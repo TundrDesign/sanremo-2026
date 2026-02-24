@@ -38,20 +38,20 @@ button{cursor:pointer;border:none;background:none;}
 .hero{position:relative;z-index:1;padding:48px 24px 40px;overflow:hidden;}
 .hero::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:800px;height:500px;background:radial-gradient(ellipse at center,rgba(254,200,47,.07) 0%,transparent 60%);pointer-events:none;}
 .hero-wm{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--ff-t);font-size:clamp(80px,18vw,200px);font-weight:900;color:rgba(255,255,255,.02);white-space:nowrap;pointer-events:none;letter-spacing:-.04em;user-select:none;}
-.hero-inner{position:relative;z-index:1;max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 240px;gap:40px;align-items:start;}
-.eyebrow{display:inline-flex;align-items:center;gap:7px;background:var(--brand-dim);border:1px solid var(--border-brand);border-radius:var(--r-pill);padding:5px 14px 5px 10px;font-size:10px;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:.12em;margin-bottom:20px;}
-.eyebrow-pip{width:7px;height:7px;background:var(--brand);border-radius:50%;box-shadow:0 0 8px var(--brand);animation:pip 1.4s ease-in-out infinite;}
+.hero-inner{position:relative;z-index:1;max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 30%;gap:40px;align-items:start;}
+
 @keyframes pip{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.2;transform:scale(.6)}}
 .hero h1{font-family:var(--ff-t);font-size:clamp(38px,6.5vw,68px);font-weight:800;line-height:1;letter-spacing:-.03em;margin-bottom:16px;}
 .hero h1 em{font-style:italic;color:var(--brand);}
 .hero p{font-size:15px;line-height:1.7;color:var(--t2);font-weight:300;max-width:480px;}
 .hero p strong{color:var(--t1);font-weight:500;}
 
-.live-card{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-xl);padding:20px;box-shadow:0 8px 40px rgba(0,0,0,.5);overflow:hidden;}
+.live-card{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-xl);padding:20px;box-shadow:0 8px 40px rgba(0,0,0,.5);cursor:pointer;transition:border-color .15s;}
+.live-card:hover{border-color:var(--border-brand);}
 .lc-head{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--t2);margin-bottom:14px;}
 .lc-dot{width:6px;height:6px;border-radius:50%;background:var(--brand);box-shadow:0 0 8px var(--brand);animation:pip 1s ease-in-out infinite;}
 .lc-dot.off{background:var(--t3);box-shadow:none;animation:none;}
-.lc-clock{font-family:var(--ff-t);font-size:30px;font-weight:800;letter-spacing:-.06em;color:var(--t1);line-height:1;font-variant-numeric:tabular-nums;margin-bottom:14px;display:block;width:100%;white-space:nowrap;}
+.lc-clock{font-family:var(--ff-t);font-size:40px;font-weight:800;letter-spacing:-.04em;color:var(--t1);line-height:1.1;font-variant-numeric:tabular-nums;margin-bottom:14px;display:block;width:100%;white-space:nowrap;}
 .lc-divider{height:1px;background:var(--border);margin-bottom:14px;}
 .lc-sub{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--t3);margin-bottom:4px;}
 .lc-content{font-size:13px;color:var(--t1);line-height:1.5;}
@@ -63,9 +63,12 @@ button{cursor:pointer;border:none;background:none;}
 .tl-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;}
 .tl-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);}
 .tl-pct{font-family:var(--ff-t);font-size:11px;font-weight:800;color:var(--brand);}
-.track{height:4px;background:var(--surface3);border-radius:var(--r-pill);position:relative;cursor:pointer;overflow:visible;}
+.track{height:4px;background:var(--surface3);border-radius:var(--r-pill);position:relative;cursor:grab;overflow:visible;user-select:none;touch-action:none;}
+.track.dragging{cursor:grabbing;}
+.track::before{content:'';position:absolute;top:-14px;bottom:-14px;left:0;right:0;}
 .track-fill{height:100%;background:linear-gradient(90deg,rgba(242,240,235,.2),var(--brand));border-radius:var(--r-pill);transition:width 1s linear;position:relative;}
-.track-fill::after{content:'';position:absolute;right:-6px;top:50%;transform:translateY(-50%);width:14px;height:14px;background:var(--brand);border:2px solid var(--bg);border-radius:50%;box-shadow:0 0 12px var(--brand-glow);}
+.track-fill::after{content:'';position:absolute;right:-8px;top:50%;transform:translateY(-50%);width:18px;height:18px;background:var(--brand);border:2px solid var(--bg);border-radius:50%;box-shadow:0 0 14px var(--brand-glow);transition:transform .1s;}
+.track.dragging .track-fill::after{transform:translateY(-50%) scale(1.3);}
 .track-markers{position:absolute;inset:0;pointer-events:none;}
 .tm{position:absolute;top:50%;transform:translate(-50%,-50%);width:2px;height:7px;border-radius:2px;pointer-events:all;cursor:pointer;opacity:.5;transition:opacity .15s,transform .15s;}
 .tm:hover{opacity:1;transform:translate(-50%,-50%) scaleY(2);}
@@ -136,9 +139,9 @@ button{cursor:pointer;border:none;background:none;}
 .fab-pip{width:6px;height:6px;background:rgba(0,0,0,.3);border-radius:50%;animation:pip 1s ease-in-out infinite;}
 
 @media(max-width:640px){
-  .hero-inner{grid-template-columns:1fr;}.live-card{display:none;}
-  .si{grid-template-columns:52px 1fr;}.si-badges{display:none;}
-  .si.current .si-badges{display:flex;grid-column:2;margin-top:4px;}
+  .hero-inner{grid-template-columns:1fr;gap:20px;}
+  .si{grid-template-columns:44px 1fr auto;gap:8px;}
+  .si-badges{flex-direction:row;flex-wrap:wrap;justify-content:flex-end;gap:3px;}
   .fcta{padding:28px 20px;}.hero-wm,.topbar-center{display:none;}
 }
 </style>
@@ -155,11 +158,10 @@ button{cursor:pointer;border:none;background:none;}
   <div class="hero-wm">SANREMO</div>
   <div class="hero-inner">
     <div>
-      <div class="eyebrow"><span class="eyebrow-pip"></span><span id="eyebrow-text">In diretta stasera</span></div>
       <h1>La tua serata<br>libera. Il festival,<br><em>quando vuoi.</em></h1>
       <p>Come ti aiutiamo a stare bene al lavoro, <strong>ti aiutiamo a stare bene anche stasera</strong>. Sai esattamente quando accendere Rai Uno per il tuo artista — e quando invece fare altro.</p>
     </div>
-    <div class="live-card">
+    <div class="live-card" onclick="liveCardClick()">
       <div class="lc-head"><span class="lc-dot off" id="lc-dot"></span><span id="lc-head-label">Orario</span></div>
       <div class="lc-clock" id="clock">--:--:--</div>
       <div class="lc-divider"></div>
@@ -174,7 +176,7 @@ button{cursor:pointer;border:none;background:none;}
       <span class="tl-label" id="tl-label">Scaletta</span>
       <span class="tl-pct" id="tl-pct">0%</span>
     </div>
-    <div class="track" id="track" onclick="clickTrack(event)">
+    <div class="track" id="track">
       <div class="track-fill" id="track-fill" style="width:0%"></div>
       <div class="track-markers" id="track-markers"></div>
     </div>
@@ -200,7 +202,7 @@ button{cursor:pointer;border:none;background:none;}
 
 <script>
 const SHEET = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYoLP0N8FnhBYOlhy3d942dlg8Vl8oDfXpFC3da1_ETLzXRPDFx9SkbJ0NFCvhVC3VZzk2Z6M3HQ9W/pub";
-const GIDS  = { 1:"0", 2:"734498227", 3:"1452678913", 4:"821345670", 5:"234567891" };
+const GIDS  = { 1:"0", 2:"1426018492", 3:"1682569433", 4:"285953640", 5:"1616238422" };
 
 const NIGHTS = [
   {n:1, date:"2026-02-24", label:"24 feb",          long:"Martedì 24 febbraio",     startH:20,startM:40,endH:1,endM:44,  isFinale:false},
@@ -296,8 +298,7 @@ function render(ni, schedule) {
   const isTonight = ni.date === today;
   const hasSched  = Array.isArray(schedule) && schedule.length > 0;
 
-  document.getElementById('eyebrow-text').textContent =
-    isTonight ? 'In diretta stasera' : ni.date < today ? 'Archivio · '+ni.long : 'Prossima serata · '+ni.long;
+
   document.getElementById('sticky-tl').style.display = hasSched && isTonight ? 'block' : 'none';
   lastIdx = -2;
 
@@ -305,7 +306,8 @@ function render(ni, schedule) {
   main.innerHTML = '';
 
   if (!hasSched) {
-    main.innerHTML = `<div class="notice"><div class="notice-icon">📡</div><div><h3>Serata ${ni.n} — ${ni.long}</h3><p>Scaletta non disponibile.</p></div></div>`;
+    const isFuture = ni.date > todayStr();
+    main.innerHTML = `<div class="notice"><div class="notice-icon">${isFuture ? '🔜' : '📡'}</div><div><h3>Serata ${ni.n} — ${ni.long}</h3><p>${isFuture ? 'La scaletta sarà disponibile qualche ora prima dell\'inizio.' : 'Scaletta non disponibile.'}</p></div></div>`;
     buildMarkers(ni, []);
     return;
   }
@@ -388,25 +390,24 @@ function tick() {
   const dot     = document.getElementById('lc-dot');
   const lcBody  = document.getElementById('lc-body');
   const lcHead  = document.getElementById('lc-head-label');
-  const firstNight = NIGHTS[0];
-  const target  = new Date(firstNight.date+'T'+pad(firstNight.startH)+':'+pad(firstNight.startM)+':00');
+  const target  = new Date(ni.date+'T'+pad(ni.startH)+':'+pad(ni.startM)+':00');
   const diff    = target - now;
   if (!isTonight || !sched || mn < start) {
     dot.style.display='none';
-    lcHead.textContent='Manca alla prima serata:';
+    lcHead.textContent = diff > 0 ? 'Manca alla serata:' : 'Serata conclusa';
     if (diff <= 0) {
-      clockEl.textContent='00:00:00';
+      clockEl.textContent='--:--:--';fitClock();
     } else {
       const hrs=Math.floor(diff/3600000), mins=Math.floor((diff%3600000)/60000), secs=Math.floor((diff%60000)/1000);
-      clockEl.textContent=`${pad(hrs)}:${pad(mins)}:${pad(secs)}`;
+      clockEl.textContent=`${pad(hrs)}:${pad(mins)}:${pad(secs)}`;fitClock();
     }
-    lcBody.innerHTML=`<div class="lc-sub">Inizio diretta</div><div class="lc-content" style="color:var(--t2)">Stasera si parte alle <strong style="color:var(--t1)">${pad(firstNight.startH)}:${pad(firstNight.startM)}</strong>.</div>`;
+    lcBody.innerHTML=`<div class="lc-content" style="color:var(--t2)"><strong style="color:var(--t1)">${ni.long}</strong><br>Inizia alle ${pad(ni.startH)}:${pad(ni.startM)}.</div>`;
     return;
   }
   if (mn >= end) {
     dot.style.display=''; dot.className='lc-dot off';
     lcHead.textContent='Serata conclusa';
-    clockEl.textContent='—';
+    clockEl.textContent='—';fitClock();
     lcBody.innerHTML=`<div class="lc-content" style="color:var(--t2)">Ci vediamo domani sera alle 20:40!</div>`;
     return;
   }
@@ -432,10 +433,10 @@ function tick() {
 
   const cur = idx>=0 ? sched[idx] : null;
   if (cur) {
-    clockEl.textContent = cur.a;
-    lcBody.innerHTML = `<div class="lc-sub">In onda</div><div class="lc-content">${cur.s?`<em style="color:var(--t2)">"${cur.s}"</em><br>`:''} ${cur.d?`<span style="color:var(--t2)">${cur.d}</span>`:`<span style="color:var(--t2)">—</span>`}</div><div class="lc-prog"><div class="lc-prog-fill" style="width:${pct}%"></div></div>`;
+    clockEl.textContent = cur.a;fitClock();
+    lcBody.innerHTML = `<div class="lc-content">${cur.s?`<em style="color:var(--t2)">"${cur.s}"</em><br>`:''} ${cur.d?`<span style="color:var(--t2)">${cur.d}</span>`:`<span style="color:var(--t2)">—</span>`}</div><div class="lc-prog"><div class="lc-prog-fill" style="width:${pct}%"></div></div>`;
   } else {
-    clockEl.textContent='—';
+    clockEl.textContent='—';fitClock();
     lcBody.innerHTML=`<div class="lc-content" style="color:var(--t2)">—</div>`;
   }
 
@@ -446,22 +447,77 @@ function tick() {
   } else fab.classList.remove('on');
 }
 
+function fitClock() {
+  const el = document.getElementById('clock');
+  if (!el) return;
+  const parent = el.parentElement;
+  const maxW = parent.clientWidth - 40; // padding 20px per lato
+  let size = 48;
+  el.style.fontSize = size + 'px';
+  while (el.scrollWidth > maxW && size > 14) {
+    size -= 1;
+    el.style.fontSize = size + 'px';
+  }
+}
+
+function liveCardClick() {
+  const sched = schedCache[NIGHTS[activeTab].n];
+  const idx = curIdx(sched, nowMin());
+  if (idx >= 0) document.getElementById('si'+idx)?.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
 function fabClick() {
   const sched=schedCache[NIGHTS[activeTab].n];
   const idx=curIdx(sched,nowMin());
   if (idx>=0) document.getElementById('si'+idx)?.scrollIntoView({behavior:'smooth',block:'center'});
 }
 
-function clickTrack(e) {
-  const ni=NIGHTS[activeTab], sched=schedCache[ni.n];
-  if (!sched) return;
-  const start=norm(H(ni.startH,ni.startM)), end=norm(H(ni.endH,ni.endM));
-  const r=document.getElementById('track').getBoundingClientRect();
-  const target=start+(e.clientX-r.left)/r.width*(end-start);
-  let best=0, minD=Infinity;
-  sched.forEach((d,i)=>{ const df=Math.abs(norm(H(d.t[0],d.t[1]))-target); if(df<minD){minD=df;best=i;} });
-  document.getElementById('si'+best)?.scrollIntoView({behavior:'smooth',block:'center'});
-}
+/* ── DRAG TIMELINE ── */
+(function(){
+  const track = document.getElementById('track');
+  let dragging = false;
+
+  function clientX(e){ return e.touches ? e.touches[0].clientX : e.clientX; }
+
+  function seekTo(cx) {
+    const ni = NIGHTS[activeTab], sched = schedCache[ni.n];
+    if (!sched) return;
+    const r = track.getBoundingClientRect();
+    const pct = Math.max(0, Math.min(1, (cx - r.left) / r.width));
+    const start = norm(H(ni.startH,ni.startM)), end = norm(H(ni.endH,ni.endM));
+    const target = start + pct * (end - start);
+    // aggiorna visivamente il fill in tempo reale
+    document.getElementById('track-fill').style.width = (pct*100) + '%';
+    document.getElementById('tl-pct').textContent = Math.round(pct*100) + '%';
+    // trova slot più vicino
+    let best=0, minD=Infinity;
+    sched.forEach((d,i)=>{ const df=Math.abs(norm(H(d.t[0],d.t[1]))-target); if(df<minD){minD=df;best=i;} });
+    document.getElementById('si'+best)?.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+
+  function onStart(e){
+    dragging = true;
+    track.classList.add('dragging');
+    seekTo(clientX(e));
+    e.preventDefault();
+  }
+  function onMove(e){
+    if (!dragging) return;
+    seekTo(clientX(e));
+    e.preventDefault();
+  }
+  function onEnd(){
+    dragging = false;
+    track.classList.remove('dragging');
+  }
+
+  track.addEventListener('mousedown',  onStart, {passive:false});
+  track.addEventListener('touchstart', onStart, {passive:false});
+  document.addEventListener('mousemove',  onMove, {passive:false});
+  document.addEventListener('touchmove',  onMove, {passive:false});
+  document.addEventListener('mouseup',  onEnd);
+  document.addEventListener('touchend', onEnd);
+})();
 
 buildTabs();
 loadAndRender(activeTab);
