@@ -5,100 +5,66 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tundr × Sanremo 2026</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --brand:#FEC82F; --brand-hover:#FFD45A;
-  --brand-dim:rgba(254,200,47,0.15); --brand-glow:rgba(254,200,47,0.30);
-  --brand-text:#1a1400; --border-brand:rgba(254,200,47,0.35);
-  --bg:#0a0a0c; --surface:#111114; --surface2:#18181c; --surface3:#202025;
-  --border:rgba(255,255,255,0.06); --border2:rgba(255,255,255,0.11);
-  --t1:#f2f0eb; --t2:rgba(242,240,235,0.52); --t3:rgba(242,240,235,0.28);
-  --bw-bg:rgba(254,200,47,.10); --bw-fg:#FEC82F; --bw-bd:rgba(254,200,47,.22);
-  --bs-bg:rgba(254,200,47,.14); --bs-fg:#FEC82F; --bs-bd:rgba(254,200,47,.3);
-  --bo-bg:rgba(255,93,45,.12);  --bo-fg:#ff8562; --bo-bd:rgba(255,93,45,.25);
-  --bc-bg:rgba(47,102,254,.12); --bc-fg:#98a6fe; --bc-bd:rgba(47,102,254,.25);
-  --bsk-bg:rgba(255,255,255,.04); --bsk-fg:rgba(242,240,235,0.28); --bsk-bd:rgba(255,255,255,0.06);
-  --bp-bg:rgba(255,255,255,.03); --bp-fg:rgba(242,240,235,0.28); --bp-bd:rgba(255,255,255,0.06);
-  --r-sm:4px; --r-md:8px; --r-xl:16px; --r-2xl:24px; --r-pill:999px;
-  --ff-title:'Syne',sans-serif; --ff-body:'Inter',sans-serif;
+:root{
+  --brand:#FEC82F;--brand-hover:#FFD45A;--brand-dim:rgba(254,200,47,.15);--brand-glow:rgba(254,200,47,.30);--brand-text:#1a1400;--border-brand:rgba(254,200,47,.35);
+  --bg:#0a0a0c;--surface2:#18181c;--surface3:#202025;
+  --border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.11);
+  --t1:#f2f0eb;--t2:rgba(242,240,235,.52);--t3:rgba(242,240,235,.28);
+  --bw-bg:rgba(254,200,47,.10);--bw-fg:#FEC82F;--bw-bd:rgba(254,200,47,.22);
+  --bs-bg:rgba(254,200,47,.14);--bs-fg:#FEC82F;--bs-bd:rgba(254,200,47,.3);
+  --bo-bg:rgba(255,93,45,.12);--bo-fg:#ff8562;--bo-bd:rgba(255,93,45,.25);
+  --bc-bg:rgba(47,102,254,.12);--bc-fg:#98a6fe;--bc-bd:rgba(47,102,254,.25);
+  --bsk-bg:rgba(255,255,255,.04);--bsk-fg:rgba(242,240,235,.28);--bsk-bd:rgba(255,255,255,.06);
+  --bp-bg:rgba(255,255,255,.03);--bp-fg:rgba(242,240,235,.28);--bp-bd:rgba(255,255,255,.06);
+  --r-md:8px;--r-xl:16px;--r-2xl:24px;--r-pill:999px;
+  --ff-t:'Syne',sans-serif;--ff-b:'Inter',sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{font-family:var(--ff-body);background:var(--bg);color:var(--t1);font-size:16px;line-height:24px;overflow-x:hidden;min-height:100vh;}
+body{font-family:var(--ff-b);background:var(--bg);color:var(--t1);overflow-x:hidden;min-height:100vh;}
 body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;}
 a{color:inherit;text-decoration:none;}
 button{cursor:pointer;border:none;background:none;}
 
-.topbar{position:relative;z-index:200;background:rgba(10,10,12,0.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.topbar{position:relative;z-index:200;background:rgba(10,10,12,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
 .logo-svg{display:block;height:20px;width:auto;flex-shrink:0;color:var(--t1);}
-.topbar-center{font-family:var(--ff-title);font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);flex:1;text-align:center;}
-.topbar-center strong{color:var(--brand);font-weight:800;}
-.night-pill{display:flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-pill);padding:5px 12px;font-size:11px;font-weight:600;color:var(--t2);letter-spacing:.04em;white-space:nowrap;}
+.topbar-center{font-family:var(--ff-t);font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);flex:1;text-align:center;}
+.topbar-center strong{color:var(--brand);}
+.night-pill{display:flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-pill);padding:5px 12px;font-size:11px;font-weight:600;color:var(--t2);white-space:nowrap;}
 .night-pill.live{border-color:var(--border-brand);background:var(--brand-dim);color:var(--brand);}
 
 .hero{position:relative;z-index:1;padding:48px 24px 40px;overflow:hidden;}
-.hero::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:800px;height:500px;background:radial-gradient(ellipse at center,rgba(254,200,47,0.07) 0%,transparent 60%);pointer-events:none;}
-.hero-wm{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--ff-title);font-size:clamp(80px,18vw,200px);font-weight:900;color:rgba(255,255,255,0.02);white-space:nowrap;pointer-events:none;letter-spacing:-.04em;user-select:none;}
+.hero::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:800px;height:500px;background:radial-gradient(ellipse at center,rgba(254,200,47,.07) 0%,transparent 60%);pointer-events:none;}
+.hero-wm{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--ff-t);font-size:clamp(80px,18vw,200px);font-weight:900;color:rgba(255,255,255,.02);white-space:nowrap;pointer-events:none;letter-spacing:-.04em;user-select:none;}
 .hero-inner{position:relative;z-index:1;max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 240px;gap:40px;align-items:start;}
 .eyebrow{display:inline-flex;align-items:center;gap:7px;background:var(--brand-dim);border:1px solid var(--border-brand);border-radius:var(--r-pill);padding:5px 14px 5px 10px;font-size:10px;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:.12em;margin-bottom:20px;}
 .eyebrow-pip{width:7px;height:7px;background:var(--brand);border-radius:50%;box-shadow:0 0 8px var(--brand);animation:pip 1.4s ease-in-out infinite;}
 @keyframes pip{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.2;transform:scale(.6)}}
-.hero h1{font-family:var(--ff-title);font-size:clamp(38px,6.5vw,68px);font-weight:800;line-height:1.0;letter-spacing:-.03em;color:var(--t1);margin-bottom:16px;}
+.hero h1{font-family:var(--ff-t);font-size:clamp(38px,6.5vw,68px);font-weight:800;line-height:1;letter-spacing:-.03em;margin-bottom:16px;}
 .hero h1 em{font-style:italic;color:var(--brand);}
 .hero p{font-size:15px;line-height:1.7;color:var(--t2);font-weight:300;max-width:480px;}
 .hero p strong{color:var(--t1);font-weight:500;}
 
-.live-card{
-  background:var(--surface2);
-  border:1px solid var(--border2);
-  border-radius:var(--r-xl);
-  padding:20px;
-  box-shadow:0 8px 40px rgba(0,0,0,.5);
-  overflow:hidden; /* ✅ evita sbordi fuori dal box */
-}
-.lc-head{
-  display:flex;
-  align-items:center;
-  gap:6px;
-
-  font-size:12px;
-  font-weight:600;
-  color:var(--t2);
-
-  text-transform:none;   /* ✅ niente uppercase da “label” */
-  letter-spacing:0;      /* ✅ niente look da legenda */
-  margin-bottom:14px;
-}
+.live-card{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-xl);padding:20px;box-shadow:0 8px 40px rgba(0,0,0,.5);overflow:hidden;}
+.lc-head{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--t2);margin-bottom:14px;}
 .lc-dot{width:6px;height:6px;border-radius:50%;background:var(--brand);box-shadow:0 0 8px var(--brand);animation:pip 1s ease-in-out infinite;}
 .lc-dot.off{background:var(--t3);box-shadow:none;animation:none;}
-.lc-clock{
-  font-family:var(--ff-title);
-  font-size:clamp(30px, 6.2vw, 30px); /* ✅ si adatta alla larghezza */
-  font-weight:800;
-  letter-spacing:-.06em;              /* ✅ stringe un filo */
-  color:var(--t1);
-  line-height:1;
-  font-variant-numeric:tabular-nums;
-  margin-bottom:14px;
-
-  display:block;
-  width:100%;
-  white-space:nowrap;                 /* ✅ non va a capo */
-}
+.lc-clock{font-family:var(--ff-t);font-size:30px;font-weight:800;letter-spacing:-.06em;color:var(--t1);line-height:1;font-variant-numeric:tabular-nums;margin-bottom:14px;display:block;width:100%;white-space:nowrap;}
 .lc-divider{height:1px;background:var(--border);margin-bottom:14px;}
 .lc-sub{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--t3);margin-bottom:4px;}
 .lc-content{font-size:13px;color:var(--t1);line-height:1.5;}
 .lc-prog{height:3px;background:var(--surface3);border-radius:var(--r-pill);margin-top:12px;overflow:hidden;}
 .lc-prog-fill{height:100%;background:linear-gradient(90deg,var(--brand),var(--brand-hover));border-radius:var(--r-pill);transition:width 1s linear;}
 
-.sticky{position:sticky;top:0;z-index:150;background:rgba(10,10,12,0.94);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:10px 24px;}
+.sticky{position:sticky;top:0;z-index:150;background:rgba(10,10,12,.94);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:10px 24px;}
 .sticky-inner{max-width:900px;margin:0 auto;}
 .tl-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;}
 .tl-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);}
-.tl-pct{font-family:var(--ff-title);font-size:11px;font-weight:800;color:var(--brand);}
+.tl-pct{font-family:var(--ff-t);font-size:11px;font-weight:800;color:var(--brand);}
 .track{height:4px;background:var(--surface3);border-radius:var(--r-pill);position:relative;cursor:pointer;overflow:visible;}
-.track-fill{height:100%;background:linear-gradient(90deg,rgba(242,240,235,0.2),var(--brand));border-radius:var(--r-pill);transition:width 1s linear;position:relative;}
+.track-fill{height:100%;background:linear-gradient(90deg,rgba(242,240,235,.2),var(--brand));border-radius:var(--r-pill);transition:width 1s linear;position:relative;}
 .track-fill::after{content:'';position:absolute;right:-6px;top:50%;transform:translateY(-50%);width:14px;height:14px;background:var(--brand);border:2px solid var(--bg);border-radius:50%;box-shadow:0 0 12px var(--brand-glow);}
 .track-markers{position:absolute;inset:0;pointer-events:none;}
 .tm{position:absolute;top:50%;transform:translate(-50%,-50%);width:2px;height:7px;border-radius:2px;pointer-events:all;cursor:pointer;opacity:.5;transition:opacity .15s,transform .15s;}
@@ -109,40 +75,14 @@ button{cursor:pointer;border:none;background:none;}
 .night-tabs{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:20px 24px 0;}
 .nt-scroll{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;}
 .nt-scroll::-webkit-scrollbar{display:none;}
-.nt-btn{flex-shrink:0;display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:var(--r-pill);border:1px solid var(--border);font-family:var(--ff-body);font-size:11px;font-weight:600;color:var(--t2);background:transparent;transition:all .15s;white-space:nowrap;}
+.nt-btn{flex-shrink:0;display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:var(--r-pill);border:1px solid var(--border);font-family:var(--ff-b);font-size:11px;font-weight:600;color:var(--t2);background:transparent;transition:all .15s;white-space:nowrap;}
 .nt-btn:hover{background:var(--surface2);color:var(--t1);}
-.nt-btn.active{
-  background:var(--brand) !important;
-  border-color:var(--brand) !important;
-
-  color:#0a0a0c !important;              /* ✅ forza il colore del testo */
-  -webkit-text-fill-color:#0a0a0c;       /* ✅ fix Safari/Chrome in alcuni casi */
-  font-weight:800;
-
-  box-shadow:
-    0 0 0 2px rgba(254,200,47,.35),
-    0 10px 28px rgba(254,200,47,.12);
-}
-.nt-btn.active *{
-  color:inherit !important;              /* ✅ anche il pallino e qualsiasi span */
-  -webkit-text-fill-color:inherit;
-}
-.nt-btn.active .nt-dot{
-  opacity:1;
-  background:rgba(0,0,0,.35);    /* ✅ pallino visibile sul giallo */
-}
+.nt-btn.active{background:var(--brand);border-color:var(--brand);color:#0a0a0c;font-weight:800;box-shadow:0 0 0 2px rgba(254,200,47,.35),0 10px 28px rgba(254,200,47,.12);}
+.nt-btn.active .nt-dot{opacity:1;background:rgba(0,0,0,.35);}
 .nt-btn .nt-dot{width:5px;height:5px;background:currentColor;border-radius:50%;opacity:.5;}
 .nt-btn.tonight{color:var(--brand);border-color:var(--border-brand);}
 .nt-btn.tonight .nt-dot{background:var(--brand);box-shadow:0 0 6px var(--brand);animation:pip 1s ease-in-out infinite;opacity:1;}
-/* Fix: quando è "tonight" + "active", il testo non deve tornare giallo */
-.nt-btn.active.tonight{
-  color:#0a0a0c !important;
-  border-color:var(--brand);
-}
-.nt-btn.active.tonight .nt-dot{
-  background:rgba(0,0,0,.35);
-  opacity:1;
-}
+
 .main{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:20px 24px 40px;}
 
 .legend{display:flex;flex-wrap:wrap;gap:14px;padding-bottom:16px;border-bottom:1px solid var(--border);margin-bottom:16px;}
@@ -153,10 +93,8 @@ button{cursor:pointer;border:none;background:none;}
 
 .notice{display:flex;align-items:flex-start;gap:14px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-xl);padding:20px;margin-bottom:20px;}
 .notice-icon{flex-shrink:0;font-size:22px;line-height:1;margin-top:2px;}
-.notice h3{font-family:var(--ff-title);font-size:16px;font-weight:800;color:var(--t1);margin-bottom:4px;}
+.notice h3{font-family:var(--ff-t);font-size:16px;font-weight:800;color:var(--t1);margin-bottom:4px;}
 .notice p{font-size:13px;color:var(--t2);line-height:1.6;}
-.hl-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
-.hl{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;background:var(--brand-dim);border:1px solid var(--border-brand);border-radius:var(--r-pill);font-size:11px;font-weight:600;color:var(--brand);}
 
 .slist{display:flex;flex-direction:column;gap:1px;}
 .si{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;padding:12px;border-radius:var(--r-md);border:1px solid transparent;transition:background .13s,border-color .13s;scroll-margin-top:100px;position:relative;}
@@ -164,16 +102,15 @@ button{cursor:pointer;border:none;background:none;}
 .si.past{opacity:.22;}
 .si.next-up{background:var(--brand-dim);border-color:var(--border-brand);}
 .si.current{background:var(--surface2);border-color:var(--brand);box-shadow:0 0 0 1px var(--brand),inset 0 0 50px rgba(254,200,47,.04);margin-top:18px;}
-.si.current::before{content:'▶ ORA IN ONDA';position:absolute;top:-12px;left:12px;background:var(--brand);color:var(--brand-text);font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:2px 10px;border-radius:var(--r-pill);border:2px solid var(--bg);font-family:var(--ff-body);}
-.si-time{font-family:var(--ff-title);font-size:15px;font-weight:700;color:var(--t3);font-variant-numeric:tabular-nums;white-space:nowrap;}
+.si.current::before{content:'▶ ORA IN ONDA';position:absolute;top:-12px;left:12px;background:var(--brand);color:var(--brand-text);font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:2px 10px;border-radius:var(--r-pill);border:2px solid var(--bg);}
+.si-time{font-family:var(--ff-t);font-size:15px;font-weight:700;color:var(--t3);font-variant-numeric:tabular-nums;white-space:nowrap;}
 .si.current .si-time{color:var(--brand);}
 .si-body{min-width:0;}
-.si-artist{font-family:var(--ff-title);font-size:15px;font-weight:700;color:var(--t1);margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.si-artist{font-family:var(--ff-t);font-size:15px;font-weight:700;color:var(--t1);margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .si-song{font-size:12px;color:var(--t2);font-style:italic;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .si-desc{font-size:11px;color:var(--t3);line-height:1.45;}
 .si-badges{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;}
-
-.badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:var(--r-pill);border:1px solid;white-space:nowrap;letter-spacing:.02em;}
+.badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:var(--r-pill);border:1px solid;white-space:nowrap;}
 .bw{background:var(--bw-bg);color:var(--bw-fg);border-color:var(--bw-bd);}
 .bs{background:var(--bs-bg);color:var(--bs-fg);border-color:var(--bs-bd);}
 .bo{background:var(--bo-bg);color:var(--bo-fg);border-color:var(--bo-bd);}
@@ -185,40 +122,31 @@ button{cursor:pointer;border:none;background:none;}
 
 .fcta-wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 24px 60px;}
 .fcta{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-2xl);padding:44px 40px;text-align:center;position:relative;overflow:hidden;}
-.fcta::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(254,200,47,0.07) 0%,transparent 65%);pointer-events:none;}
+.fcta::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(254,200,47,.07) 0%,transparent 65%);pointer-events:none;}
 .fcta-logo-svg{height:18px;width:auto;color:var(--t1);position:relative;margin-bottom:20px;display:inline-block;}
-.fcta h2{font-family:var(--ff-title);font-size:clamp(22px,4vw,34px);font-weight:800;line-height:1.1;letter-spacing:-.02em;color:var(--t1);margin-bottom:10px;position:relative;}
+.fcta h2{font-family:var(--ff-t);font-size:clamp(22px,4vw,34px);font-weight:800;line-height:1.1;letter-spacing:-.02em;margin-bottom:10px;position:relative;}
 .fcta h2 em{font-style:italic;color:var(--brand);}
 .fcta p{font-size:14px;line-height:1.7;color:var(--t2);max-width:440px;margin:0 auto 28px;position:relative;font-weight:300;}
-.btn{display:inline-block;padding:12px 28px;background:var(--brand);color:var(--brand-text);border-radius:var(--r-pill);font-family:var(--ff-body);font-size:13px;font-weight:700;transition:background .15s,transform .12s,box-shadow .15s;letter-spacing:.01em;}
+.btn{display:inline-block;padding:12px 28px;background:var(--brand);color:var(--brand-text);border-radius:var(--r-pill);font-size:13px;font-weight:700;transition:background .15s,transform .12s,box-shadow .15s;}
 .btn:hover{background:var(--brand-hover);transform:translateY(-1px);box-shadow:0 8px 28px var(--brand-glow);}
 
-.fab{position:fixed;bottom:24px;right:24px;background:var(--brand);color:var(--brand-text);border-radius:var(--r-pill);padding:11px 20px;font-family:var(--ff-body);font-size:12px;font-weight:700;z-index:300;display:flex;align-items:center;gap:7px;box-shadow:0 4px 24px var(--brand-glow);opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .2s,transform .2s;}
+.fab{position:fixed;bottom:24px;right:24px;background:var(--brand);color:var(--brand-text);border-radius:var(--r-pill);padding:11px 20px;font-size:12px;font-weight:700;z-index:300;display:flex;align-items:center;gap:7px;box-shadow:0 4px 24px var(--brand-glow);opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .2s,transform .2s;}
 .fab.on{opacity:1;transform:translateY(0);pointer-events:all;}
 .fab:hover{background:var(--brand-hover);}
 .fab-pip{width:6px;height:6px;background:rgba(0,0,0,.3);border-radius:50%;animation:pip 1s ease-in-out infinite;}
 
 @media(max-width:640px){
-  .hero-inner{grid-template-columns:1fr;} .live-card{display:none;}
-  .si{grid-template-columns:52px 1fr;} .si-badges{display:none;}
+  .hero-inner{grid-template-columns:1fr;}.live-card{display:none;}
+  .si{grid-template-columns:52px 1fr;}.si-badges{display:none;}
   .si.current .si-badges{display:flex;grid-column:2;margin-top:4px;}
-  .fcta{padding:28px 20px;} .hero-wm{display:none;} .topbar-center{display:none;}
+  .fcta{padding:28px 20px;}.hero-wm,.topbar-center{display:none;}
 }
 </style>
 </head>
 <body>
 
 <header class="topbar">
-  <svg class="logo-svg" viewBox="0 0 322 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g clip-path="url(#c)">
-      <path d="M109.37 57.0649C107.015 57.0649 105.462 54.6106 106.473 52.488L120.935 22.1341C120.914 20.3839 119.494 18.9655 117.737 18.9655H96.6965C94.9138 18.9655 93.4682 20.4095 93.4682 22.1902L93.3916 51.8808C93.3916 54.728 91.0827 57.0342 88.2324 57.0342C85.3821 57.0342 83.0732 54.728 83.0732 51.8808V22.1647C83.0732 20.3942 81.6378 18.9655 79.8704 18.9655H58.7637C56.9963 18.9655 55.5609 20.3993 55.5609 22.1647V56.8557C55.5609 64.3663 57.2773 70.1014 60.7048 74.0608C64.1323 78.0203 69.3835 80 76.4531 80C81.4897 80 85.5353 78.9285 88.5849 76.7753C91.6089 74.6374 93.8207 71.7648 95.2203 68.1727L97.2687 76.4283C97.6262 77.8672 98.9186 78.8775 100.405 78.8775H117.716C119.499 78.8775 120.945 77.4335 120.945 75.6528V57.0649H109.37Z" fill="currentColor"/>
-      <path d="M188.055 23.7821C184.628 19.8227 179.376 17.843 172.307 17.843C167.265 17.843 163.219 18.9145 160.175 21.0677C157.146 23.2056 154.939 26.0782 153.54 29.6703L151.491 21.4146C151.134 19.9758 149.841 18.9655 148.355 18.9655H131.049C129.266 18.9655 127.82 20.4095 127.82 22.1902V40.7985H139.457C141.811 40.7985 143.364 43.2528 142.348 45.3753L127.836 75.765C127.892 77.4845 129.286 78.8724 131.018 78.8724H152.058C153.841 78.8724 155.287 77.4284 155.287 75.6477L155.363 45.957C155.363 43.1099 157.672 40.8036 160.522 40.8036C163.373 40.8036 165.682 43.1099 165.682 45.957V75.6732C165.682 77.4386 167.117 78.8724 168.889 78.8724H189.991C191.764 78.8724 193.199 77.4386 193.199 75.6732V40.9822C193.199 33.4715 191.483 27.7365 188.05 23.777" fill="currentColor"/>
-      <path d="M47.2143 18.9706H35.2715V7.14331C35.2715 5.36259 33.8259 3.91861 32.0432 3.91861H17.2552C15.4725 3.91861 14.0269 5.36259 14.0269 7.14331C14.0269 7.14331 13.6642 11.0517 12.8162 13.1335C11.861 16.0724 10.1192 18.0879 7.58555 19.1747C7.58555 19.1747 5.01617 20.389 3.22833 20.389C1.44049 20.389 0 21.833 0 23.6137V37.5738C0 39.3545 1.4456 40.7985 3.22833 40.7985H9.74117V51.2277C9.74117 57.7843 10.4767 63.0908 11.9428 67.1522C13.4139 71.2137 16.0293 74.1833 19.7888 76.061C23.5433 77.9386 28.8762 78.8775 35.7823 78.8775H47.2143C48.997 78.8775 50.4426 77.4335 50.4426 75.6528V58.9629C50.4426 57.1822 48.997 55.7382 47.2143 55.7382H43.8838C41.4881 55.7382 39.6645 55.5494 38.3977 55.1719C37.1309 54.7994 36.2982 54.0136 35.8845 52.8197C35.4758 51.6257 35.2664 49.8297 35.2664 47.4418V40.8036H47.2092C48.9919 40.8036 50.4375 39.3596 50.4375 37.5789V22.2004C50.4375 20.4197 48.9919 18.9757 47.2092 18.9757" fill="currentColor"/>
-      <path d="M318.797 17.8481H316.907V17.9093C311.748 18.0675 307.631 19.1084 304.673 21.1238C301.823 23.0627 299.994 26.4558 299.08 31.1448L296.669 21.4197C296.311 19.9809 295.019 18.9706 293.533 18.9706H276.226C274.444 18.9706 272.998 20.4146 272.998 22.1953V75.6528C272.998 77.4335 274.444 78.8775 276.226 78.8775H297.241C299.024 78.8775 300.469 77.4335 300.469 75.6528V56.0801C300.505 52.2278 301.19 49.544 302.553 48.0796C303.953 46.5744 306.773 45.8243 311.018 45.8243L316.907 45.8907V45.9009H318.797C320.565 45.9009 322 44.4671 322 42.7017V21.0473C322 19.2818 320.565 17.8481 318.797 17.8481Z" fill="currentColor"/>
-      <path d="M262.884 0H241.869C240.086 0 238.641 1.44397 238.641 3.22469V25.272C237.21 23.1698 235.448 21.4146 233.155 20.2003C230.452 18.7665 227.02 18.0471 222.852 18.0471C218.203 18.0471 214.009 19.139 210.286 21.3228C206.562 23.5066 203.625 26.8027 201.469 31.2061C199.318 35.6094 198.241 41.222 198.241 48.0541V49.2837C198.241 59.2487 200.509 66.8308 205.055 72.0199C209.601 77.209 215.496 79.801 222.744 79.801C227.388 79.801 231.27 79.056 234.069 77.0865C237.195 74.8823 239.642 71.3872 240.75 69.6371L242.436 76.4334C242.794 77.8723 244.086 78.8826 245.572 78.8826H262.884C264.667 78.8826 266.112 77.4386 266.112 75.6579V3.22469C266.112 1.44397 264.667 0 262.884 0ZM239.014 49.0797C239.014 52.5595 238.344 55.0035 237.011 56.4015C235.678 57.7996 233.921 58.4986 231.729 58.4986C229.538 58.4986 227.888 57.82 226.555 56.4526C225.222 55.0902 224.553 52.6309 224.553 49.0797V48.1612C224.553 45.0233 225.222 42.7527 226.555 41.3496C227.888 39.9515 229.61 39.2474 231.729 39.2474C233.849 39.2474 235.673 39.9668 237.011 41.4006C238.344 42.8344 239.014 45.0845 239.014 48.1612V49.0797Z" fill="currentColor"/>
-    </g>
-    <defs><clipPath id="c"><rect width="322" height="80" fill="white"/></clipPath></defs>
-  </svg>
+  <svg class="logo-svg" viewBox="0 0 322 80" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#a)"><path d="M109.37 57.06C107.02 57.06 105.46 54.61 106.47 52.49L120.94 22.13C120.91 20.38 119.49 18.97 117.74 18.97H96.7C94.91 18.97 93.47 20.41 93.47 22.19L93.39 51.88C93.39 54.73 91.08 57.03 88.23 57.03 85.38 57.03 83.07 54.73 83.07 51.88V22.16C83.07 20.39 81.64 18.97 79.87 18.97H58.76C56.99 18.97 55.56 20.4 55.56 22.16V56.86C55.56 64.37 57.28 70.1 60.7 74.06 64.13 78.02 69.38 80 76.45 80c5.04 0 9.08-1.07 12.13-3.22 3.02-2.14 5.24-5.01 6.64-8.6l2.05 8.26c.36 1.44 1.65 2.45 3.14 2.45h17.31c1.78 0 3.23-1.44 3.23-3.22V57.06h-11.58ZM188.06 23.78C184.63 19.82 179.38 17.84 172.31 17.84c-5.04 0-9.09 1.07-12.13 3.23-3.03 2.14-5.24 5.01-6.64 8.6l-2.05-8.25c-.36-1.44-1.65-2.45-3.14-2.45h-17.31c-1.78 0-3.23 1.44-3.23 3.22v18.6h11.64c2.35 0 3.9 2.45 2.88 4.58L127.84 75.77c.06 1.72 1.45 3.1 3.18 3.1h21.04c1.78 0 3.23-1.44 3.23-3.22l.08-29.69c0-2.85 2.31-5.15 5.16-5.15 2.85 0 5.16 2.3 5.16 5.15v29.7c0 1.76 1.43 3.2 3.21 3.2h21.1c1.77 0 3.21-1.44 3.21-3.2V40.98c0-7.51-1.72-13.24-5.15-17.2ZM47.21 18.97H35.27V7.14C35.27 5.36 33.83 3.92 32.04 3.92H17.26C15.47 3.92 14.03 5.36 14.03 7.14c0 0-.36 4.04-1.21 6.12-1.19 3.14-2.86 4.97-5.23 6.04 0 0-2.57 1.21-4.36 1.21C1.44 20.51 0 21.83 0 23.61v13.96c0 1.78 1.45 3.23 3.23 3.23h6.51v10.43c0 6.56.74 11.87 2.2 15.93 1.47 4.06 4.09 6.93 7.85 8.81C23.54 77.94 28.88 78.88 35.78 78.88h11.43c1.78 0 3.23-1.44 3.23-3.22V58.96c0-1.78-1.45-3.22-3.23-3.22h-3.33c-2.4 0-4.22-.19-5.49-.57-1.27-.37-2.1-1.16-2.51-2.35-.41-1.2-.62-2.99-.62-5.38v-6.63h11.95c1.78 0 3.23-1.44 3.23-3.22V22.2c0-1.78-1.45-3.22-3.23-3.22ZM318.8 17.85h-1.89v.06c-5.16.16-9.28 1.2-12.23 3.21-2.85 1.94-4.68 5.33-5.59 10.02l-2.41-9.73c-.36-1.44-1.65-2.45-3.14-2.45h-17.31c-1.78 0-3.23 1.44-3.23 3.22v53.46c0 1.78 1.45 3.23 3.23 3.23h21.01c1.78 0 3.23-1.44 3.23-3.23V56.08c.04-3.85.72-6.54 2.08-8 1.4-1.5 4.22-2.26 8.47-2.26l5.89.07v.01h1.89c1.77 0 3.2-1.43 3.2-3.2V21.05c0-1.77-1.43-3.2-3.2-3.2ZM262.88 0h-21.01c-1.78 0-3.23 1.44-3.23 3.22v22.05c-1.43-2.1-3.19-3.86-5.49-5.07-2.7-1.43-6.13-2.15-10.3-2.15-4.65 0-8.84 1.09-12.56 3.28-3.72 2.18-6.66 5.48-8.82 9.88-2.15 4.4-3.23 10.01-3.23 16.84v1.23c0 9.96 2.27 17.55 6.81 22.74 4.55 5.19 10.45 7.78 17.7 7.78 4.64 0 8.53-.75 11.32-2.71 3.13-2.2 5.58-5.7 6.68-7.45l1.69 6.8c.36 1.44 1.65 2.45 3.14 2.45h17.31c1.78 0 3.23-1.44 3.23-3.22V3.22C266.12 1.44 264.67 0 262.88 0Zm-23.87 49.08c0 3.48-.67 5.92-2 7.32-1.33 1.4-3.09 2.09-5.28 2.09-2.19 0-3.84-.68-5.17-2.05-1.33-1.36-2-3.82-2-7.36v-.92c0-3.14.67-5.41 2-6.81 1.33-1.4 3.06-2.1 5.17-2.1 2.12 0 3.94.72 5.28 2.15 1.33 1.43 2 3.68 2 6.77v.91Z" fill="currentColor"/></g><defs><clipPath id="a"><rect width="322" height="80" fill="white"/></clipPath></defs></svg>
   <span class="topbar-center">Festival di <strong>Sanremo 2026</strong></span>
   <div class="night-pill" id="night-pill">Serata 1 / 5</div>
 </header>
@@ -232,7 +160,7 @@ button{cursor:pointer;border:none;background:none;}
       <p>Come ti aiutiamo a stare bene al lavoro, <strong>ti aiutiamo a stare bene anche stasera</strong>. Sai esattamente quando accendere Rai Uno per il tuo artista — e quando invece fare altro.</p>
     </div>
     <div class="live-card">
-      <div class="lc-head"><span class="lc-dot off" id="lc-dot"></span><span id="lc-head-label">ORARIO</span></div>
+      <div class="lc-head"><span class="lc-dot off" id="lc-dot"></span><span id="lc-head-label">Orario</span></div>
       <div class="lc-clock" id="clock">--:--:--</div>
       <div class="lc-divider"></div>
       <div id="lc-body"></div>
@@ -243,7 +171,7 @@ button{cursor:pointer;border:none;background:none;}
 <div class="sticky" id="sticky-tl" style="display:none">
   <div class="sticky-inner">
     <div class="tl-head">
-      <span class="tl-label" id="tl-label">Scaletta · 20:40 → 01:44</span>
+      <span class="tl-label" id="tl-label">Scaletta</span>
       <span class="tl-pct" id="tl-pct">0%</span>
     </div>
     <div class="track" id="track" onclick="clickTrack(event)">
@@ -259,16 +187,7 @@ button{cursor:pointer;border:none;background:none;}
 
 <div class="fcta-wrap">
   <div class="fcta">
-    <svg class="fcta-logo-svg" viewBox="0 0 322 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <g clip-path="url(#c2)">
-        <path d="M109.37 57.0649C107.015 57.0649 105.462 54.6106 106.473 52.488L120.935 22.1341C120.914 20.3839 119.494 18.9655 117.737 18.9655H96.6965C94.9138 18.9655 93.4682 20.4095 93.4682 22.1902L93.3916 51.8808C93.3916 54.728 91.0827 57.0342 88.2324 57.0342C85.3821 57.0342 83.0732 54.728 83.0732 51.8808V22.1647C83.0732 20.3942 81.6378 18.9655 79.8704 18.9655H58.7637C56.9963 18.9655 55.5609 20.3993 55.5609 22.1647V56.8557C55.5609 64.3663 57.2773 70.1014 60.7048 74.0608C64.1323 78.0203 69.3835 80 76.4531 80C81.4897 80 85.5353 78.9285 88.5849 76.7753C91.6089 74.6374 93.8207 71.7648 95.2203 68.1727L97.2687 76.4283C97.6262 77.8672 98.9186 78.8775 100.405 78.8775H117.716C119.499 78.8775 120.945 77.4335 120.945 75.6528V57.0649H109.37Z" fill="currentColor"/>
-        <path d="M188.055 23.7821C184.628 19.8227 179.376 17.843 172.307 17.843C167.265 17.843 163.219 18.9145 160.175 21.0677C157.146 23.2056 154.939 26.0782 153.54 29.6703L151.491 21.4146C151.134 19.9758 149.841 18.9655 148.355 18.9655H131.049C129.266 18.9655 127.82 20.4095 127.82 22.1902V40.7985H139.457C141.811 40.7985 143.364 43.2528 142.348 45.3753L127.836 75.765C127.892 77.4845 129.286 78.8724 131.018 78.8724H152.058C153.841 78.8724 155.287 77.4284 155.287 75.6477L155.363 45.957C155.363 43.1099 157.672 40.8036 160.522 40.8036C163.373 40.8036 165.682 43.1099 165.682 45.957V75.6732C165.682 77.4386 167.117 78.8724 168.889 78.8724H189.991C191.764 78.8724 193.199 77.4386 193.199 75.6732V40.9822C193.199 33.4715 191.483 27.7365 188.05 23.777" fill="currentColor"/>
-        <path d="M47.2143 18.9706H35.2715V7.14331C35.2715 5.36259 33.8259 3.91861 32.0432 3.91861H17.2552C15.4725 3.91861 14.0269 5.36259 14.0269 7.14331C14.0269 7.14331 13.6642 11.0517 12.8162 13.1335C11.861 16.0724 10.1192 18.0879 7.58555 19.1747C7.58555 19.1747 5.01617 20.389 3.22833 20.389C1.44049 20.389 0 21.833 0 23.6137V37.5738C0 39.3545 1.4456 40.7985 3.22833 40.7985H9.74117V51.2277C9.74117 57.7843 10.4767 63.0908 11.9428 67.1522C13.4139 71.2137 16.0293 74.1833 19.7888 76.061C23.5433 77.9386 28.8762 78.8775 35.7823 78.8775H47.2143C48.997 78.8775 50.4426 77.4335 50.4426 75.6528V58.9629C50.4426 57.1822 48.997 55.7382 47.2143 55.7382H43.8838C41.4881 55.7382 39.6645 55.5494 38.3977 55.1719C37.1309 54.7994 36.2982 54.0136 35.8845 52.8197C35.4758 51.6257 35.2664 49.8297 35.2664 47.4418V40.8036H47.2092C48.9919 40.8036 50.4375 39.3596 50.4375 37.5789V22.2004C50.4375 20.4197 48.9919 18.9757 47.2092 18.9757" fill="currentColor"/>
-        <path d="M318.797 17.8481H316.907V17.9093C311.748 18.0675 307.631 19.1084 304.673 21.1238C301.823 23.0627 299.994 26.4558 299.08 31.1448L296.669 21.4197C296.311 19.9809 295.019 18.9706 293.533 18.9706H276.226C274.444 18.9706 272.998 20.4146 272.998 22.1953V75.6528C272.998 77.4335 274.444 78.8775 276.226 78.8775H297.241C299.024 78.8775 300.469 77.4335 300.469 75.6528V56.0801C300.505 52.2278 301.19 49.544 302.553 48.0796C303.953 46.5744 306.773 45.8243 311.018 45.8243L316.907 45.8907V45.9009H318.797C320.565 45.9009 322 44.4671 322 42.7017V21.0473C322 19.2818 320.565 17.8481 318.797 17.8481Z" fill="currentColor"/>
-        <path d="M262.884 0H241.869C240.086 0 238.641 1.44397 238.641 3.22469V25.272C237.21 23.1698 235.448 21.4146 233.155 20.2003C230.452 18.7665 227.02 18.0471 222.852 18.0471C218.203 18.0471 214.009 19.139 210.286 21.3228C206.562 23.5066 203.625 26.8027 201.469 31.2061C199.318 35.6094 198.241 41.222 198.241 48.0541V49.2837C198.241 59.2487 200.509 66.8308 205.055 72.0199C209.601 77.209 215.496 79.801 222.744 79.801C227.388 79.801 231.27 79.056 234.069 77.0865C237.195 74.8823 239.642 71.3872 240.75 69.6371L242.436 76.4334C242.794 77.8723 244.086 78.8826 245.572 78.8826H262.884C264.667 78.8826 266.112 77.4386 266.112 75.6579V3.22469C266.112 1.44397 264.667 0 262.884 0ZM239.014 49.0797C239.014 52.5595 238.344 55.0035 237.011 56.4015C235.678 57.7996 233.921 58.4986 231.729 58.4986C229.538 58.4986 227.888 57.82 226.555 56.4526C225.222 55.0902 224.553 52.6309 224.553 49.0797V48.1612C224.553 45.0233 225.222 42.7527 226.555 41.3496C227.888 39.9515 229.61 39.2474 231.729 39.2474C233.849 39.2474 235.673 39.9668 237.011 41.4006C238.344 42.8344 239.014 45.0845 239.014 48.1612V49.0797Z" fill="currentColor"/>
-      </g>
-      <defs><clipPath id="c2"><rect width="322" height="80" fill="white"/></clipPath></defs>
-    </svg>
+    <svg class="fcta-logo-svg" viewBox="0 0 322 80" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#b)"><path d="M109.37 57.06C107.02 57.06 105.46 54.61 106.47 52.49L120.94 22.13C120.91 20.38 119.49 18.97 117.74 18.97H96.7C94.91 18.97 93.47 20.41 93.47 22.19L93.39 51.88C93.39 54.73 91.08 57.03 88.23 57.03 85.38 57.03 83.07 54.73 83.07 51.88V22.16C83.07 20.39 81.64 18.97 79.87 18.97H58.76C56.99 18.97 55.56 20.4 55.56 22.16V56.86C55.56 64.37 57.28 70.1 60.7 74.06 64.13 78.02 69.38 80 76.45 80c5.04 0 9.08-1.07 12.13-3.22 3.02-2.14 5.24-5.01 6.64-8.6l2.05 8.26c.36 1.44 1.65 2.45 3.14 2.45h17.31c1.78 0 3.23-1.44 3.23-3.22V57.06h-11.58ZM188.06 23.78C184.63 19.82 179.38 17.84 172.31 17.84c-5.04 0-9.09 1.07-12.13 3.23-3.03 2.14-5.24 5.01-6.64 8.6l-2.05-8.25c-.36-1.44-1.65-2.45-3.14-2.45h-17.31c-1.78 0-3.23 1.44-3.23 3.22v18.6h11.64c2.35 0 3.9 2.45 2.88 4.58L127.84 75.77c.06 1.72 1.45 3.1 3.18 3.1h21.04c1.78 0 3.23-1.44 3.23-3.22l.08-29.69c0-2.85 2.31-5.15 5.16-5.15 2.85 0 5.16 2.3 5.16 5.15v29.7c0 1.76 1.43 3.2 3.21 3.2h21.1c1.77 0 3.21-1.44 3.21-3.2V40.98c0-7.51-1.72-13.24-5.15-17.2ZM47.21 18.97H35.27V7.14C35.27 5.36 33.83 3.92 32.04 3.92H17.26C15.47 3.92 14.03 5.36 14.03 7.14c0 0-.36 4.04-1.21 6.12-1.19 3.14-2.86 4.97-5.23 6.04 0 0-2.57 1.21-4.36 1.21C1.44 20.51 0 21.83 0 23.61v13.96c0 1.78 1.45 3.23 3.23 3.23h6.51v10.43c0 6.56.74 11.87 2.2 15.93 1.47 4.06 4.09 6.93 7.85 8.81C23.54 77.94 28.88 78.88 35.78 78.88h11.43c1.78 0 3.23-1.44 3.23-3.22V58.96c0-1.78-1.45-3.22-3.23-3.22h-3.33c-2.4 0-4.22-.19-5.49-.57-1.27-.37-2.1-1.16-2.51-2.35-.41-1.2-.62-2.99-.62-5.38v-6.63h11.95c1.78 0 3.23-1.44 3.23-3.22V22.2c0-1.78-1.45-3.22-3.23-3.22ZM318.8 17.85h-1.89v.06c-5.16.16-9.28 1.2-12.23 3.21-2.85 1.94-4.68 5.33-5.59 10.02l-2.41-9.73c-.36-1.44-1.65-2.45-3.14-2.45h-17.31c-1.78 0-3.23 1.44-3.23 3.22v53.46c0 1.78 1.45 3.23 3.23 3.23h21.01c1.78 0 3.23-1.44 3.23-3.23V56.08c.04-3.85.72-6.54 2.08-8 1.4-1.5 4.22-2.26 8.47-2.26l5.89.07v.01h1.89c1.77 0 3.2-1.43 3.2-3.2V21.05c0-1.77-1.43-3.2-3.2-3.2ZM262.88 0h-21.01c-1.78 0-3.23 1.44-3.23 3.22v22.05c-1.43-2.1-3.19-3.86-5.49-5.07-2.7-1.43-6.13-2.15-10.3-2.15-4.65 0-8.84 1.09-12.56 3.28-3.72 2.18-6.66 5.48-8.82 9.88-2.15 4.4-3.23 10.01-3.23 16.84v1.23c0 9.96 2.27 17.55 6.81 22.74 4.55 5.19 10.45 7.78 17.7 7.78 4.64 0 8.53-.75 11.32-2.71 3.13-2.2 5.58-5.7 6.68-7.45l1.69 6.8c.36 1.44 1.65 2.45 3.14 2.45h17.31c1.78 0 3.23-1.44 3.23-3.22V3.22C266.12 1.44 264.67 0 262.88 0Zm-23.87 49.08c0 3.48-.67 5.92-2 7.32-1.33 1.4-3.09 2.09-5.28 2.09-2.19 0-3.84-.68-5.17-2.05-1.33-1.36-2-3.82-2-7.36v-.92c0-3.14.67-5.41 2-6.81 1.33-1.4 3.06-2.1 5.17-2.1 2.12 0 3.94.72 5.28 2.15 1.33 1.43 2 3.68 2 6.77v.91Z" fill="currentColor"/></g><defs><clipPath id="b"><rect width="322" height="80" fill="white"/></clipPath></defs></svg>
     <h2>Il welfare è anche<br><em>staccare bene.</em></h2>
     <p>Tundr è la piattaforma che aiuta le aziende a prendersi cura delle persone. Stasera ti aiutiamo a goderti Sanremo senza perdere un minuto.</p>
     <a class="btn" href="https://tundr.tech/" target="_blank">Scopri Tundr →</a>
@@ -280,175 +199,137 @@ button{cursor:pointer;border:none;background:none;}
 </button>
 
 <script>
-/* ═══════════════ NIGHTS DATA ═══════════════ */
-const NIGHTS=[
-  {n:1,date:"2026-02-24",label:"24 feb",long:"Martedì 24 febbraio",startH:20,startM:40,endH:1,endM:44,isFinale:false,
-   highlights:["OLLY apre il Festival","Laura Pausini co-conduttrice","Can Yaman ospite","Tiziano Ferro medley","Max Pezzali dalla Costa Toscana"],
-   schedule:[
-    {t:[20,40],a:"Apertura del Festival",s:"",d:"Orchestra + Carlo Conti. Serata dedicata a Pippo Baudo",tp:"special"},
-    {t:[20,43],a:"OLLY",s:"Balorda nostalgia",d:"Ospite di apertura — disco di diamante",tp:"watch"},
-    {t:[20,50],a:"Regolamento & votazione",s:"",d:"Spiegazione giuria",tp:"skip"},
-    {t:[20,53],a:"LAURA PAUSINI entra",s:"Co-conduttrice",d:"Presentata da Pippo Baudo — grande momento",tp:"special"},
-    {t:[20,56],a:"DITONELLAPIAGA",s:"Che fastidio!",d:"Con sei ballerine + occhiali da sole",tp:"cat"},
-    {t:[21,2],a:"PUBBLICITÀ",s:"",d:"5 minuti",tp:"pub"},
-    {t:[21,7],a:"MICHELE BRAVI",s:"Prima o poi",d:"",tp:"cat"},
-    {t:[21,13],a:"SAYF",s:"Tu mi piaci tanto",d:"Con asta e base circolare",tp:"cat"},
-    {t:[21,19],a:"MARA SATTEI",s:"Le cose che non sai di me",d:"",tp:"cat"},
-    {t:[21,25],a:"DARGEN D'AMICO",s:"AI AI",d:"",tp:"cat"},
-    {t:[21,31],a:"Omaggio Peppe Vessicchio",s:"",d:"Video tributo — momento commovente",tp:"special"},
-    {t:[21,34],a:"PUBBLICITÀ",s:"",d:"5 minuti",tp:"pub"},
-    {t:[21,39],a:"CAN YAMAN entra",s:"Ospite speciale",d:"Sulle note di Sandokan — iconico",tp:"ospite"},
-    {t:[21,42],a:"ARISA",s:"Magica favola",d:"",tp:"cat"},
-    {t:[21,48],a:"LUCHÈ",s:"Labirinto",d:"",tp:"cat"},
-    {t:[21,54],a:"GIANNA PRATESI — 105 anni",s:"Ospite d'onore",d:"Il primo voto delle donne, 2 giugno 1946",tp:"special"},
-    {t:[22,0],a:"TOMMASO PARADISO",s:"I romantici",d:"",tp:"cat"},
-    {t:[22,6],a:"ELETTRA LAMBORGHINI",s:"Voilà",d:"Con 6 ballerini e ventagli",tp:"cat"},
-    {t:[22,12],a:"Momento TIM",s:"Papaveri e papere (1952)",d:"Tutto il pubblico canta + braccialetti luminosi",tp:"special"},
-    {t:[22,15],a:"PATTY PRAVO",s:"Opera",d:"",tp:"cat"},
-    {t:[22,21],a:"SAMURAI JAY",s:"Ossessione",d:"Con 6 ballerini",tp:"cat"},
-    {t:[22,27],a:"PUBBLICITÀ",s:"",d:"5 minuti",tp:"pub"},
-    {t:[22,32],a:"TIZIANO FERRO",s:"Ti scatterò una foto / Sono un grande",d:"Medley live + intervista + nuovo brano — non perdere!",tp:"watch"},
-    {t:[22,47],a:"RAF",s:"Ora e per sempre",d:"",tp:"cat"},
-    {t:[22,53],a:"PUBBLICITÀ",s:"",d:"5 minuti",tp:"pub"},
-    {t:[22,58],a:"Laura Pausini — cambio abito",s:"",d:"",tp:"skip"},
-    {t:[22,59],a:"J-AX",s:"Italia starter pack",d:"Violino, banjo, cheerleader acrobatiche",tp:"cat"},
-    {t:[23,4],a:"GAIA (Suzuki Stage)",s:"Chiamo io chiami tu",d:"Collegamento da Piazza Colombo",tp:"ospite"},
-    {t:[23,10],a:"Can Yaman — cambio abito",s:"",d:"Filastrocca con Pausini",tp:"skip"},
-    {t:[23,12],a:"FULMINACCI",s:"Stupida fortuna",d:"",tp:"cat"},
-    {t:[23,18],a:"Laura Pausini VDL",s:"",d:"Video dedicato",tp:"skip"},
-    {t:[23,20],a:"Telepromozione",s:"",d:"1 minuto",tp:"pub"},
-    {t:[23,21],a:"LEVANTE",s:"Sei tu",d:"",tp:"cat"},
-    {t:[23,27],a:"FEDEZ & MASINI",s:"Male necessario",d:"Duo inedito — molto atteso",tp:"cat"},
-    {t:[23,33],a:"Lancio Costa Toscana",s:"",d:"",tp:"skip"},
-    {t:[23,34],a:"PUBBLICITÀ",s:"",d:"5 minuti · Fine prima parte",tp:"pub"},
-    {t:[23,39],a:"MAX PEZZALI (Costa Toscana)",s:"Sei un mito / Nella notte / La regina",d:"Dal palco della nave — eccezionale",tp:"watch"},
-    {t:[23,45],a:"ERMAL META",s:"Stella stellina",d:"",tp:"cat"},
-    {t:[23,51],a:"KABIR BEDI + CAN YAMAN",s:"Sandokan — 50 anni",d:"Dal primo sceneggiato 1976",tp:"special"},
-    {t:[23,59],a:"GM + TG1",s:"",d:"3 minuti",tp:"pub"},
-    {t:[0,3],a:"SERENA BRANCALE",s:"Qui con me",d:"",tp:"cat"},
-    {t:[0,9],a:"NAYT",s:"Prima che",d:"",tp:"cat"},
-    {t:[0,14],a:"Spot Liguria",s:"",d:"1 minuto",tp:"pub"},
-    {t:[0,15],a:"MALIKA AYANE",s:"Animali notturni",d:"Con chitarra e bottiglie di vetro",tp:"cat"},
-    {t:[0,21],a:"EDDIE BROCK",s:"Avvoltoi",d:"Con chitarrista",tp:"cat"},
-    {t:[0,27],a:"PUBBLICITÀ",s:"",d:"5 minuti",tp:"pub"},
-    {t:[0,32],a:"Pausini — cambio abito",s:"",d:"",tp:"skip"},
-    {t:[0,33],a:"SAL DA VINCI",s:"Per sempre sì",d:"",tp:"cat"},
-    {t:[0,38],a:"ENRICO NIGIOTTI",s:"Ogni volta che non so volare",d:"",tp:"cat"},
-    {t:[0,44],a:"Can Yaman — cambio abito",s:"",d:"",tp:"skip"},
-    {t:[0,45],a:"TREDICI PIETRO",s:"Uomo che cade",d:"",tp:"cat"},
-    {t:[0,51],a:"PUBBLICITÀ",s:"",d:"5 minuti",tp:"pub"},
-    {t:[0,56],a:"BAMBOLE DI PEZZA",s:"Resta con me",d:"Band completa: 2 chitarre, basso, batteria",tp:"cat"},
-    {t:[1,2],a:"CHIELLO",s:"Ti penso sempre",d:"",tp:"cat"},
-    {t:[1,8],a:"MARIA ANTONIETTA & COLOMBRE",s:"La felicità e basta",d:"Omnichord + chitarra",tp:"cat"},
-    {t:[1,14],a:"LEO GASSMANN",s:"Naturale",d:"",tp:"cat"},
-    {t:[1,20],a:"FRANCESCO RENGA",s:"Il meglio di me",d:"",tp:"cat"},
-    {t:[1,26],a:"LDA & AKA 7EVEN",s:"Poesie clandestine",d:"4 ballerini con tamburi + 4 ballerine",tp:"cat"},
-    {t:[1,32],a:"Lancio Dopo Festival",s:"Nicola Savino",d:"",tp:"skip"},
-    {t:[1,33],a:"PUBBLICITÀ",s:"",d:"5 minuti",tp:"pub"},
-    {t:[1,38],a:"Rai Radio 2 + Eurovision",s:"Vienna, 16 maggio",d:"",tp:"special"},
-    {t:[1,39],a:"CLASSIFICA PROVVISORIA",s:"Top 5 in testa",d:"Le 5 canzoni più votate dalla Sala Stampa",tp:"special"},
-    {t:[1,44],a:"Fine serata",s:"",d:"",tp:"skip"},
-  ]},
-  {n:2,date:"2026-02-25",label:"25 feb",long:"Mercoledì 25 febbraio",startH:20,startM:40,endH:1,endM:30,isFinale:false,highlights:[],schedule:[]},
-  {n:3,date:"2026-02-26",label:"26 feb",long:"Giovedì 26 febbraio",startH:20,startM:40,endH:1,endM:30,isFinale:false,highlights:[],schedule:[]},
-  {n:4,date:"2026-02-27",label:"27 feb",long:"Venerdì 27 febbraio",startH:20,startM:40,endH:1,endM:30,isFinale:false,highlights:[],schedule:[]},
-  {n:5,date:"2026-02-28",label:"28 feb · Finale",long:"Sabato 28 febbraio · FINALE",startH:20,startM:40,endH:1,endM:30,isFinale:true,highlights:[],schedule:[]},
+const SHEET = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYoLP0N8FnhBYOlhy3d942dlg8Vl8oDfXpFC3da1_ETLzXRPDFx9SkbJ0NFCvhVC3VZzk2Z6M3HQ9W/pub";
+const GIDS  = { 1:"0", 2:"734498227", 3:"1452678913", 4:"821345670", 5:"234567891" };
+
+const NIGHTS = [
+  {n:1, date:"2026-02-24", label:"24 feb",          long:"Martedì 24 febbraio",     startH:20,startM:40,endH:1,endM:44,  isFinale:false},
+  {n:2, date:"2026-02-25", label:"25 feb",          long:"Mercoledì 25 febbraio",   startH:20,startM:40,endH:1,endM:30,  isFinale:false},
+  {n:3, date:"2026-02-26", label:"26 feb",          long:"Giovedì 26 febbraio",     startH:20,startM:40,endH:1,endM:30,  isFinale:false},
+  {n:4, date:"2026-02-27", label:"27 feb",          long:"Venerdì 27 febbraio",     startH:20,startM:40,endH:1,endM:30,  isFinale:false},
+  {n:5, date:"2026-02-28", label:"28 feb · Finale", long:"Sabato 28 febbraio · FINALE", startH:20,startM:40,endH:1,endM:30, isFinale:true},
 ];
 
-/* ═══════════════ HELPERS ═══════════════ */
-const BADGE={watch:{l:"Da guardare",c:"bw"},special:{l:"Imperdibile ✦",c:"bs"},ospite:{l:"Ospite",c:"bo"},cat:{l:"In gara",c:"bc"},skip:{l:"Puoi saltare",c:"bsk"},pub:{l:"Pubblicità",c:"bp"}};
-const DOTS={watch:"#FEC82F",special:"#FEC82F",ospite:"#ff8562",cat:"#98a6fe",skip:"rgba(255,255,255,.1)",pub:"rgba(255,255,255,.05)"};
-const H=(h,m)=>h*60+m;
-const norm=m=>m<720?m+1440:m;
-const pad=v=>String(Math.floor(v)).padStart(2,'0');
-const padT=a=>pad(a[0])+':'+pad(a[1]);
-const toStr=d=>d.toISOString().slice(0,10);
-const todayStr=()=>toStr(new Date());
-const nowMin=()=>{const n=new Date();return norm(n.getHours()*60+n.getMinutes()+n.getSeconds()/60);};
+const BADGE = {
+  watch:   {l:"Da guardare",   c:"bw"},
+  special: {l:"Imperdibile ✦", c:"bs"},
+  ospite:  {l:"Ospite",        c:"bo"},
+  cat:     {l:"In gara",       c:"bc"},
+  skip:    {l:"Puoi saltare",  c:"bsk"},
+  pub:     {l:"Pubblicità",    c:"bp"},
+};
+const DOTS = {watch:"#FEC82F",special:"#FEC82F",ospite:"#ff8562",cat:"#98a6fe",skip:"rgba(255,255,255,.1)",pub:"rgba(255,255,255,.05)"};
 
-let activeTab=(()=>{
-  const today=todayStr(); const h=new Date().getHours();
-  for(let i=0;i<NIGHTS.length;i++){
-    if(NIGHTS[i].date===today) return i;
-    if(h<4){const p=new Date();p.setDate(p.getDate()-1);if(NIGHTS[i].date===toStr(p)) return i;}
+const H    = (h,m) => h*60+m;
+const norm = m => m < 720 ? m+1440 : m;
+const pad  = v => String(Math.floor(v)).padStart(2,'0');
+const padT = ([h,m]) => `${pad(h)}:${pad(m)}`;
+const todayStr = () => new Date().toISOString().slice(0,10);
+const nowMin   = () => { const n=new Date(); return norm(n.getHours()*60+n.getMinutes()+n.getSeconds()/60); };
+
+const schedCache = {};  // cache in-session per le scalette già caricate
+let activeTab = (() => {
+  const today = todayStr(), h = new Date().getHours();
+  for (let i=0; i<NIGHTS.length; i++) {
+    if (NIGHTS[i].date === today) return i;
+    if (h < 4) { const p = new Date(); p.setDate(p.getDate()-1); if (NIGHTS[i].date === p.toISOString().slice(0,10)) return i; }
   }
-  return todayStr()<NIGHTS[0].date?0:NIGHTS.length-1;
+  return today < NIGHTS[0].date ? 0 : NIGHTS.length-1;
 })();
-let lastIdx=-2;
+let lastIdx = -2;
 
-/* ═══════════════ TABS ═══════════════ */
-function buildTabs(){
-  const row=document.getElementById('night-tabs');
-  const today=todayStr();
-  NIGHTS.forEach((n,i)=>{
-    const btn=document.createElement('button');
-    btn.className='nt-btn'+(n.date===today?' tonight':'');
-    btn.id='ntb'+i;
-    btn.innerHTML=`<span class="nt-dot"></span>${n.label}${n.isFinale?' 🏆':''}`;
-    btn.onclick=()=>{activeTab=i;lastIdx=-2;render();};
+function csvToSchedule(csv) {
+  return csv.trim().split('\n').slice(1).map(line => {
+    const cols = []; let cur='', inQ=false;
+    for (const c of line) {
+      if (c==='"') { inQ=!inQ; }
+      else if (c===',' && !inQ) { cols.push(cur.trim()); cur=''; }
+      else cur += c;
+    }
+    cols.push(cur.trim());
+    const [ora='', artista='', canzone='', descrizione='', tipo=''] = cols;
+    if (!ora || !artista) return null;
+    const [hS,mS] = ora.replace('.', ':').split(':');
+    const h=parseInt(hS), m=parseInt(mS||'0');
+    if (isNaN(h)||isNaN(m)) return null;
+    return { t:[h,m], a:artista, s:canzone, d:descrizione, tp:tipo.trim().toLowerCase()||'cat' };
+  }).filter(Boolean);
+}
+
+async function fetchSchedule(nightNum) {
+  const gid = GIDS[nightNum];
+  if (!gid) return null;
+  try {
+    const res = await fetch(`${SHEET}?gid=${gid}&single=true&output=csv`, {cache:'default'});
+    if (!res.ok) return null;
+    const sched = csvToSchedule(await res.text());
+    return sched.length ? sched : null;
+  } catch { return null; }
+}
+
+function buildTabs() {
+  const row = document.getElementById('night-tabs');
+  const today = todayStr();
+  NIGHTS.forEach((n,i) => {
+    const btn = document.createElement('button');
+    btn.className = 'nt-btn' + (n.date===today ? ' tonight' : '');
+    btn.id = 'ntb'+i;
+    btn.innerHTML = `<span class="nt-dot"></span>${n.label}${n.isFinale?' 🏆':''}`;
+    btn.onclick = async () => { activeTab=i; lastIdx=-2; await loadAndRender(i); };
     row.appendChild(btn);
   });
 }
 
-/* ═══════════════ RENDER ═══════════════ */
-function render(){
+async function loadAndRender(i) {
+  const ni = NIGHTS[i];
+  if (!schedCache[ni.n]) {
+    render(ni, null);
+    const sched = await fetchSchedule(ni.n);
+    schedCache[ni.n] = sched; // null se fallisce
+  }
+  render(ni, schedCache[ni.n]);
+}
+
+function render(ni, schedule) {
   document.querySelectorAll('.nt-btn').forEach((b,i)=>b.classList.toggle('active',i===activeTab));
-  const ni=NIGHTS[activeTab];
-  const today=todayStr();
-  const isTonight=ni.date===today;
-  const isPast=ni.date<today;
-  const hasSched=ni.schedule.length>0;
+  const today     = todayStr();
+  const isTonight = ni.date === today;
+  const hasSched  = Array.isArray(schedule) && schedule.length > 0;
 
-  document.getElementById('eyebrow-text').textContent=isTonight?'In diretta stasera':isPast?'Archivio · '+ni.long:'Prossima serata · '+ni.long;
-  document.getElementById('sticky-tl').style.display=(hasSched&&isTonight)?'block':'none';
+  document.getElementById('eyebrow-text').textContent =
+    isTonight ? 'In diretta stasera' : ni.date < today ? 'Archivio · '+ni.long : 'Prossima serata · '+ni.long;
+  document.getElementById('sticky-tl').style.display = hasSched && isTonight ? 'block' : 'none';
+  lastIdx = -2;
 
-  const main=document.getElementById('main');
-  main.innerHTML='';
+  const main = document.getElementById('main');
+  main.innerHTML = '';
 
-  if(!hasSched){
-    const d=document.createElement('div');
-    d.className='notice';
-    d.innerHTML=`<div class="notice-icon">${isPast?'📁':isTonight?'⏳':'🔜'}</div>
-      <div>
-        <h3>Serata ${ni.n} – ${ni.long}</h3>
-        <p>${isPast?'Scaletta in lavorazione.':isTonight?'La scaletta verrà caricata prima dell\'inizio.':'La scaletta sarà disponibile qualche ora prima dell\'inizio della serata.'}</p>
-        ${ni.highlights.length?`<div class="hl-list">${ni.highlights.map(h=>`<span class="hl">✦ ${h}</span>`).join('')}</div>`:''}
-      </div>`;
-    main.appendChild(d);
+  if (!hasSched) {
+    main.innerHTML = `<div class="notice"><div class="notice-icon">📡</div><div><h3>Serata ${ni.n} — ${ni.long}</h3><p>Scaletta non disponibile.</p></div></div>`;
+    buildMarkers(ni, []);
     return;
   }
-
-  const leg=document.createElement('div');
-  leg.className='legend';
-  leg.innerHTML=[
-    ['Da guardare','#FEC82F'],
-    ['Imperdibile ✦','#FED252'],
-    ['Ospite','#ff8562'],
-    ['In gara','#98a6fe'],
-    ['Puoi saltare','rgba(255,255,255,.12)'],
-    ['Pubblicità','rgba(255,255,255,.06)'],
-    ['Ora in onda','#FEC82F']
-  ].map(([l,c])=>`<div class="leg"><div class="leg-d" style="background:${c}"></div>${l}</div>`).join('');
+  const leg = document.createElement('div');
+  leg.className = 'legend';
+  leg.innerHTML = [['Da guardare','#FEC82F'],['Imperdibile ✦','#FED252'],['Ospite','#ff8562'],['In gara','#98a6fe'],['Puoi saltare','rgba(255,255,255,.12)'],['Pubblicità','rgba(255,255,255,.06)']].map(([l,c])=>
+    `<div class="leg"><div class="leg-d" style="background:${c}"></div>${l}</div>`).join('');
   main.appendChild(leg);
+  const sl = document.createElement('div');
+  sl.className = 'slist'; sl.id = 'slist';
+  let sec = null;
+  const secs = {a:{e:'🎤',t:'Prima parte · 20:40 – 22:30'},b:{e:'⭐',t:'Seconda parte · 22:30 – 23:34'},c:{e:'🌙',t:'Dopo mezzanotte'}};
 
-  const sl=document.createElement('div');
-  sl.className='slist';sl.id='slist';
-  let sec=null;
-  const secs={a:{e:'🎤',t:'Prima parte · 20:40 – 22:30'},b:{e:'⭐',t:'Seconda parte · 22:30 – 23:34'},c:{e:'🌙',t:'Dopo mezzanotte'}};
-
-  ni.schedule.forEach((d,j)=>{
-    const sk=d.t[0]<22||(d.t[0]===22&&d.t[1]<30)?'a':d.t[0]<23||(d.t[0]===23&&d.t[1]<34)?'b':'c';
-    if(sk!==sec){
+  schedule.forEach((d,j) => {
+    const sk = d.t[0]<22||(d.t[0]===22&&d.t[1]<30)?'a':d.t[0]<23||(d.t[0]===23&&d.t[1]<34)?'b':'c';
+    if (sk!==sec) {
       sec=sk;
-      const c=document.createElement('div');
-      c.className='sc';
-      c.textContent=secs[sk].e+'  '+secs[sk].t;
-      sl.appendChild(c);
+      const c=document.createElement('div'); c.className='sc';
+      c.textContent=secs[sk].e+'  '+secs[sk].t; sl.appendChild(c);
     }
-    const bg=BADGE[d.tp]||BADGE.skip;
-    const el=document.createElement('div');
-    el.className='si';el.id='si'+j;
-    el.innerHTML=`<div class="si-time">${padT(d.t)}</div>
+    const bg = BADGE[d.tp] || BADGE.skip;
+    const el = document.createElement('div');
+    el.className='si'; el.id='si'+j;
+    el.innerHTML = `<div class="si-time">${padT(d.t)}</div>
       <div class="si-body">
         <div class="si-artist">${d.a}</div>
         ${d.s?`<div class="si-song">"${d.s}"</div>`:''}
@@ -458,195 +339,132 @@ function render(){
     sl.appendChild(el);
   });
   main.appendChild(sl);
+  buildMarkers(ni, schedule);
+  document.getElementById('tl-label').textContent = `Scaletta · ${pad(ni.startH)}:${pad(ni.startM)} → ${pad(ni.endH)}:${pad(ni.endM)}`;
+}
 
-  // Markers
-  const mc=document.getElementById('track-markers');
-  mc.innerHTML='';
-  const start=norm(H(ni.startH,ni.startM)),end=norm(H(ni.endH,ni.endM));
-  ni.schedule.forEach((d,i)=>{
-    const pct=Math.max(0,Math.min(100,(norm(H(d.t[0],d.t[1]))-start)/(end-start)*100));
-    const dot=document.createElement('div');
+function buildMarkers(ni, schedule) {
+  const mc = document.getElementById('track-markers');
+  mc.innerHTML = '';
+  const start=norm(H(ni.startH,ni.startM)), end=norm(H(ni.endH,ni.endM));
+  (schedule||[]).forEach((d,i) => {
+    const pct = Math.max(0,Math.min(100,(norm(H(d.t[0],d.t[1]))-start)/(end-start)*100));
+    const dot = document.createElement('div');
     dot.className='tm';
     dot.style.cssText=`left:${pct}%;background:${DOTS[d.tp]||'rgba(255,255,255,.05)'}`;
     dot.title=d.a+(d.s?` — "${d.s}"`:'')+' '+padT(d.t);
     dot.onclick=e=>{e.stopPropagation();document.getElementById('si'+i)?.scrollIntoView({behavior:'smooth',block:'center'});};
     mc.appendChild(dot);
   });
-
-  document.getElementById('tl-label').textContent=`Scaletta · ${pad(ni.startH)}:${pad(ni.startM)} → ${pad(ni.endH)}:${pad(ni.endM)}`;
 }
 
-function curIdx(ni,mn){
-  if(!ni.schedule.length) return -1;
-  for(let i=0;i<ni.schedule.length;i++){
-    const t=norm(H(ni.schedule[i].t[0],ni.schedule[i].t[1]));
-    const nx=i+1<ni.schedule.length?norm(H(ni.schedule[i+1].t[0],ni.schedule[i+1].t[1])):norm(H(ni.endH,ni.endM));
-    if(mn>=t&&mn<nx) return i;
+function curIdx(schedule, mn) {
+  if (!schedule) return -1;
+  for (let i=0; i<schedule.length; i++) {
+    const t  = norm(H(schedule[i].t[0],schedule[i].t[1]));
+    const nx = i+1<schedule.length ? norm(H(schedule[i+1].t[0],schedule[i+1].t[1])) : norm(H(NIGHTS[activeTab].endH,NIGHTS[activeTab].endM));
+    if (mn>=t && mn<nx) return i;
   }
   return -1;
 }
 
-/* ═══════════════ TICK ═══════════════ */
-function tick(){
-  const now = new Date();
+function tick() {
+  const now     = new Date();
   const clockEl = document.getElementById('clock');
-
-  const ni = NIGHTS[activeTab];
-  const today = todayStr();
+  const ni      = NIGHTS[activeTab];
+  const today   = todayStr();
+  const sched   = schedCache[ni.n] || null;
   const isTonight = ni.date === today;
-  const hasSched = ni.schedule.length > 0;
-  const mn = nowMin();
-  const start = norm(H(ni.startH, ni.startM));
-  const end = norm(H(ni.endH, ni.endM));
-
-  // Pill
+  const mn    = nowMin();
+  const start = norm(H(ni.startH,ni.startM));
+  const end   = norm(H(ni.endH,ni.endM));
   const pill = document.getElementById('night-pill');
-  if (isTonight && hasSched && mn >= start && mn < end) {
-    pill.textContent = '● Live ora';
-    pill.className = 'night-pill live';
+  if (isTonight && sched && mn>=start && mn<end) {
+    pill.textContent='● Live ora'; pill.className='night-pill live';
   } else {
-    pill.textContent = 'Serata ' + ni.n + ' / 5';
-    pill.className = 'night-pill';
+    pill.textContent=`Serata ${ni.n} / 5`; pill.className='night-pill';
   }
 
-  // Live card
-  const dot = document.getElementById('lc-dot');
-  const lcBody = document.getElementById('lc-body');
-  const lcHead = document.getElementById('lc-head-label');
-
-  // Countdown target: prima serata (NIGHTS[0]) alle 20:40
+  const dot     = document.getElementById('lc-dot');
+  const lcBody  = document.getElementById('lc-body');
+  const lcHead  = document.getElementById('lc-head-label');
   const firstNight = NIGHTS[0];
-  const target = new Date(firstNight.date + 'T20:40:00');
-  const diff = target - now;
-
-  // PRE-LIVE (o serata senza scaletta / prima dell'inizio):
-  // - nasconde il puntino
-  // - titolo: "Manca alla prima serata:"
-  // - display grande: countdown
-  // - testo sotto: info inizio
-  if (!isTonight || !hasSched || mn < start) {
-    dot.style.display = 'none';
-    lcHead.textContent = 'Manca alla prima serata:';
-
+  const target  = new Date(firstNight.date+'T'+pad(firstNight.startH)+':'+pad(firstNight.startM)+':00');
+  const diff    = target - now;
+  if (!isTonight || !sched || mn < start) {
+    dot.style.display='none';
+    lcHead.textContent='Manca alla prima serata:';
     if (diff <= 0) {
-      clockEl.textContent = '00:00:00';
+      clockEl.textContent='00:00:00';
     } else {
-      const hrs  = Math.floor(diff / 3600000);
-      const mins = Math.floor((diff % 3600000) / 60000);
-      const secs = Math.floor((diff % 60000) / 1000);
-      clockEl.textContent = `${pad(hrs)}:${pad(mins)}:${pad(secs)}`;
+      const hrs=Math.floor(diff/3600000), mins=Math.floor((diff%3600000)/60000), secs=Math.floor((diff%60000)/1000);
+      clockEl.textContent=`${pad(hrs)}:${pad(mins)}:${pad(secs)}`;
     }
-
-    lcBody.innerHTML = `
-      <div class="lc-sub">Inizio diretta</div>
-      <div class="lc-content" style="color:var(--t2)">
-        Stasera si parte alle <strong style="color:var(--t1)">${pad(firstNight.startH)}:${pad(firstNight.startM)}</strong>.
-      </div>
-    `;
+    lcBody.innerHTML=`<div class="lc-sub">Inizio diretta</div><div class="lc-content" style="color:var(--t2)">Stasera si parte alle <strong style="color:var(--t1)">${pad(firstNight.startH)}:${pad(firstNight.startM)}</strong>.</div>`;
     return;
   }
-
-  // POST-LIVE
   if (mn >= end) {
-    dot.style.display = '';
-    dot.className = 'lc-dot off';
-    lcHead.textContent = 'SERATA CONCLUSA';
-    clockEl.textContent = '—';
-    lcBody.innerHTML = `<div class="lc-content" style="color:var(--t2)">Ci vediamo domani sera alle 20:40!</div>`;
+    dot.style.display=''; dot.className='lc-dot off';
+    lcHead.textContent='Serata conclusa';
+    clockEl.textContent='—';
+    lcBody.innerHTML=`<div class="lc-content" style="color:var(--t2)">Ci vediamo domani sera alle 20:40!</div>`;
     return;
   }
+  dot.style.display=''; dot.className='lc-dot';
+  lcHead.textContent='Live ora';
+  const pct = Math.max(0,Math.min(100,(mn-start)/(end-start)*100));
+  const tf  = document.getElementById('track-fill');
+  if (tf) tf.style.width=pct+'%';
+  document.getElementById('tl-pct').textContent=Math.round(pct)+'%';
 
-  // LIVE
-  dot.style.display = '';
-  dot.className = 'lc-dot';
-  lcHead.textContent = 'LIVE ORA';
-
-  const pct = Math.max(0, Math.min(100, (mn - start) / (end - start) * 100));
-  const tf = document.getElementById('track-fill');
-  if (tf) tf.style.width = pct + '%';
-  document.getElementById('tl-pct').textContent = Math.round(pct) + '%';
-
-  const idx = curIdx(ni, mn);
-
-  // Evidenzia in lista (current/past/next-up)
+  const idx = curIdx(sched, mn);
   if (idx !== lastIdx) {
     lastIdx = idx;
-    document.querySelectorAll('.si').forEach((el, j) => {
-      el.classList.remove('current', 'past', 'next-up');
-      if (!ni.schedule[j]) return;
-
-      const t = norm(H(ni.schedule[j].t[0], ni.schedule[j].t[1]));
-      if (j === idx) {
-        el.classList.add('current');
-        el.querySelector('.si-badges').innerHTML = '<span class="badge bl">▶ Ora</span>';
-      } else if (t < mn) {
-        el.classList.add('past');
-      } else if (j === idx + 1) {
-        el.classList.add('next-up');
-      }
+    document.querySelectorAll('.si').forEach((el,j) => {
+      el.classList.remove('current','past','next-up');
+      if (!sched[j]) return;
+      const t = norm(H(sched[j].t[0],sched[j].t[1]));
+      if (j===idx) { el.classList.add('current'); el.querySelector('.si-badges').innerHTML='<span class="badge bl">▶ Ora</span>'; }
+      else if (t<mn) el.classList.add('past');
+      else if (j===idx+1) el.classList.add('next-up');
     });
   }
 
-  // Contenuto live card: titolo grande + descrizione
-  const cur = idx >= 0 ? ni.schedule[idx] : null;
-
+  const cur = idx>=0 ? sched[idx] : null;
   if (cur) {
-    // Titolo grande nel "clock"
     clockEl.textContent = cur.a;
-
-    // Sotto: brano + descrizione (se presenti)
-    lcBody.innerHTML = `
-      <div class="lc-sub">In onda</div>
-      <div class="lc-content">
-        ${cur.s ? `<em style="color:var(--t2)">"${cur.s}"</em><br>` : ''}
-        ${cur.d ? `<span style="color:var(--t2)">${cur.d}</span>` : `<span style="color:var(--t2)">—</span>`}
-      </div>
-      <div class="lc-prog"><div class="lc-prog-fill" style="width:${pct}%"></div></div>
-    `;
+    lcBody.innerHTML = `<div class="lc-sub">In onda</div><div class="lc-content">${cur.s?`<em style="color:var(--t2)">"${cur.s}"</em><br>`:''} ${cur.d?`<span style="color:var(--t2)">${cur.d}</span>`:`<span style="color:var(--t2)">—</span>`}</div><div class="lc-prog"><div class="lc-prog-fill" style="width:${pct}%"></div></div>`;
   } else {
-    clockEl.textContent = '—';
-    lcBody.innerHTML = `<div class="lc-content" style="color:var(--t2)">—</div>`;
+    clockEl.textContent='—';
+    lcBody.innerHTML=`<div class="lc-content" style="color:var(--t2)">—</div>`;
   }
 
-  // FAB visibility
   const fab = document.getElementById('fab');
-  if (idx >= 0) {
-    const el = document.getElementById('si' + idx);
-    if (el) {
-      const r = el.getBoundingClientRect();
-      fab.classList.toggle('on', r.top < 0 || r.bottom > window.innerHeight);
-    }
-  } else {
-    fab.classList.remove('on');
-  }
+  if (idx>=0) {
+    const el=document.getElementById('si'+idx);
+    if (el) { const r=el.getBoundingClientRect(); fab.classList.toggle('on',r.top<0||r.bottom>window.innerHeight); }
+  } else fab.classList.remove('on');
 }
 
-function fabClick(){
-  const ni = NIGHTS[activeTab];
-  const idx = curIdx(ni, nowMin());
-  if (idx >= 0) document.getElementById('si' + idx)?.scrollIntoView({behavior:'smooth', block:'center'});
+function fabClick() {
+  const sched=schedCache[NIGHTS[activeTab].n];
+  const idx=curIdx(sched,nowMin());
+  if (idx>=0) document.getElementById('si'+idx)?.scrollIntoView({behavior:'smooth',block:'center'});
 }
 
-function clickTrack(e){
-  const ni = NIGHTS[activeTab];
-  if (!ni.schedule.length) return;
-
-  const start = norm(H(ni.startH, ni.startM)), end = norm(H(ni.endH, ni.endM));
-  const r = document.getElementById('track').getBoundingClientRect();
-  const target = start + (e.clientX - r.left) / r.width * (end - start);
-
-  let best = 0, minD = Infinity;
-  ni.schedule.forEach((d, i) => {
-    const df = Math.abs(norm(H(d.t[0], d.t[1])) - target);
-    if (df < minD) { minD = df; best = i; }
-  });
-
-  document.getElementById('si' + best)?.scrollIntoView({behavior:'smooth', block:'center'});
+function clickTrack(e) {
+  const ni=NIGHTS[activeTab], sched=schedCache[ni.n];
+  if (!sched) return;
+  const start=norm(H(ni.startH,ni.startM)), end=norm(H(ni.endH,ni.endM));
+  const r=document.getElementById('track').getBoundingClientRect();
+  const target=start+(e.clientX-r.left)/r.width*(end-start);
+  let best=0, minD=Infinity;
+  sched.forEach((d,i)=>{ const df=Math.abs(norm(H(d.t[0],d.t[1]))-target); if(df<minD){minD=df;best=i;} });
+  document.getElementById('si'+best)?.scrollIntoView({behavior:'smooth',block:'center'});
 }
 
 buildTabs();
-render();
-tick();
+loadAndRender(activeTab);
 setInterval(tick, 1000);
 </script>
 </body>
