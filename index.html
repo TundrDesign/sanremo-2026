@@ -85,6 +85,8 @@ button{cursor:pointer;border:none;background:none;}
 .nt-btn .nt-dot{width:5px;height:5px;background:currentColor;border-radius:50%;opacity:.5;}
 .nt-btn.tonight{color:var(--brand);border-color:var(--border-brand);}
 .nt-btn.tonight .nt-dot{background:var(--brand);box-shadow:0 0 6px var(--brand);animation:pip 1s ease-in-out infinite;opacity:1;}
+.nt-btn.active.tonight{color:#0a0a0c;}
+.nt-btn.active.tonight .nt-dot{background:rgba(0,0,0,.35);box-shadow:none;animation:none;}
 
 .main{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:20px 24px 40px;}
 
@@ -94,6 +96,22 @@ button{cursor:pointer;border:none;background:none;}
 
 .sc{display:flex;align-items:center;gap:8px;margin:20px 0 8px;padding:7px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-md);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);}
 
+.rank-table{width:100%;border-collapse:collapse;margin-top:8px;}
+.rank-table th{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);padding:10px 16px;border-bottom:1px solid var(--border);text-align:left;}
+.rank-table td{padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--t1);vertical-align:middle;}
+.rank-table tr:last-child td{border-bottom:none;}
+.rank-table tbody tr:hover td{background:var(--surface2);}
+.rank-table tbody tr:first-child td{background:rgba(254,200,47,.06);}
+.rank-num{font-family:var(--ff-t);font-size:20px;font-weight:800;color:var(--t3);display:inline-block;text-align:center;line-height:1;}
+.rank-num.gold{color:#FFD700;font-size:22px;}
+.rank-num.silver{color:#C0C0C0;}
+.rank-num.bronze{color:#CD7F32;}
+.rank-artist{font-weight:700;color:var(--t1);font-size:14px;}
+.rank-song{color:var(--t2);font-size:12px;margin-top:3px;font-style:italic;}
+.rank-header{display:flex;align-items:center;gap:12px;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border);}
+.rank-title{font-family:var(--ff-t);font-size:22px;font-weight:800;color:var(--t1);}
+.rank-sub{font-size:11px;color:var(--t3);margin-top:3px;}
+.rank-loading{color:var(--t3);font-size:13px;padding:24px 0;text-align:center;}
 .notice{display:flex;align-items:flex-start;gap:14px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-xl);padding:20px;margin-bottom:20px;}
 .notice-icon{flex-shrink:0;font-size:22px;line-height:1;margin-top:2px;}
 .notice h3{font-family:var(--ff-t);font-size:16px;font-weight:800;color:var(--t1);margin-bottom:4px;}
@@ -201,7 +219,7 @@ const NIGHTS = [
   {n:1, date:"2026-02-24", label:"24 feb",          long:"Martedì 24 febbraio",     startH:20,startM:40,endH:1,endM:44,  isFinale:false},
   {n:2, date:"2026-02-25", label:"25 feb",          long:"Mercoledì 25 febbraio",   startH:20,startM:40,endH:1,endM:30,  isFinale:false},
   {n:3, date:"2026-02-26", label:"26 feb",          long:"Giovedì 26 febbraio",     startH:20,startM:40,endH:1,endM:30,  isFinale:false},
-  {n:4, date:"2026-02-27", label:"27 feb",          long:"Venerdì 27 febbraio",     startH:20,startM:40,endH:1,endM:30,  isFinale:false},
+  {n:4, date:"2026-02-27", label:"27 feb",          long:"Venerdì 27 febbraio",     startH:20,startM:40,endH:1,endM:44,  isFinale:false},
   {n:5, date:"2026-02-28", label:"28 feb · Finale", long:"Sabato 28 febbraio · FINALE", startH:20,startM:40,endH:1,endM:30, isFinale:true},
 ];
 
@@ -222,7 +240,59 @@ const padT = ([h,m]) => `${pad(h)}:${pad(m)}`;
 const todayStr = () => new Date().toISOString().slice(0,10);
 const nowMin   = () => { const n=new Date(); return norm(n.getHours()*60+n.getMinutes()+n.getSeconds()/60); };
 
-const schedCache = {};  // cache in-session per le scalette già caricate
+const schedCache = {};
+const rankCache  = {};
+
+async function fetchWikiClassifica(nightNum) {
+  if (rankCache[nightNum]) return rankCache[nightNum];
+  try {
+    const url = 'https://it.wikipedia.org/w/api.php?action=parse&page=Festival_di_Sanremo_2026&prop=text&format=json&origin=*';
+    const res = await fetch(url, {cache:'default'});
+    if (!res.ok) return null;
+    const json = await res.json();
+    const html = json?.parse?.text?.['*'];
+    if (!html) return null;
+    // Parsa la tabella della serata corrispondente
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    // Cerca sezione "Prima/Seconda/Terza/Quarta/Quinta serata"
+    const nightNames = ['', 'prima', 'seconda', 'terza', 'quarta', 'quinta'];
+    const nightName = nightNames[nightNum];
+    // Trova l'heading della serata
+    let targetTable = null;
+    const headings = doc.querySelectorAll('h2, h3, h4');
+    for (const h of headings) {
+      if (h.textContent.toLowerCase().includes(nightName + ' serata') ||
+          h.textContent.toLowerCase().includes(nightName.charAt(0).toUpperCase() + nightName.slice(1) + ' serata')) {
+        // Prendi la prima tabella dopo questo heading
+        let el = h.nextElementSibling;
+        while (el && !['H2','H3','H4'].includes(el.tagName)) {
+          if (el.tagName === 'TABLE' || el.querySelector('table')) {
+            targetTable = el.tagName === 'TABLE' ? el : el.querySelector('table');
+            break;
+          }
+          el = el.nextElementSibling;
+        }
+        if (targetTable) break;
+      }
+    }
+    if (!targetTable) return null;
+    // Estrai righe
+    const rows = [];
+    targetTable.querySelectorAll('tr').forEach((tr, i) => {
+      if (i === 0) return; // skip header
+      const cells = tr.querySelectorAll('td, th');
+      if (cells.length < 2) return;
+      const pos = cells[0]?.textContent.trim().replace(/[^0-9°ºª]/g,'') || (i+'');
+      const artist = cells[1]?.textContent.trim();
+      const song = cells[2]?.textContent.trim() || '';
+      if (artist) rows.push({ pos, artist, song });
+    });
+    if (rows.length === 0) return null;
+    rankCache[nightNum] = rows;
+    return rows;
+  } catch(e) { console.warn('Wiki fetch error:', e); return null; }
+}  // cache in-session per le scalette già caricate
 let activeTab = (() => {
   const today = todayStr(), h = new Date().getHours();
   for (let i=0; i<NIGHTS.length; i++) {
@@ -297,6 +367,15 @@ function render(ni, schedule) {
 
   const main = document.getElementById('main');
   main.innerHTML = '';
+
+  const nowD = new Date();
+  const isPast = ni.date < todayStr() || (ni.date === todayStr() && (nowD.getHours() > 1 || (nowD.getHours() === 1 && nowD.getMinutes() >= 45)));
+
+  if (isPast) {
+    document.getElementById('sticky-tl').style.display = 'none';
+    loadRankAfterRender(ni);
+    return;
+  }
 
   if (!hasSched) {
     const isFuture = ni.date > todayStr();
@@ -436,6 +515,131 @@ function tick() {
 
 }
 
+async function loadRankAfterRender(ni) {
+  const main = document.getElementById('main');
+  // Mostra stato loading
+  main.innerHTML = `
+    <div class="rank-header">
+      <span style="font-size:28px">🏆</span>
+      <div>
+        <div class="rank-title">Classifica · Serata ${ni.n}</div>
+        <div class="rank-sub">${ni.long}</div>
+      </div>
+    </div>
+    <div class="rank-loading" id="rank-loading-${ni.n}">Carico la classifica da Wikipedia…</div>`;
+  const rows = await fetchWikiClassifica(ni.n);
+  const loadEl = document.getElementById('rank-loading-'+ni.n);
+  if (!rows || rows.length === 0) {
+    if (loadEl) loadEl.innerHTML = '📡 Classifica non ancora disponibile.<br><small style="color:var(--t3)">Wikipedia viene aggiornata subito dopo la serata — riprova tra qualche minuto.</small>';
+    return;
+  }
+  if (loadEl) loadEl.remove();
+  const table = document.createElement('table');
+  table.className = 'rank-table';
+  table.innerHTML = '<thead><tr><th>#</th><th>Artista</th><th>Canzone</th></tr></thead>';
+  const tbody = document.createElement('tbody');
+  rows.forEach(r => {
+    const n = parseInt(r.pos);
+    const numClass = n===1?'gold':n===2?'silver':n===3?'bronze':'';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td><span class="rank-num ${numClass}">${r.pos}</span></td>
+      <td><div class="rank-artist">${r.artist}</div></td>
+      <td><div class="rank-song">${r.song ? '"'+r.song+'"' : ''}</div></td>`;
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+  document.getElementById('main').appendChild(table);
+}
+
+async function loadRankAfterRender(ni) {
+  const main = document.getElementById('main');
+  main.innerHTML = `
+    <div class="rank-header">
+      <span style="font-size:28px">🏆</span>
+      <div>
+        <div class="rank-title">Classifica · Serata ${ni.n}</div>
+        <div class="rank-sub">${ni.long} · Aggiornata da Wikipedia</div>
+      </div>
+    </div>
+    <div id="rank-content" class="rank-loading">Carico la classifica…</div>`;
+  try {
+    const url = 'https://it.wikipedia.org/w/api.php?action=parse&page=Festival_di_Sanremo_2026&prop=text&format=json&origin=*';
+    const res = await fetch(url, {cache:'default'});
+    if (!res.ok) throw new Error('HTTP '+res.status);
+    const json = await res.json();
+    const html = json?.parse?.text?.['*'];
+    if (!html) throw new Error('no content');
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+
+    // Cerca la sezione della serata giusta
+    const nightNames = ['','prima','seconda','terza','quarta','quinta'];
+    const nightName = nightNames[ni.n] || '';
+    let targetTable = null;
+    const headings = doc.querySelectorAll('h2,h3,h4');
+    for (const h of headings) {
+      const t = h.textContent.toLowerCase();
+      if (t.includes(nightName+' serata') || t.includes('serata '+ni.n)) {
+        let el = h.nextElementSibling;
+        while (el && !/^H[2-4]$/.test(el.tagName)) {
+          const tbl = el.tagName==='TABLE' ? el : el.querySelector('table');
+          if (tbl) { targetTable = tbl; break; }
+          el = el.nextElementSibling;
+        }
+        if (targetTable) break;
+      }
+    }
+    // Fallback: prendi la n-esima wikitable
+    if (!targetTable) {
+      const all = doc.querySelectorAll('table.wikitable');
+      targetTable = all[ni.n - 1] || all[0] || null;
+    }
+
+    const el = document.getElementById('rank-content');
+    if (!targetTable) {
+      el.innerHTML = '📡 Classifica non ancora disponibile.<br><small style="color:var(--t3)">Wikipedia viene aggiornata subito dopo la serata.</small>';
+      return;
+    }
+
+    // Trova colonne interprete e brano
+    const headerCells = Array.from(targetTable.querySelectorAll('tr')[0]?.querySelectorAll('th,td')||[]);
+    const hTexts = headerCells.map(c=>c.textContent.trim().toLowerCase());
+    const posIdx    = hTexts.findIndex(t=>t.includes('pos')||t==='#'||t==='n°'||t==='n.');
+    const artistIdx = hTexts.findIndex(t=>t.includes('interprete')||t.includes('artista')||t.includes('cantante'));
+    const songIdx   = hTexts.findIndex(t=>t.includes('brano')||t.includes('canzone')||t.includes('titolo'));
+
+    const table = document.createElement('table');
+    table.className = 'rank-table';
+    table.innerHTML = '<thead><tr><th style="width:48px;text-align:center">#</th><th>Interprete</th><th>Brano</th></tr></thead>';
+    const tbody = document.createElement('tbody');
+    Array.from(targetTable.querySelectorAll('tr')).slice(1).forEach((tr,i) => {
+      const cells = Array.from(tr.querySelectorAll('td,th'));
+      if (cells.length < 2) return;
+      const pos    = posIdx>=0 ? cells[posIdx]?.textContent.trim().replace(/\[.*?\]/g,'') : String(i+1);
+      const artist = (artistIdx>=0 ? cells[artistIdx] : cells[1])?.textContent.trim().replace(/\[.*?\]/g,'');
+      const song   = (songIdx>=0 ? cells[songIdx] : cells[2])?.textContent.trim().replace(/\[.*?\]/g,'');
+      if (!artist) return;
+      const n = parseInt(pos);
+      const medal = n===1?'🥇':n===2?'🥈':n===3?'🥉':'';
+      const numClass = n===1?'gold':n===2?'silver':n===3?'bronze':'';
+      const row = document.createElement('tr');
+      row.innerHTML = `<td style="text-align:center"><span class="rank-num ${numClass}">${medal||pos}</span></td>
+        <td><div class="rank-artist">${artist}</div></td>
+        <td><div class="rank-song">${song?'"'+song+'"':'—'}</div></td>`;
+      tbody.appendChild(row);
+    });
+    if (!tbody.children.length) {
+      el.innerHTML = '📡 Classifica non ancora disponibile.';
+      return;
+    }
+    table.appendChild(tbody);
+    el.replaceWith(table);
+  } catch(e) {
+    const el = document.getElementById('rank-content');
+    if (el) el.innerHTML = '❌ Errore: '+e.message;
+  }
+}
+
 function fitClock() {
   const el = document.getElementById('clock');
   if (!el) return;
@@ -520,6 +724,7 @@ function liveCardClick() {
 })();
 
 buildTabs();
+
 loadAndRender(activeTab);
 setInterval(tick, 1000);
 </script>
