@@ -1,0 +1,20 @@
+[build]
+  publish = "."
+  command = ""
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Cache-Control = "public, max-age=60"
+
+[[headers]]
+  for = "/data/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=30"
+
+[[headers]]
+  for = "*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=30"
