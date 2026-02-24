@@ -4,812 +4,183 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tundr × Sanremo 2026</title>
-
-<!-- Favicon -->
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-
-<!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-
 <style>
-/* ══════════════════════════════════════════
-   TUNDR DESIGN TOKENS
-══════════════════════════════════════════ */
 :root {
-  /* Brand – Yellow 400 */
-  --brand:       #FEC82F;
-  --brand-hover: #FFD45A;
-  --brand-dim:   rgba(254,200,47,0.15);
-  --brand-glow:  rgba(254,200,47,0.30);
-  --brand-text:  #1a1400;  /* text on yellow */
-
-  /* Greens (secondary) */
-  --green-400:#26aaa5; --green-500:#009a93; --green-700:#007d74;
-
-  /* Greys */
-  --grey-900:#272726; --grey-800:#494948; --grey-700:#686867;
-  --grey-600:#7c7c7b; --grey-500:#a6a6a5; --grey-400:#c4c4c3;
-  --grey-300:#e7e7e5; --grey-200:#f1f1f0; --grey-100:#f6f6f5;
-
-  /* Semantic badge */
-  --yellow-300:#FED252; --yellow-400:#FEC82F; --yellow-50:rgba(254,200,47,0.1);
-  --indaco-200:#98a6fe; --indaco-400:#2f66fe;
-  --brick-500:#ff5d2d;
-  --sand-400:#8f7458;
-
-  /* Surfaces – dark festival */
-  --bg:        #0a0a0c;
-  --surface:   #111114;
-  --surface2:  #18181c;
-  --surface3:  #202025;
-  --border:    rgba(255,255,255,0.06);
-  --border2:   rgba(255,255,255,0.11);
-  --border-brand: rgba(254,200,47,0.35);
-
-  /* Text */
-  --t1: #f2f0eb;
-  --t2: rgba(242,240,235,0.52);
-  --t3: rgba(242,240,235,0.28);
-
-  /* Badge colours */
-  --bw-bg:rgba(254,200,47,.10); --bw-fg:var(--yellow-400); --bw-bd:rgba(254,200,47,.22);
-  --bs-bg:rgba(254,200,47,.14); --bs-fg:var(--brand); --bs-bd:rgba(254,200,47,.3);
+  --brand:#FEC82F; --brand-hover:#FFD45A;
+  --brand-dim:rgba(254,200,47,0.15); --brand-glow:rgba(254,200,47,0.30);
+  --brand-text:#1a1400; --border-brand:rgba(254,200,47,0.35);
+  --bg:#0a0a0c; --surface:#111114; --surface2:#18181c; --surface3:#202025;
+  --border:rgba(255,255,255,0.06); --border2:rgba(255,255,255,0.11);
+  --t1:#f2f0eb; --t2:rgba(242,240,235,0.52); --t3:rgba(242,240,235,0.28);
+  --bw-bg:rgba(254,200,47,.10); --bw-fg:#FEC82F; --bw-bd:rgba(254,200,47,.22);
+  --bs-bg:rgba(254,200,47,.14); --bs-fg:#FEC82F; --bs-bd:rgba(254,200,47,.3);
   --bo-bg:rgba(255,93,45,.12);  --bo-fg:#ff8562; --bo-bd:rgba(255,93,45,.25);
-  --bc-bg:rgba(47,102,254,.12); --bc-fg:var(--indaco-200); --bc-bd:rgba(47,102,254,.25);
-  --bsk-bg:rgba(255,255,255,.04); --bsk-fg:var(--t3); --bsk-bd:var(--border);
-  --bp-bg:rgba(255,255,255,.03); --bp-fg:var(--t3); --bp-bd:var(--border);
-
-  /* Radius */
+  --bc-bg:rgba(47,102,254,.12); --bc-fg:#98a6fe; --bc-bd:rgba(47,102,254,.25);
+  --bsk-bg:rgba(255,255,255,.04); --bsk-fg:rgba(242,240,235,0.28); --bsk-bd:rgba(255,255,255,0.06);
+  --bp-bg:rgba(255,255,255,.03); --bp-fg:rgba(242,240,235,0.28); --bp-bd:rgba(255,255,255,0.06);
   --r-sm:4px; --r-md:8px; --r-xl:16px; --r-2xl:24px; --r-pill:999px;
-
-  /* Fonts */
-  --ff-title: 'Syne', sans-serif;
-  --ff-body:  'Inter', sans-serif;
+  --ff-title:'Syne',sans-serif; --ff-body:'Inter',sans-serif;
 }
-
-/* ══════════════════════════════════════════
-   RESET & BASE
-══════════════════════════════════════════ */
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{
-  font-family:var(--ff-body);
-  background:var(--bg);
-  color:var(--t1);
-  font-size:16px;
-  line-height:24px;
-  overflow-x:hidden;
-  min-height:100vh;
-}
-body::after{
-  content:'';position:fixed;inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");
-  pointer-events:none;z-index:0;
-}
+body{font-family:var(--ff-body);background:var(--bg);color:var(--t1);font-size:16px;line-height:24px;overflow-x:hidden;min-height:100vh;}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;}
 a{color:inherit;text-decoration:none;}
 button{cursor:pointer;border:none;background:none;}
-
-/* ══════════════════════════════════════════
-   TOP BAR
-══════════════════════════════════════════ */
-.topbar{
-  position:relative;z-index:200;
-  background:rgba(10,10,12,0.96);
-  backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--border);
-  padding:0 24px;
-  height:52px;
-  display:flex;align-items:center;justify-content:space-between;
-  gap:16px;
-}
-
-/* Tundr wordmark – full SVG, white version on dark */
-.logo-svg{
-  display:block;
-  height:20px;
-  width:auto;
-  flex-shrink:0;
-}
-.logo-svg path{fill:var(--t1);}
-
-.topbar-center{
-  font-family:var(--ff-title);
-  font-size:13px;font-weight:700;
-  letter-spacing:.06em;
-  text-transform:uppercase;
-  color:var(--t3);
-  flex:1;text-align:center;
-}
+.topbar{position:relative;z-index:200;background:rgba(10,10,12,0.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.logo-svg{display:block;height:20px;width:auto;flex-shrink:0;color:var(--t1);}
+.topbar-center{font-family:var(--ff-title);font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);flex:1;text-align:center;}
 .topbar-center strong{color:var(--brand);font-weight:800;}
-
-.topbar-right{
-  display:flex;align-items:center;gap:10px;flex-shrink:0;
-}
-
-.night-pill{
-  display:flex;align-items:center;gap:6px;
-  background:var(--surface2);
-  border:1px solid var(--border2);
-  border-radius:var(--r-pill);
-  padding:5px 12px;
-  font-size:11px;font-weight:600;
-  color:var(--t2);
-  letter-spacing:.04em;
-}
-.night-pill.live{
-  border-color:var(--brand-border, rgba(254,200,47,.3));
-  background:var(--brand-dim);
-  color:var(--brand);
-}
-
-/* ══════════════════════════════════════════
-   COUNTDOWN / HERO
-══════════════════════════════════════════ */
-.hero{
-  position:relative;z-index:1;
-  padding:48px 24px 40px;
-  overflow:hidden;
-}
-
-/* Radial glow */
-.hero::before{
-  content:'';
-  position:absolute;top:-100px;left:50%;transform:translateX(-50%);
-  width:800px;height:500px;
-  background:radial-gradient(ellipse at center, rgba(254,200,47,0.07) 0%, transparent 60%);
-  pointer-events:none;
-}
-
-/* Watermark */
-.hero-wm{
-  position:absolute;top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  font-family:var(--ff-title);
-  font-size:clamp(80px,18vw,200px);font-weight:900;
-  color:rgba(255,255,255,0.02);
-  white-space:nowrap;
-  pointer-events:none;
-  letter-spacing:-.04em;
-  user-select:none;
-}
-
-.hero-inner{
-  position:relative;z-index:1;
-  max-width:900px;margin:0 auto;
-  display:grid;
-  grid-template-columns:1fr 240px;
-  gap:40px;align-items:start;
-}
-
-.eyebrow{
-  display:inline-flex;align-items:center;gap:7px;
-  background:var(--brand-dim);
-  border:1px solid var(--border-brand);
-  border-radius:var(--r-pill);
-  padding:5px 14px 5px 10px;
-  font-size:10px;font-weight:700;
-  color:var(--brand);
-  text-transform:uppercase;letter-spacing:.12em;
-  margin-bottom:20px;
-}
-
-.eyebrow-pip{
-  width:7px;height:7px;
-  background:var(--brand);
-  border-radius:50%;
-  box-shadow:0 0 8px var(--brand);
-  animation:pip 1.4s ease-in-out infinite;
-}
+.night-pill{display:flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-pill);padding:5px 12px;font-size:11px;font-weight:600;color:var(--t2);letter-spacing:.04em;white-space:nowrap;}
+.night-pill.live{border-color:var(--border-brand);background:var(--brand-dim);color:var(--brand);}
+.hero{position:relative;z-index:1;padding:48px 24px 40px;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:800px;height:500px;background:radial-gradient(ellipse at center,rgba(254,200,47,0.07) 0%,transparent 60%);pointer-events:none;}
+.hero-wm{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--ff-title);font-size:clamp(80px,18vw,200px);font-weight:900;color:rgba(255,255,255,0.02);white-space:nowrap;pointer-events:none;letter-spacing:-.04em;user-select:none;}
+.hero-inner{position:relative;z-index:1;max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 240px;gap:40px;align-items:start;}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;background:var(--brand-dim);border:1px solid var(--border-brand);border-radius:var(--r-pill);padding:5px 14px 5px 10px;font-size:10px;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:.12em;margin-bottom:20px;}
+.eyebrow-pip{width:7px;height:7px;background:var(--brand);border-radius:50%;box-shadow:0 0 8px var(--brand);animation:pip 1.4s ease-in-out infinite;}
 @keyframes pip{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.2;transform:scale(.6)}}
-
-.hero h1{
-  font-family:var(--ff-title);
-  font-size:clamp(38px,6.5vw,68px);
-  font-weight:800;line-height:1.0;
-  letter-spacing:-.03em;
-  color:var(--t1);
-  margin-bottom:16px;
-}
-
-.hero h1 em{
-  font-style:italic;
-  color:var(--brand);
-}
-
-.hero p{
-  font-size:15px;line-height:1.7;
-  color:var(--t2);font-weight:300;
-  max-width:480px;
-}
+.hero h1{font-family:var(--ff-title);font-size:clamp(38px,6.5vw,68px);font-weight:800;line-height:1.0;letter-spacing:-.03em;color:var(--t1);margin-bottom:16px;}
+.hero h1 em{font-style:italic;color:var(--brand);}
+.hero p{font-size:15px;line-height:1.7;color:var(--t2);font-weight:300;max-width:480px;}
 .hero p strong{color:var(--t1);font-weight:500;}
-
-/* ── Live / Countdown Card ── */
-.live-card{
-  background:var(--surface2);
-  border:1px solid var(--border2);
-  border-radius:var(--r-xl);
-  padding:20px;
-  box-shadow:0 8px 40px rgba(0,0,0,.5);
-}
-
-.lc-head{
-  display:flex;align-items:center;gap:6px;
-  font-size:10px;font-weight:700;
-  text-transform:uppercase;letter-spacing:.12em;
-  color:var(--t3);margin-bottom:14px;
-}
-
-.lc-dot{
-  width:6px;height:6px;
-  border-radius:50%;
-  background:var(--brand);
-  box-shadow:0 0 8px var(--brand);
-  animation:pip 1s ease-in-out infinite;
-}
-.lc-dot.inactive{background:var(--t3);box-shadow:none;animation:none;}
-
-/* Clock display */
-.lc-clock{
-  font-family:var(--ff-title);
-  font-size:38px;font-weight:800;
-  letter-spacing:-.04em;
-  color:var(--t1);line-height:1;
-  font-variant-numeric:tabular-nums;
-  margin-bottom:14px;
-}
-
+.live-card{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-xl);padding:20px;box-shadow:0 8px 40px rgba(0,0,0,.5);}
+.lc-head{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--t3);margin-bottom:14px;}
+.lc-dot{width:6px;height:6px;border-radius:50%;background:var(--brand);box-shadow:0 0 8px var(--brand);animation:pip 1s ease-in-out infinite;}
+.lc-dot.off{background:var(--t3);box-shadow:none;animation:none;}
+.lc-clock{font-family:var(--ff-title);font-size:38px;font-weight:800;letter-spacing:-.04em;color:var(--t1);line-height:1;font-variant-numeric:tabular-nums;margin-bottom:14px;}
 .lc-divider{height:1px;background:var(--border);margin-bottom:14px;}
-
-.lc-sub{
-  font-size:9px;font-weight:700;
-  text-transform:uppercase;letter-spacing:.12em;
-  color:var(--t3);margin-bottom:4px;
-}
-
-.lc-content{font-size:13px;font-weight:400;color:var(--t1);line-height:1.5;}
-
-/* Countdown mode */
-.lc-countdown{
-  font-family:var(--ff-title);
-  font-size:14px;font-weight:700;
-  color:var(--brand);
-  margin-bottom:10px;
-}
-
-.cd-grid{
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:6px;margin-top:8px;
-}
-
-.cd-unit{
-  background:var(--surface3);
-  border:1px solid var(--border);
-  border-radius:var(--r-md);
-  padding:8px 6px;
-  text-align:center;
-}
-
-.cd-num{
-  font-family:var(--ff-title);
-  font-size:22px;font-weight:800;
-  color:var(--brand);
-  line-height:1;
-  font-variant-numeric:tabular-nums;
-}
-
-.cd-lbl{
-  font-size:9px;font-weight:600;
-  text-transform:uppercase;letter-spacing:.1em;
-  color:var(--t3);
-  margin-top:2px;
-}
-
-/* Progress mini bar in live card */
-.lc-prog{
-  height:3px;background:var(--surface3);
-  border-radius:var(--r-pill);
-  margin-top:12px;overflow:hidden;
-}
-.lc-prog-fill{
-  height:100%;
-  background:linear-gradient(90deg, var(--brand), var(--brand-hover));
-  border-radius:var(--r-pill);
-  transition:width 1s linear;
-}
-
-/* ══════════════════════════════════════════
-   STICKY TIMELINE
-══════════════════════════════════════════ */
-.sticky{
-  position:sticky;top:0;z-index:150;
-  background:rgba(10,10,12,0.94);
-  backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--border);
-  padding:10px 24px;
-}
-
+.lc-sub{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--t3);margin-bottom:4px;}
+.lc-content{font-size:13px;color:var(--t1);line-height:1.5;}
+.cd-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;}
+.cd-unit{background:var(--surface3);border:1px solid var(--border);border-radius:var(--r-md);padding:8px 6px;text-align:center;}
+.cd-num{font-family:var(--ff-title);font-size:22px;font-weight:800;color:var(--brand);line-height:1;font-variant-numeric:tabular-nums;}
+.cd-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-top:2px;}
+.lc-prog{height:3px;background:var(--surface3);border-radius:var(--r-pill);margin-top:12px;overflow:hidden;}
+.lc-prog-fill{height:100%;background:linear-gradient(90deg,var(--brand),var(--brand-hover));border-radius:var(--r-pill);transition:width 1s linear;}
+.sticky{position:sticky;top:0;z-index:150;background:rgba(10,10,12,0.94);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:10px 24px;}
 .sticky-inner{max-width:900px;margin:0 auto;}
-
-.tl-head{
-  display:flex;justify-content:space-between;align-items:center;
-  margin-bottom:7px;
-}
-
-.tl-label{
-  font-size:10px;font-weight:600;
-  text-transform:uppercase;letter-spacing:.1em;
-  color:var(--t3);
-}
-
-.tl-pct{
-  font-family:var(--ff-title);
-  font-size:11px;font-weight:800;
-  color:var(--brand);letter-spacing:-.01em;
-}
-
-.track{
-  height:4px;background:var(--surface3);
-  border-radius:var(--r-pill);
-  position:relative;cursor:pointer;overflow:visible;
-}
-
-.track-fill{
-  height:100%;
-  background:linear-gradient(90deg, var(--grey-700), var(--brand));
-  border-radius:var(--r-pill);
-  transition:width 1s linear;position:relative;
-}
-
-.track-fill::after{
-  content:'';
-  position:absolute;right:-6px;top:50%;
-  transform:translateY(-50%);
-  width:14px;height:14px;
-  background:var(--brand);
-  border:2px solid var(--bg);
-  border-radius:50%;
-  box-shadow:0 0 12px var(--brand-glow);
-}
-
+.tl-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;}
+.tl-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);}
+.tl-pct{font-family:var(--ff-title);font-size:11px;font-weight:800;color:var(--brand);}
+.track{height:4px;background:var(--surface3);border-radius:var(--r-pill);position:relative;cursor:pointer;overflow:visible;}
+.track-fill{height:100%;background:linear-gradient(90deg,rgba(242,240,235,0.2),var(--brand));border-radius:var(--r-pill);transition:width 1s linear;position:relative;}
+.track-fill::after{content:'';position:absolute;right:-6px;top:50%;transform:translateY(-50%);width:14px;height:14px;background:var(--brand);border:2px solid var(--bg);border-radius:50%;box-shadow:0 0 12px var(--brand-glow);}
 .track-markers{position:absolute;inset:0;pointer-events:none;}
-
-.tm{
-  position:absolute;top:50%;
-  transform:translate(-50%,-50%);
-  width:2px;height:7px;
-  border-radius:2px;
-  pointer-events:all;cursor:pointer;
-  opacity:.5;transition:opacity .15s,transform .15s;
-}
+.tm{position:absolute;top:50%;transform:translate(-50%,-50%);width:2px;height:7px;border-radius:2px;pointer-events:all;cursor:pointer;opacity:.5;transition:opacity .15s,transform .15s;}
 .tm:hover{opacity:1;transform:translate(-50%,-50%) scaleY(2);}
-
-.track-times{
-  display:flex;justify-content:space-between;
-  margin-top:5px;
-}
+.track-times{display:flex;justify-content:space-between;margin-top:5px;}
 .track-times span{font-size:9px;color:var(--t3);font-variant-numeric:tabular-nums;}
-
-/* ══════════════════════════════════════════
-   NIGHT TABS
-══════════════════════════════════════════ */
-.night-tabs{
-  position:relative;z-index:1;
-  max-width:900px;margin:0 auto;
-  padding:20px 24px 0;
-}
-
-.nt-scroll{
-  display:flex;gap:4px;
-  overflow-x:auto;
-  scrollbar-width:none;
-  padding-bottom:2px;
-}
+.night-tabs{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:20px 24px 0;}
+.nt-scroll{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;}
 .nt-scroll::-webkit-scrollbar{display:none;}
-
-.nt-btn{
-  flex-shrink:0;
-  display:flex;align-items:center;gap:6px;
-  padding:7px 14px;
-  border-radius:var(--r-pill);
-  border:1px solid var(--border);
-  font-family:var(--ff-body);
-  font-size:11px;font-weight:600;
-  color:var(--t2);
-  background:transparent;
-  transition:all .15s;
-  white-space:nowrap;
-}
+.nt-btn{flex-shrink:0;display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:var(--r-pill);border:1px solid var(--border);font-family:var(--ff-body);font-size:11px;font-weight:600;color:var(--t2);background:transparent;transition:all .15s;white-space:nowrap;}
 .nt-btn:hover{background:var(--surface2);color:var(--t1);}
-.nt-btn.active{
-  background:var(--brand);
-  border-color:var(--brand);
-  color:var(--brand-text);
-}
-.nt-btn .nt-badge{
-  display:inline-block;
-  width:5px;height:5px;
-  background:currentColor;
-  border-radius:50%;
-  opacity:.6;
-}
-.nt-btn.live-night .nt-badge{
-  background:var(--brand);
-  box-shadow:0 0 6px var(--brand);
-  animation:pip 1s ease-in-out infinite;
-}
-.nt-btn.live-night:not(.active){color:var(--brand);border-color:var(--border-brand);}
-
-/* ══════════════════════════════════════════
-   MAIN CONTENT
-══════════════════════════════════════════ */
-.main{
-  position:relative;z-index:1;
-  max-width:900px;margin:0 auto;
-  padding:20px 24px 80px;
-}
-
-/* Archive notice */
-.archive-notice{
-  display:flex;align-items:flex-start;gap:14px;
-  background:var(--surface2);
-  border:1px solid var(--border2);
-  border-radius:var(--r-xl);
-  padding:20px;
-  margin-bottom:20px;
-}
-.archive-notice .an-icon{
-  flex-shrink:0;font-size:22px;line-height:1;margin-top:2px;
-}
-.archive-notice h3{
-  font-family:var(--ff-title);
-  font-size:16px;font-weight:800;
-  color:var(--t1);margin-bottom:4px;
-}
-.archive-notice p{font-size:13px;color:var(--t2);line-height:1.6;}
-
-/* Highlights list */
-.highlights{
-  display:flex;flex-wrap:wrap;gap:6px;
-  margin-top:10px;
-}
-.hl{
-  display:inline-flex;align-items:center;gap:5px;
-  padding:3px 10px;
-  background:var(--brand-dim);
-  border:1px solid var(--border-brand);
-  border-radius:var(--r-pill);
-  font-size:11px;font-weight:600;
-  color:var(--brand);
-}
-
-/* Ranking widget */
-.ranking-widget{
-  background:var(--surface2);
-  border:1px solid var(--border2);
-  border-radius:var(--r-xl);
-  overflow:hidden;
-  margin-bottom:20px;
-}
-.rw-head{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px 18px;
-  border-bottom:1px solid var(--border);
-}
-.rw-title{
-  font-family:var(--ff-title);
-  font-size:14px;font-weight:800;
-  color:var(--t1);display:flex;align-items:center;gap:8px;
-}
-.rw-badge{
-  font-size:10px;font-weight:600;
-  padding:2px 8px;
-  background:var(--brand-dim);
-  border:1px solid var(--border-brand);
-  border-radius:var(--r-pill);
-  color:var(--brand);
-  text-transform:uppercase;letter-spacing:.08em;
-}
-.rw-link{
-  font-size:11px;color:var(--t3);
-  text-decoration:underline;
-  text-underline-offset:2px;
-}
+.nt-btn.active{background:var(--brand);border-color:var(--brand);color:var(--brand-text);}
+.nt-btn .nt-dot{width:5px;height:5px;background:currentColor;border-radius:50%;opacity:.5;}
+.nt-btn.tonight{color:var(--brand);border-color:var(--border-brand);}
+.nt-btn.tonight .nt-dot{background:var(--brand);box-shadow:0 0 6px var(--brand);animation:pip 1s ease-in-out infinite;opacity:1;}
+.main{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:20px 24px 40px;}
+.ranking-widget{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-xl);overflow:hidden;margin-bottom:20px;}
+.rw-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);}
+.rw-title{font-family:var(--ff-title);font-size:14px;font-weight:800;color:var(--t1);display:flex;align-items:center;gap:8px;}
+.rw-badge{font-size:10px;font-weight:600;padding:2px 8px;background:var(--brand-dim);border:1px solid var(--border-brand);border-radius:var(--r-pill);color:var(--brand);text-transform:uppercase;letter-spacing:.08em;}
+.rw-link{font-size:11px;color:var(--t3);text-decoration:underline;text-underline-offset:2px;}
 .rw-link:hover{color:var(--brand);}
-
-.rank-list{padding:0;}
-.rank-item{
-  display:flex;align-items:center;gap:12px;
-  padding:11px 18px;
-  border-bottom:1px solid var(--border);
-  transition:background .12s;
-}
+.rank-item{display:flex;align-items:center;gap:12px;padding:11px 18px;border-bottom:1px solid var(--border);transition:background .12s;}
 .rank-item:last-child{border-bottom:none;}
 .rank-item:hover{background:var(--surface3);}
-.rank-num{
-  font-family:var(--ff-title);
-  font-size:18px;font-weight:900;
-  color:var(--t3);
-  width:28px;flex-shrink:0;
-  font-variant-numeric:tabular-nums;
-}
+.rank-num{font-family:var(--ff-title);font-size:18px;font-weight:900;color:var(--t3);width:28px;flex-shrink:0;font-variant-numeric:tabular-nums;}
 .rank-item:nth-child(1) .rank-num{color:var(--brand);}
 .rank-item:nth-child(2) .rank-num{color:var(--t2);}
 .rank-item:nth-child(3) .rank-num{color:#cd7f32;}
 .rank-body{flex:1;min-width:0;}
-.rank-artist{
-  font-family:var(--ff-title);
-  font-size:14px;font-weight:700;
-  color:var(--t1);
-}
+.rank-artist{font-family:var(--ff-title);font-size:14px;font-weight:700;color:var(--t1);}
 .rank-song{font-size:12px;color:var(--t2);font-style:italic;}
-.rank-pts{
-  font-family:var(--ff-title);
-  font-size:12px;font-weight:700;
-  color:var(--t3);flex-shrink:0;
-}
-
-/* Legend */
-.legend{
-  display:flex;flex-wrap:wrap;gap:14px;
-  padding-bottom:16px;
-  border-bottom:1px solid var(--border);
-  margin-bottom:16px;
-}
+.rank-pts{font-family:var(--ff-title);font-size:12px;font-weight:700;color:var(--t3);flex-shrink:0;}
+.legend{display:flex;flex-wrap:wrap;gap:14px;padding-bottom:16px;border-bottom:1px solid var(--border);margin-bottom:16px;}
 .leg{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--t2);}
 .leg-d{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
-
-/* Section chips */
-.sc{
-  display:flex;align-items:center;gap:8px;
-  margin:20px 0 8px;
-  padding:7px 14px;
-  background:var(--surface2);
-  border:1px solid var(--border);
-  border-radius:var(--r-md);
-  font-size:10px;font-weight:700;
-  text-transform:uppercase;letter-spacing:.1em;
-  color:var(--t3);
-}
-
-/* Empty state */
-.empty-state{
-  text-align:center;
-  padding:60px 24px;
-  color:var(--t3);
-}
-.empty-state .es-icon{font-size:42px;margin-bottom:12px;}
-.empty-state h3{
-  font-family:var(--ff-title);
-  font-size:18px;font-weight:800;
-  color:var(--t2);margin-bottom:8px;
-}
-.empty-state p{font-size:13px;line-height:1.6;max-width:320px;margin:0 auto;}
-.empty-state a{color:var(--brand);}
-
-/* ══════════════════════════════════════════
-   SCHEDULE ITEMS
-══════════════════════════════════════════ */
+.sc{display:flex;align-items:center;gap:8px;margin:20px 0 8px;padding:7px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-md);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);}
+.notice{display:flex;align-items:flex-start;gap:14px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-xl);padding:20px;margin-bottom:20px;}
+.notice-icon{flex-shrink:0;font-size:22px;line-height:1;margin-top:2px;}
+.notice h3{font-family:var(--ff-title);font-size:16px;font-weight:800;color:var(--t1);margin-bottom:4px;}
+.notice p{font-size:13px;color:var(--t2);line-height:1.6;}
+.hl-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.hl{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;background:var(--brand-dim);border:1px solid var(--border-brand);border-radius:var(--r-pill);font-size:11px;font-weight:600;color:var(--brand);}
 .slist{display:flex;flex-direction:column;gap:1px;}
-
-.si{
-  display:grid;
-  grid-template-columns:64px 1fr auto;
-  gap:12px;align-items:center;
-  padding:12px 12px;
-  border-radius:var(--r-md);
-  border:1px solid transparent;
-  cursor:default;
-  transition:background .13s, border-color .13s;
-  scroll-margin-top:100px;
-  position:relative;
-}
-
+.si{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;padding:12px;border-radius:var(--r-md);border:1px solid transparent;transition:background .13s,border-color .13s;scroll-margin-top:100px;position:relative;}
 .si:hover{background:var(--surface2);border-color:var(--border);}
 .si.past{opacity:.22;}
 .si.next-up{background:var(--brand-dim);border-color:var(--border-brand);}
-
-.si.current{
-  background:var(--surface2);
-  border-color:var(--brand);
-  box-shadow:0 0 0 1px var(--brand), inset 0 0 50px rgba(254,200,47,.04);
-  margin-top:18px;
-}
-
-.si.current::before{
-  content:'▶ ORA IN ONDA';
-  position:absolute;top:-12px;left:12px;
-  background:var(--brand);
-  color:var(--brand-text);
-  font-size:9px;font-weight:800;
-  letter-spacing:.12em;text-transform:uppercase;
-  padding:2px 10px;
-  border-radius:var(--r-pill);
-  border:2px solid var(--bg);
-  font-family:var(--ff-body);
-}
-
-.si-time{
-  font-family:var(--ff-title);
-  font-size:15px;font-weight:700;
-  color:var(--t3);
-  font-variant-numeric:tabular-nums;
-  letter-spacing:-.01em;
-  white-space:nowrap;
-}
+.si.current{background:var(--surface2);border-color:var(--brand);box-shadow:0 0 0 1px var(--brand),inset 0 0 50px rgba(254,200,47,.04);margin-top:18px;}
+.si.current::before{content:'▶ ORA IN ONDA';position:absolute;top:-12px;left:12px;background:var(--brand);color:var(--brand-text);font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:2px 10px;border-radius:var(--r-pill);border:2px solid var(--bg);font-family:var(--ff-body);}
+.si-time{font-family:var(--ff-title);font-size:15px;font-weight:700;color:var(--t3);font-variant-numeric:tabular-nums;white-space:nowrap;}
 .si.current .si-time{color:var(--brand);}
-
 .si-body{min-width:0;}
-
-.si-artist{
-  font-family:var(--ff-title);
-  font-size:15px;font-weight:700;
-  color:var(--t1);
-  margin-bottom:1px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.si-song{
-  font-size:12px;color:var(--t2);
-  font-style:italic;margin-bottom:2px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
+.si-artist{font-family:var(--ff-title);font-size:15px;font-weight:700;color:var(--t1);margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.si-song{font-size:12px;color:var(--t2);font-style:italic;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .si-desc{font-size:11px;color:var(--t3);line-height:1.45;}
-
-.si-badges{
-  display:flex;flex-direction:column;
-  align-items:flex-end;gap:4px;flex-shrink:0;
-}
-
-.badge{
-  font-size:10px;font-weight:700;
-  padding:3px 9px;
-  border-radius:var(--r-pill);
-  border:1px solid;
-  white-space:nowrap;
-  letter-spacing:.02em;
-}
-.bw {background:var(--bw-bg);color:var(--bw-fg);border-color:var(--bw-bd);}
-.bs {background:var(--bs-bg);color:var(--bs-fg);border-color:var(--bs-bd);}
-.bo {background:var(--bo-bg);color:var(--bo-fg);border-color:var(--bo-bd);}
-.bc {background:var(--bc-bg);color:var(--bc-fg);border-color:var(--bc-bd);}
+.si-badges{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;}
+.badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:var(--r-pill);border:1px solid;white-space:nowrap;letter-spacing:.02em;}
+.bw{background:var(--bw-bg);color:var(--bw-fg);border-color:var(--bw-bd);}
+.bs{background:var(--bs-bg);color:var(--bs-fg);border-color:var(--bs-bd);}
+.bo{background:var(--bo-bg);color:var(--bo-fg);border-color:var(--bo-bd);}
+.bc{background:var(--bc-bg);color:var(--bc-fg);border-color:var(--bc-bd);}
 .bsk{background:var(--bsk-bg);color:var(--bsk-fg);border-color:var(--bsk-bd);}
-.bp {background:var(--bp-bg);color:var(--bp-fg);border-color:var(--bp-bd);}
-.bl {
-  background:var(--brand);
-  color:var(--brand-text);
-  border-color:var(--brand);
-  animation:badge-pulse 1.8s ease-in-out infinite;
-}
-@keyframes badge-pulse{
-  0%,100%{box-shadow:0 0 0 0 var(--brand-glow);}
-  50%{box-shadow:0 0 0 6px rgba(254,200,47,0);}
-}
-
-/* ══════════════════════════════════════════
-   FOOTER CTA
-══════════════════════════════════════════ */
-.fcta{
-  margin-top:48px;
-  background:var(--surface2);
-  border:1px solid var(--border2);
-  border-radius:var(--r-2xl);
-  padding:44px 40px;
-  text-align:center;position:relative;overflow:hidden;
-}
-.fcta::before{
-  content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);
-  width:600px;height:300px;
-  background:radial-gradient(ellipse, rgba(254,200,47,0.07) 0%, transparent 65%);
-  pointer-events:none;
-}
-.fcta-logo{
-  display:inline-flex;align-items:center;gap:10px;
-  margin-bottom:20px;position:relative;
-}
-.fcta-logo-svg{height:18px;width:auto;}
-.fcta-logo-svg path{fill:var(--t1);}
-
-.fcta h2{
-  font-family:var(--ff-title);
-  font-size:clamp(22px,4vw,34px);
-  font-weight:800;line-height:1.1;
-  letter-spacing:-.02em;
-  color:var(--t1);margin-bottom:10px;position:relative;
-}
+.bp{background:var(--bp-bg);color:var(--bp-fg);border-color:var(--bp-bd);}
+.bl{background:var(--brand);color:var(--brand-text);border-color:var(--brand);animation:badge-pulse 1.8s ease-in-out infinite;}
+@keyframes badge-pulse{0%,100%{box-shadow:0 0 0 0 var(--brand-glow);}50%{box-shadow:0 0 0 6px rgba(254,200,47,0);}}
+.fcta-wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 24px 60px;}
+.fcta{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-2xl);padding:44px 40px;text-align:center;position:relative;overflow:hidden;}
+.fcta::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(254,200,47,0.07) 0%,transparent 65%);pointer-events:none;}
+.fcta-logo-svg{height:18px;width:auto;color:var(--t1);position:relative;margin-bottom:20px;display:inline-block;}
+.fcta h2{font-family:var(--ff-title);font-size:clamp(22px,4vw,34px);font-weight:800;line-height:1.1;letter-spacing:-.02em;color:var(--t1);margin-bottom:10px;position:relative;}
 .fcta h2 em{font-style:italic;color:var(--brand);}
-.fcta p{
-  font-size:14px;line-height:1.7;color:var(--t2);
-  max-width:440px;margin:0 auto 28px;
-  position:relative;font-weight:300;
-}
-.btn{
-  display:inline-block;padding:12px 28px;
-  background:var(--brand);color:var(--brand-text);
-  border-radius:var(--r-pill);
-  font-family:var(--ff-body);font-size:13px;font-weight:700;
-  border:none;
-  transition:background .15s,transform .12s,box-shadow .15s;
-  position:relative;letter-spacing:.01em;
-}
-.btn:hover{
-  background:var(--brand-hover);
-  transform:translateY(-1px);
-  box-shadow:0 8px 28px var(--brand-glow);
-}
-
-/* ══════════════════════════════════════════
-   FAB
-══════════════════════════════════════════ */
-.fab{
-  position:fixed;bottom:24px;right:24px;
-  background:var(--brand);color:var(--brand-text);
-  border-radius:var(--r-pill);
-  padding:11px 20px;
-  font-family:var(--ff-body);font-size:12px;font-weight:700;
-  z-index:300;
-  display:flex;align-items:center;gap:7px;
-  box-shadow:0 4px 24px var(--brand-glow);
-  opacity:0;transform:translateY(10px);pointer-events:none;
-  transition:opacity .2s,transform .2s;
-}
+.fcta p{font-size:14px;line-height:1.7;color:var(--t2);max-width:440px;margin:0 auto 28px;position:relative;font-weight:300;}
+.btn{display:inline-block;padding:12px 28px;background:var(--brand);color:var(--brand-text);border-radius:var(--r-pill);font-family:var(--ff-body);font-size:13px;font-weight:700;transition:background .15s,transform .12s,box-shadow .15s;letter-spacing:.01em;}
+.btn:hover{background:var(--brand-hover);transform:translateY(-1px);box-shadow:0 8px 28px var(--brand-glow);}
+.fab{position:fixed;bottom:24px;right:24px;background:var(--brand);color:var(--brand-text);border-radius:var(--r-pill);padding:11px 20px;font-family:var(--ff-body);font-size:12px;font-weight:700;z-index:300;display:flex;align-items:center;gap:7px;box-shadow:0 4px 24px var(--brand-glow);opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .2s,transform .2s;}
 .fab.on{opacity:1;transform:translateY(0);pointer-events:all;}
 .fab:hover{background:var(--brand-hover);}
 .fab-pip{width:6px;height:6px;background:rgba(0,0,0,.3);border-radius:50%;animation:pip 1s ease-in-out infinite;}
-
-/* ══════════════════════════════════════════
-   RESPONSIVE
-══════════════════════════════════════════ */
 @media(max-width:640px){
-  .hero-inner{grid-template-columns:1fr;}
-  .live-card{display:none;}
-  .si{grid-template-columns:52px 1fr;}
-  .si-badges{display:none;}
+  .hero-inner{grid-template-columns:1fr;} .live-card{display:none;}
+  .si{grid-template-columns:52px 1fr;} .si-badges{display:none;}
   .si.current .si-badges{display:flex;grid-column:2;margin-top:4px;}
-  .fcta{padding:28px 20px;}
-  .hero-wm{display:none;}
-  .topbar-center{display:none;}
+  .fcta{padding:28px 20px;} .hero-wm{display:none;} .topbar-center{display:none;}
 }
 </style>
 </head>
 <body>
 
-<!-- ══ TOP BAR ══ -->
 <header class="topbar">
-  <!-- Tundr wordmark SVG (dark bg → white paths) -->
   <svg class="logo-svg" viewBox="0 0 322 80" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g clip-path="url(#c)">
       <path d="M109.37 57.0649C107.015 57.0649 105.462 54.6106 106.473 52.488L120.935 22.1341C120.914 20.3839 119.494 18.9655 117.737 18.9655H96.6965C94.9138 18.9655 93.4682 20.4095 93.4682 22.1902L93.3916 51.8808C93.3916 54.728 91.0827 57.0342 88.2324 57.0342C85.3821 57.0342 83.0732 54.728 83.0732 51.8808V22.1647C83.0732 20.3942 81.6378 18.9655 79.8704 18.9655H58.7637C56.9963 18.9655 55.5609 20.3993 55.5609 22.1647V56.8557C55.5609 64.3663 57.2773 70.1014 60.7048 74.0608C64.1323 78.0203 69.3835 80 76.4531 80C81.4897 80 85.5353 78.9285 88.5849 76.7753C91.6089 74.6374 93.8207 71.7648 95.2203 68.1727L97.2687 76.4283C97.6262 77.8672 98.9186 78.8775 100.405 78.8775H117.716C119.499 78.8775 120.945 77.4335 120.945 75.6528V57.0649H109.37Z" fill="currentColor"/>
       <path d="M188.055 23.7821C184.628 19.8227 179.376 17.843 172.307 17.843C167.265 17.843 163.219 18.9145 160.175 21.0677C157.146 23.2056 154.939 26.0782 153.54 29.6703L151.491 21.4146C151.134 19.9758 149.841 18.9655 148.355 18.9655H131.049C129.266 18.9655 127.82 20.4095 127.82 22.1902V40.7985H139.457C141.811 40.7985 143.364 43.2528 142.348 45.3753L127.836 75.765C127.892 77.4845 129.286 78.8724 131.018 78.8724H152.058C153.841 78.8724 155.287 77.4284 155.287 75.6477L155.363 45.957C155.363 43.1099 157.672 40.8036 160.522 40.8036C163.373 40.8036 165.682 43.1099 165.682 45.957V75.6732C165.682 77.4386 167.117 78.8724 168.889 78.8724H189.991C191.764 78.8724 193.199 77.4386 193.199 75.6732V40.9822C193.199 33.4715 191.483 27.7365 188.05 23.777" fill="currentColor"/>
       <path d="M47.2143 18.9706H35.2715V7.14331C35.2715 5.36259 33.8259 3.91861 32.0432 3.91861H17.2552C15.4725 3.91861 14.0269 5.36259 14.0269 7.14331C14.0269 7.14331 13.6642 11.0517 12.8162 13.1335C11.861 16.0724 10.1192 18.0879 7.58555 19.1747C7.58555 19.1747 5.01617 20.389 3.22833 20.389C1.44049 20.389 0 21.833 0 23.6137V37.5738C0 39.3545 1.4456 40.7985 3.22833 40.7985H9.74117V51.2277C9.74117 57.7843 10.4767 63.0908 11.9428 67.1522C13.4139 71.2137 16.0293 74.1833 19.7888 76.061C23.5433 77.9386 28.8762 78.8775 35.7823 78.8775H47.2143C48.997 78.8775 50.4426 77.4335 50.4426 75.6528V58.9629C50.4426 57.1822 48.997 55.7382 47.2143 55.7382H43.8838C41.4881 55.7382 39.6645 55.5494 38.3977 55.1719C37.1309 54.7994 36.2982 54.0136 35.8845 52.8197C35.4758 51.6257 35.2664 49.8297 35.2664 47.4418V40.8036H47.2092C48.9919 40.8036 50.4375 39.3596 50.4375 37.5789V22.2004C50.4375 20.4197 48.9919 18.9757 47.2092 18.9757" fill="currentColor"/>
-      <path d="M318.797 17.8481H318.205C318.205 17.8481 318.169 17.8481 318.148 17.8481H316.907V17.9093C311.748 18.0675 307.631 19.1084 304.673 21.1238C301.823 23.0627 299.994 26.4558 299.08 31.1448L296.669 21.4197C296.311 19.9809 295.019 18.9706 293.533 18.9706H276.226C274.444 18.9706 272.998 20.4146 272.998 22.1953V75.6528C272.998 77.4335 274.444 78.8775 276.226 78.8775H297.241C299.024 78.8775 300.469 77.4335 300.469 75.6528V56.0801C300.505 52.2278 301.19 49.544 302.553 48.0796C303.953 46.5744 306.773 45.8243 311.018 45.8243L316.907 45.8907V45.9009H318.797C320.565 45.9009 322 44.4671 322 42.7017V21.0473C322 19.2818 320.565 17.8481 318.797 17.8481Z" fill="currentColor"/>
+      <path d="M318.797 17.8481H316.907V17.9093C311.748 18.0675 307.631 19.1084 304.673 21.1238C301.823 23.0627 299.994 26.4558 299.08 31.1448L296.669 21.4197C296.311 19.9809 295.019 18.9706 293.533 18.9706H276.226C274.444 18.9706 272.998 20.4146 272.998 22.1953V75.6528C272.998 77.4335 274.444 78.8775 276.226 78.8775H297.241C299.024 78.8775 300.469 77.4335 300.469 75.6528V56.0801C300.505 52.2278 301.19 49.544 302.553 48.0796C303.953 46.5744 306.773 45.8243 311.018 45.8243L316.907 45.8907V45.9009H318.797C320.565 45.9009 322 44.4671 322 42.7017V21.0473C322 19.2818 320.565 17.8481 318.797 17.8481Z" fill="currentColor"/>
       <path d="M262.884 0H241.869C240.086 0 238.641 1.44397 238.641 3.22469V25.272C237.21 23.1698 235.448 21.4146 233.155 20.2003C230.452 18.7665 227.02 18.0471 222.852 18.0471C218.203 18.0471 214.009 19.139 210.286 21.3228C206.562 23.5066 203.625 26.8027 201.469 31.2061C199.318 35.6094 198.241 41.222 198.241 48.0541V49.2837C198.241 59.2487 200.509 66.8308 205.055 72.0199C209.601 77.209 215.496 79.801 222.744 79.801C227.388 79.801 231.27 79.056 234.069 77.0865C237.195 74.8823 239.642 71.3872 240.75 69.6371L242.436 76.4334C242.794 77.8723 244.086 78.8826 245.572 78.8826H262.884C264.667 78.8826 266.112 77.4386 266.112 75.6579V3.22469C266.112 1.44397 264.667 0 262.884 0ZM239.014 49.0797C239.014 52.5595 238.344 55.0035 237.011 56.4015C235.678 57.7996 233.921 58.4986 231.729 58.4986C229.538 58.4986 227.888 57.82 226.555 56.4526C225.222 55.0902 224.553 52.6309 224.553 49.0797V48.1612C224.553 45.0233 225.222 42.7527 226.555 41.3496C227.888 39.9515 229.61 39.2474 231.729 39.2474C233.849 39.2474 235.673 39.9668 237.011 41.4006C238.344 42.8344 239.014 45.0845 239.014 48.1612V49.0797Z" fill="currentColor"/>
     </g>
     <defs><clipPath id="c"><rect width="322" height="80" fill="white"/></clipPath></defs>
   </svg>
-
   <span class="topbar-center">Festival di <strong>Sanremo 2026</strong></span>
-
-  <div class="topbar-right">
-    <div class="night-pill" id="night-status-pill">Caricamento…</div>
-  </div>
+  <div class="night-pill" id="night-pill">Serata 1 / 5</div>
 </header>
 
-<!-- ══ HERO ══ -->
 <section class="hero">
   <div class="hero-wm">SANREMO</div>
   <div class="hero-inner">
     <div>
-      <div class="eyebrow" id="hero-eyebrow">
-        <span class="eyebrow-pip"></span>
-        <span id="eyebrow-text">24 – 28 febbraio 2026</span>
-      </div>
-      <h1 id="hero-h1">La tua serata<br>libera. Il festival,<br><em>quando vuoi.</em></h1>
+      <div class="eyebrow"><span class="eyebrow-pip"></span><span id="eyebrow-text">In diretta stasera</span></div>
+      <h1>La tua serata<br>libera. Il festival,<br><em>quando vuoi.</em></h1>
       <p>Come ti aiutiamo a stare bene al lavoro, <strong>ti aiutiamo a stare bene anche stasera</strong>. Sai esattamente quando accendere Rai Uno per il tuo artista — e quando invece fare altro.</p>
     </div>
-    <div class="live-card" id="live-card">
-      <div class="lc-head">
-        <span class="lc-dot inactive" id="lc-dot"></span>
-        <span id="lc-head-label">ORARIO</span>
-      </div>
+    <div class="live-card">
+      <div class="lc-head"><span class="lc-dot off" id="lc-dot"></span><span id="lc-head-label">ORARIO</span></div>
       <div class="lc-clock" id="clock">--:--:--</div>
       <div class="lc-divider"></div>
       <div id="lc-body"></div>
@@ -817,563 +188,324 @@ button{cursor:pointer;border:none;background:none;}
   </div>
 </section>
 
-<!-- ══ STICKY TIMELINE ══ -->
 <div class="sticky" id="sticky-tl" style="display:none">
   <div class="sticky-inner">
     <div class="tl-head">
-      <span class="tl-label" id="tl-label">Scaletta</span>
+      <span class="tl-label" id="tl-label">Scaletta · 20:40 → 01:44</span>
       <span class="tl-pct" id="tl-pct">0%</span>
     </div>
     <div class="track" id="track" onclick="clickTrack(event)">
       <div class="track-fill" id="track-fill" style="width:0%"></div>
       <div class="track-markers" id="track-markers"></div>
     </div>
-    <div class="track-times" id="track-times">
-      <span>20:40</span><span>22:00</span><span>23:30</span><span>01:00</span><span>01:44</span>
-    </div>
+    <div class="track-times"><span>20:40</span><span>22:00</span><span>23:30</span><span>01:00</span><span>01:44</span></div>
   </div>
 </div>
 
-<!-- ══ NIGHT TABS ══ -->
-<div class="night-tabs">
-  <div class="nt-scroll" id="night-tabs-row"></div>
-</div>
+<div class="night-tabs"><div class="nt-scroll" id="night-tabs"></div></div>
+<div class="main" id="main"></div>
 
-<!-- ══ MAIN ══ -->
-<div class="main" id="main-content">
-  <div class="slist" id="slist"></div>
-</div>
-
-<!-- ══ FOOTER CTA ══ -->
-<div class="main" style="padding-top:0">
+<div class="fcta-wrap">
   <div class="fcta">
-    <div class="fcta-logo">
-      <svg class="fcta-logo-svg" viewBox="0 0 322 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g clip-path="url(#c2)">
-          <path d="M109.37 57.0649C107.015 57.0649 105.462 54.6106 106.473 52.488L120.935 22.1341C120.914 20.3839 119.494 18.9655 117.737 18.9655H96.6965C94.9138 18.9655 93.4682 20.4095 93.4682 22.1902L93.3916 51.8808C93.3916 54.728 91.0827 57.0342 88.2324 57.0342C85.3821 57.0342 83.0732 54.728 83.0732 51.8808V22.1647C83.0732 20.3942 81.6378 18.9655 79.8704 18.9655H58.7637C56.9963 18.9655 55.5609 20.3993 55.5609 22.1647V56.8557C55.5609 64.3663 57.2773 70.1014 60.7048 74.0608C64.1323 78.0203 69.3835 80 76.4531 80C81.4897 80 85.5353 78.9285 88.5849 76.7753C91.6089 74.6374 93.8207 71.7648 95.2203 68.1727L97.2687 76.4283C97.6262 77.8672 98.9186 78.8775 100.405 78.8775H117.716C119.499 78.8775 120.945 77.4335 120.945 75.6528V57.0649H109.37Z" fill="currentColor"/>
-          <path d="M188.055 23.7821C184.628 19.8227 179.376 17.843 172.307 17.843C167.265 17.843 163.219 18.9145 160.175 21.0677C157.146 23.2056 154.939 26.0782 153.54 29.6703L151.491 21.4146C151.134 19.9758 149.841 18.9655 148.355 18.9655H131.049C129.266 18.9655 127.82 20.4095 127.82 22.1902V40.7985H139.457C141.811 40.7985 143.364 43.2528 142.348 45.3753L127.836 75.765C127.892 77.4845 129.286 78.8724 131.018 78.8724H152.058C153.841 78.8724 155.287 77.4284 155.287 75.6477L155.363 45.957C155.363 43.1099 157.672 40.8036 160.522 40.8036C163.373 40.8036 165.682 43.1099 165.682 45.957V75.6732C165.682 77.4386 167.117 78.8724 168.889 78.8724H189.991C191.764 78.8724 193.199 77.4386 193.199 75.6732V40.9822C193.199 33.4715 191.483 27.7365 188.05 23.777" fill="currentColor"/>
-          <path d="M47.2143 18.9706H35.2715V7.14331C35.2715 5.36259 33.8259 3.91861 32.0432 3.91861H17.2552C15.4725 3.91861 14.0269 5.36259 14.0269 7.14331C14.0269 7.14331 13.6642 11.0517 12.8162 13.1335C11.861 16.0724 10.1192 18.0879 7.58555 19.1747C7.58555 19.1747 5.01617 20.389 3.22833 20.389C1.44049 20.389 0 21.833 0 23.6137V37.5738C0 39.3545 1.4456 40.7985 3.22833 40.7985H9.74117V51.2277C9.74117 57.7843 10.4767 63.0908 11.9428 67.1522C13.4139 71.2137 16.0293 74.1833 19.7888 76.061C23.5433 77.9386 28.8762 78.8775 35.7823 78.8775H47.2143C48.997 78.8775 50.4426 77.4335 50.4426 75.6528V58.9629C50.4426 57.1822 48.997 55.7382 47.2143 55.7382H43.8838C41.4881 55.7382 39.6645 55.5494 38.3977 55.1719C37.1309 54.7994 36.2982 54.0136 35.8845 52.8197C35.4758 51.6257 35.2664 49.8297 35.2664 47.4418V40.8036H47.2092C48.9919 40.8036 50.4375 39.3596 50.4375 37.5789V22.2004C50.4375 20.4197 48.9919 18.9757 47.2092 18.9757" fill="currentColor"/>
-          <path d="M318.797 17.8481H318.205H316.907V17.9093C311.748 18.0675 307.631 19.1084 304.673 21.1238C301.823 23.0627 299.994 26.4558 299.08 31.1448L296.669 21.4197C296.311 19.9809 295.019 18.9706 293.533 18.9706H276.226C274.444 18.9706 272.998 20.4146 272.998 22.1953V75.6528C272.998 77.4335 274.444 78.8775 276.226 78.8775H297.241C299.024 78.8775 300.469 77.4335 300.469 75.6528V56.0801C300.505 52.2278 301.19 49.544 302.553 48.0796C303.953 46.5744 306.773 45.8243 311.018 45.8243L316.907 45.8907V45.9009H318.797C320.565 45.9009 322 44.4671 322 42.7017V21.0473C322 19.2818 320.565 17.8481 318.797 17.8481Z" fill="currentColor"/>
-          <path d="M262.884 0H241.869C240.086 0 238.641 1.44397 238.641 3.22469V25.272C237.21 23.1698 235.448 21.4146 233.155 20.2003C230.452 18.7665 227.02 18.0471 222.852 18.0471C218.203 18.0471 214.009 19.139 210.286 21.3228C206.562 23.5066 203.625 26.8027 201.469 31.2061C199.318 35.6094 198.241 41.222 198.241 48.0541V49.2837C198.241 59.2487 200.509 66.8308 205.055 72.0199C209.601 77.209 215.496 79.801 222.744 79.801C227.388 79.801 231.27 79.056 234.069 77.0865C237.195 74.8823 239.642 71.3872 240.75 69.6371L242.436 76.4334C242.794 77.8723 244.086 78.8826 245.572 78.8826H262.884C264.667 78.8826 266.112 77.4386 266.112 75.6579V3.22469C266.112 1.44397 264.667 0 262.884 0ZM239.014 49.0797C239.014 52.5595 238.344 55.0035 237.011 56.4015C235.678 57.7996 233.921 58.4986 231.729 58.4986C229.538 58.4986 227.888 57.82 226.555 56.4526C225.222 55.0902 224.553 52.6309 224.553 49.0797V48.1612C224.553 45.0233 225.222 42.7527 226.555 41.3496C227.888 39.9515 229.61 39.2474 231.729 39.2474C233.849 39.2474 235.673 39.9668 237.011 41.4006C238.344 42.8344 239.014 45.0845 239.014 48.1612V49.0797Z" fill="currentColor"/>
-        </g>
-        <defs><clipPath id="c2"><rect width="322" height="80" fill="white"/></clipPath></defs>
-      </svg>
-    </div>
+    <svg class="fcta-logo-svg" viewBox="0 0 322 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g clip-path="url(#c2)">
+        <path d="M109.37 57.0649C107.015 57.0649 105.462 54.6106 106.473 52.488L120.935 22.1341C120.914 20.3839 119.494 18.9655 117.737 18.9655H96.6965C94.9138 18.9655 93.4682 20.4095 93.4682 22.1902L93.3916 51.8808C93.3916 54.728 91.0827 57.0342 88.2324 57.0342C85.3821 57.0342 83.0732 54.728 83.0732 51.8808V22.1647C83.0732 20.3942 81.6378 18.9655 79.8704 18.9655H58.7637C56.9963 18.9655 55.5609 20.3993 55.5609 22.1647V56.8557C55.5609 64.3663 57.2773 70.1014 60.7048 74.0608C64.1323 78.0203 69.3835 80 76.4531 80C81.4897 80 85.5353 78.9285 88.5849 76.7753C91.6089 74.6374 93.8207 71.7648 95.2203 68.1727L97.2687 76.4283C97.6262 77.8672 98.9186 78.8775 100.405 78.8775H117.716C119.499 78.8775 120.945 77.4335 120.945 75.6528V57.0649H109.37Z" fill="currentColor"/>
+        <path d="M188.055 23.7821C184.628 19.8227 179.376 17.843 172.307 17.843C167.265 17.843 163.219 18.9145 160.175 21.0677C157.146 23.2056 154.939 26.0782 153.54 29.6703L151.491 21.4146C151.134 19.9758 149.841 18.9655 148.355 18.9655H131.049C129.266 18.9655 127.82 20.4095 127.82 22.1902V40.7985H139.457C141.811 40.7985 143.364 43.2528 142.348 45.3753L127.836 75.765C127.892 77.4845 129.286 78.8724 131.018 78.8724H152.058C153.841 78.8724 155.287 77.4284 155.287 75.6477L155.363 45.957C155.363 43.1099 157.672 40.8036 160.522 40.8036C163.373 40.8036 165.682 43.1099 165.682 45.957V75.6732C165.682 77.4386 167.117 78.8724 168.889 78.8724H189.991C191.764 78.8724 193.199 77.4386 193.199 75.6732V40.9822C193.199 33.4715 191.483 27.7365 188.05 23.777" fill="currentColor"/>
+        <path d="M47.2143 18.9706H35.2715V7.14331C35.2715 5.36259 33.8259 3.91861 32.0432 3.91861H17.2552C15.4725 3.91861 14.0269 5.36259 14.0269 7.14331C14.0269 7.14331 13.6642 11.0517 12.8162 13.1335C11.861 16.0724 10.1192 18.0879 7.58555 19.1747C7.58555 19.1747 5.01617 20.389 3.22833 20.389C1.44049 20.389 0 21.833 0 23.6137V37.5738C0 39.3545 1.4456 40.7985 3.22833 40.7985H9.74117V51.2277C9.74117 57.7843 10.4767 63.0908 11.9428 67.1522C13.4139 71.2137 16.0293 74.1833 19.7888 76.061C23.5433 77.9386 28.8762 78.8775 35.7823 78.8775H47.2143C48.997 78.8775 50.4426 77.4335 50.4426 75.6528V58.9629C50.4426 57.1822 48.997 55.7382 47.2143 55.7382H43.8838C41.4881 55.7382 39.6645 55.5494 38.3977 55.1719C37.1309 54.7994 36.2982 54.0136 35.8845 52.8197C35.4758 51.6257 35.2664 49.8297 35.2664 47.4418V40.8036H47.2092C48.9919 40.8036 50.4375 39.3596 50.4375 37.5789V22.2004C50.4375 20.4197 48.9919 18.9757 47.2092 18.9757" fill="currentColor"/>
+        <path d="M318.797 17.8481H316.907V17.9093C311.748 18.0675 307.631 19.1084 304.673 21.1238C301.823 23.0627 299.994 26.4558 299.08 31.1448L296.669 21.4197C296.311 19.9809 295.019 18.9706 293.533 18.9706H276.226C274.444 18.9706 272.998 20.4146 272.998 22.1953V75.6528C272.998 77.4335 274.444 78.8775 276.226 78.8775H297.241C299.024 78.8775 300.469 77.4335 300.469 75.6528V56.0801C300.505 52.2278 301.19 49.544 302.553 48.0796C303.953 46.5744 306.773 45.8243 311.018 45.8243L316.907 45.8907V45.9009H318.797C320.565 45.9009 322 44.4671 322 42.7017V21.0473C322 19.2818 320.565 17.8481 318.797 17.8481Z" fill="currentColor"/>
+        <path d="M262.884 0H241.869C240.086 0 238.641 1.44397 238.641 3.22469V25.272C237.21 23.1698 235.448 21.4146 233.155 20.2003C230.452 18.7665 227.02 18.0471 222.852 18.0471C218.203 18.0471 214.009 19.139 210.286 21.3228C206.562 23.5066 203.625 26.8027 201.469 31.2061C199.318 35.6094 198.241 41.222 198.241 48.0541V49.2837C198.241 59.2487 200.509 66.8308 205.055 72.0199C209.601 77.209 215.496 79.801 222.744 79.801C227.388 79.801 231.27 79.056 234.069 77.0865C237.195 74.8823 239.642 71.3872 240.75 69.6371L242.436 76.4334C242.794 77.8723 244.086 78.8826 245.572 78.8826H262.884C264.667 78.8826 266.112 77.4386 266.112 75.6579V3.22469C266.112 1.44397 264.667 0 262.884 0ZM239.014 49.0797C239.014 52.5595 238.344 55.0035 237.011 56.4015C235.678 57.7996 233.921 58.4986 231.729 58.4986C229.538 58.4986 227.888 57.82 226.555 56.4526C225.222 55.0902 224.553 52.6309 224.553 49.0797V48.1612C224.553 45.0233 225.222 42.7527 226.555 41.3496C227.888 39.9515 229.61 39.2474 231.729 39.2474C233.849 39.2474 235.673 39.9668 237.011 41.4006C238.344 42.8344 239.014 45.0845 239.014 48.1612V49.0797Z" fill="currentColor"/>
+      </g>
+      <defs><clipPath id="c2"><rect width="322" height="80" fill="white"/></clipPath></defs>
+    </svg>
     <h2>Il welfare è anche<br><em>staccare bene.</em></h2>
     <p>Tundr è la piattaforma che aiuta le aziende a prendersi cura delle persone. Stasera ti aiutiamo a goderti Sanremo senza perdere un minuto.</p>
-    <button class="btn" onclick="window.open('https://https://tundr.tech/','_blank')">Scopri Tundr →</button>
+    <a class="btn" href="https://tundr.tech/" target="_blank">Scopri Tundr →</a>
   </div>
 </div>
 
-<!-- ══ FAB ══ -->
 <button class="fab" id="fab" onclick="fabClick()">
   <span class="fab-pip"></span>Ora in onda
 </button>
 
-<!-- ══ DATA FILES ══ -->
-<script src="data/night1.js"></script>
-<script src="data/night2.js"></script>
-<script src="data/night3.js"></script>
-<script src="data/night4.js"></script>
-<script src="data/night5.js"></script>
-
-<!-- ══ APP LOGIC ══ -->
 <script>
-/* ─── CONFIG ─── */
-const FESTIVAL_NIGHTS = [
-  {n:1, date:"2026-02-24", label:"24 feb", long:"Martedì 24 febbraio", isFinale:false},
-  {n:2, date:"2026-02-25", label:"25 feb", long:"Mercoledì 25 febbraio", isFinale:false},
-  {n:3, date:"2026-02-26", label:"26 feb", long:"Giovedì 26 febbraio", isFinale:false},
-  {n:4, date:"2026-02-27", label:"27 feb", long:"Venerdì 27 febbraio", isFinale:false},
-  {n:5, date:"2026-02-28", label:"28 feb · Finale", long:"Sabato 28 febbraio · FINALE", isFinale:true},
+/* ═══════════════ NIGHTS DATA ═══════════════ */
+const NIGHTS=[
+  {n:1,date:"2026-02-24",label:"24 feb",long:"Martedì 24 febbraio",startH:20,startM:40,endH:1,endM:44,isFinale:false,
+   highlights:["OLLY apre il Festival","Laura Pausini co-conduttrice","Can Yaman ospite","Tiziano Ferro medley","Max Pezzali dalla Costa Toscana"],
+   schedule:[
+    {t:[20,40],a:"Apertura del Festival",s:"",d:"Orchestra + Carlo Conti. Serata dedicata a Pippo Baudo",tp:"special"},
+    {t:[20,43],a:"OLLY",s:"Balorda nostalgia",d:"Ospite di apertura — disco di diamante",tp:"watch"},
+    {t:[20,50],a:"Regolamento & votazione",s:"",d:"Spiegazione giuria",tp:"skip"},
+    {t:[20,53],a:"LAURA PAUSINI entra",s:"Co-conduttrice",d:"Presentata da Pippo Baudo — grande momento",tp:"special"},
+    {t:[20,56],a:"DITONELLAPIAGA",s:"Che fastidio!",d:"Con sei ballerine + occhiali da sole",tp:"cat"},
+    {t:[21,2],a:"PUBBLICITÀ",s:"",d:"5 minuti",tp:"pub"},
+    {t:[21,7],a:"MICHELE BRAVI",s:"Prima o poi",d:"",tp:"cat"},
+    {t:[21,13],a:"SAYF",s:"Tu mi piaci tanto",d:"Con asta e base circolare",tp:"cat"},
+    {t:[21,19],a:"MARA SATTEI",s:"Le cose che non sai di me",d:"",tp:"cat"},
+    {t:[21,25],a:"DARGEN D'AMICO",s:"AI AI",d:"",tp:"cat"},
+    {t:[21,31],a:"Omaggio Peppe Vessicchio",s:"",d:"Video tributo — momento commovente",tp:"special"},
+    {t:[21,34],a:"PUBBLICITÀ",s:"",d:"5 minuti",tp:"pub"},
+    {t:[21,39],a:"CAN YAMAN entra",s:"Ospite speciale",d:"Sulle note di Sandokan — iconico",tp:"ospite"},
+    {t:[21,42],a:"ARISA",s:"Magica favola",d:"",tp:"cat"},
+    {t:[21,48],a:"LUCHÈ",s:"Labirinto",d:"",tp:"cat"},
+    {t:[21,54],a:"GIANNA PRATESI — 105 anni",s:"Ospite d'onore",d:"Il primo voto delle donne, 2 giugno 1946",tp:"special"},
+    {t:[22,0],a:"TOMMASO PARADISO",s:"I romantici",d:"",tp:"cat"},
+    {t:[22,6],a:"ELETTRA LAMBORGHINI",s:"Voilà",d:"Con 6 ballerini e ventagli",tp:"cat"},
+    {t:[22,12],a:"Momento TIM",s:"Papaveri e papere (1952)",d:"Tutto il pubblico canta + braccialetti luminosi",tp:"special"},
+    {t:[22,15],a:"PATTY PRAVO",s:"Opera",d:"",tp:"cat"},
+    {t:[22,21],a:"SAMURAI JAY",s:"Ossessione",d:"Con 6 ballerini",tp:"cat"},
+    {t:[22,27],a:"PUBBLICITÀ",s:"",d:"5 minuti",tp:"pub"},
+    {t:[22,32],a:"TIZIANO FERRO",s:"Ti scatterò una foto / Sono un grande",d:"Medley live + intervista + nuovo brano — non perdere!",tp:"watch"},
+    {t:[22,47],a:"RAF",s:"Ora e per sempre",d:"",tp:"cat"},
+    {t:[22,53],a:"PUBBLICITÀ",s:"",d:"5 minuti",tp:"pub"},
+    {t:[22,58],a:"Laura Pausini — cambio abito",s:"",d:"",tp:"skip"},
+    {t:[22,59],a:"J-AX",s:"Italia starter pack",d:"Violino, banjo, cheerleader acrobatiche",tp:"cat"},
+    {t:[23,4],a:"GAIA (Suzuki Stage)",s:"Chiamo io chiami tu",d:"Collegamento da Piazza Colombo",tp:"ospite"},
+    {t:[23,10],a:"Can Yaman — cambio abito",s:"",d:"Filastrocca con Pausini",tp:"skip"},
+    {t:[23,12],a:"FULMINACCI",s:"Stupida fortuna",d:"",tp:"cat"},
+    {t:[23,18],a:"Laura Pausini VDL",s:"",d:"Video dedicato",tp:"skip"},
+    {t:[23,20],a:"Telepromozione",s:"",d:"1 minuto",tp:"pub"},
+    {t:[23,21],a:"LEVANTE",s:"Sei tu",d:"",tp:"cat"},
+    {t:[23,27],a:"FEDEZ & MASINI",s:"Male necessario",d:"Duo inedito — molto atteso",tp:"cat"},
+    {t:[23,33],a:"Lancio Costa Toscana",s:"",d:"",tp:"skip"},
+    {t:[23,34],a:"PUBBLICITÀ",s:"",d:"5 minuti · Fine prima parte",tp:"pub"},
+    {t:[23,39],a:"MAX PEZZALI (Costa Toscana)",s:"Sei un mito / Nella notte / La regina",d:"Dal palco della nave — eccezionale",tp:"watch"},
+    {t:[23,45],a:"ERMAL META",s:"Stella stellina",d:"",tp:"cat"},
+    {t:[23,51],a:"KABIR BEDI + CAN YAMAN",s:"Sandokan — 50 anni",d:"Dal primo sceneggiato 1976",tp:"special"},
+    {t:[23,59],a:"GM + TG1",s:"",d:"3 minuti",tp:"pub"},
+    {t:[0,3],a:"SERENA BRANCALE",s:"Qui con me",d:"",tp:"cat"},
+    {t:[0,9],a:"NAYT",s:"Prima che",d:"",tp:"cat"},
+    {t:[0,14],a:"Spot Liguria",s:"",d:"1 minuto",tp:"pub"},
+    {t:[0,15],a:"MALIKA AYANE",s:"Animali notturni",d:"Con chitarra e bottiglie di vetro",tp:"cat"},
+    {t:[0,21],a:"EDDIE BROCK",s:"Avvoltoi",d:"Con chitarrista",tp:"cat"},
+    {t:[0,27],a:"PUBBLICITÀ",s:"",d:"5 minuti",tp:"pub"},
+    {t:[0,32],a:"Pausini — cambio abito",s:"",d:"",tp:"skip"},
+    {t:[0,33],a:"SAL DA VINCI",s:"Per sempre sì",d:"",tp:"cat"},
+    {t:[0,38],a:"ENRICO NIGIOTTI",s:"Ogni volta che non so volare",d:"",tp:"cat"},
+    {t:[0,44],a:"Can Yaman — cambio abito",s:"",d:"",tp:"skip"},
+    {t:[0,45],a:"TREDICI PIETRO",s:"Uomo che cade",d:"",tp:"cat"},
+    {t:[0,51],a:"PUBBLICITÀ",s:"",d:"5 minuti",tp:"pub"},
+    {t:[0,56],a:"BAMBOLE DI PEZZA",s:"Resta con me",d:"Band completa: 2 chitarre, basso, batteria",tp:"cat"},
+    {t:[1,2],a:"CHIELLO",s:"Ti penso sempre",d:"",tp:"cat"},
+    {t:[1,8],a:"MARIA ANTONIETTA & COLOMBRE",s:"La felicità e basta",d:"Omnichord + chitarra",tp:"cat"},
+    {t:[1,14],a:"LEO GASSMANN",s:"Naturale",d:"",tp:"cat"},
+    {t:[1,20],a:"FRANCESCO RENGA",s:"Il meglio di me",d:"",tp:"cat"},
+    {t:[1,26],a:"LDA & AKA 7EVEN",s:"Poesie clandestine",d:"4 ballerini con tamburi + 4 ballerine",tp:"cat"},
+    {t:[1,32],a:"Lancio Dopo Festival",s:"Nicola Savino",d:"",tp:"skip"},
+    {t:[1,33],a:"PUBBLICITÀ",s:"",d:"5 minuti",tp:"pub"},
+    {t:[1,38],a:"Rai Radio 2 + Eurovision",s:"Vienna, 16 maggio",d:"",tp:"special"},
+    {t:[1,39],a:"CLASSIFICA PROVVISORIA",s:"Top 5 in testa",d:"Le 5 canzoni più votate dalla Sala Stampa",tp:"special"},
+    {t:[1,44],a:"Fine serata",s:"",d:"",tp:"skip"},
+  ]},
+  {n:2,date:"2026-02-25",label:"25 feb",long:"Mercoledì 25 febbraio",startH:20,startM:40,endH:1,endM:30,isFinale:false,highlights:[],schedule:[]},
+  {n:3,date:"2026-02-26",label:"26 feb",long:"Giovedì 26 febbraio",startH:20,startM:40,endH:1,endM:30,isFinale:false,highlights:[],schedule:[]},
+  {n:4,date:"2026-02-27",label:"27 feb",long:"Venerdì 27 febbraio",startH:20,startM:40,endH:1,endM:30,isFinale:false,highlights:[],schedule:[]},
+  {n:5,date:"2026-02-28",label:"28 feb · Finale",long:"Sabato 28 febbraio · FINALE",startH:20,startM:40,endH:1,endM:30,isFinale:true,highlights:[],schedule:[]},
 ];
 
-const BADGE_CFG = {
-  watch:  {label:"Da guardare",   cls:"bw"},
-  special:{label:"Imperdibile ✦", cls:"bs"},
-  ospite: {label:"Ospite",        cls:"bo"},
-  cat:    {label:"In gara",       cls:"bc"},
-  skip:   {label:"Puoi saltare",  cls:"bsk"},
-  pub:    {label:"Pubblicità",    cls:"bp"},
-};
-
-const DOT_COLORS = {
-  watch:"#FEC82F", special:"#FEC82F", ospite:"#ff8562",
-  cat:"#98a6fe", skip:"rgba(255,255,255,.1)", pub:"rgba(255,255,255,.06)",
-};
-
-/* Sanremo 2026 ranking – will be updated manually each night.
-   Source: https://www.canzoniweb.com/sanremo-2026-classifica-finale-risultati-e-vincitore/ */
-const RANKING = [
-  /* Format: {pos, artist, song, pts:"—"} */
-  {pos:1,  artist:"OLLY",             song:"Balorda nostalgia",         pts:"—"},
-  {pos:2,  artist:"LUCIO CORSI",      song:"Volevo essere un duro",     pts:"—"},
-  {pos:3,  artist:"BRUNORI SAS",      song:"L'albero delle noci",       pts:"—"},
-  {pos:4,  artist:"SIMONE CRISTICCHI",song:"Quando sarai piccola",      pts:"—"},
-  {pos:5,  artist:"TONY EFFE",        song:"Damme 'na mano",            pts:"—"},
-  {pos:6,  artist:"BRESH",            song:"La tua canzone",            pts:"—"},
-  {pos:7,  artist:"FRANCESCA MICHIELIN",song:"Fango in paradiso",        pts:"—"},
-  {pos:8,  artist:"JOAN THIELE",       song:"Eco",                      pts:"—"},
-  {pos:9,  artist:"IRAMA",            song:"Lentamente",                pts:"—"},
-  {pos:10, artist:"WILLIE PEYOTE",    song:"Grazie ma no grazie",       pts:"—"},
+/* ═══════════════ RANKING — aggiorna ogni sera ═══════════════ */
+const RANKING=[
+  {pos:1, artist:"OLLY",               song:"Balorda nostalgia",     pts:"—"},
+  {pos:2, artist:"LUCIO CORSI",        song:"Volevo essere un duro", pts:"—"},
+  {pos:3, artist:"BRUNORI SAS",        song:"L'albero delle noci",   pts:"—"},
+  {pos:4, artist:"SIMONE CRISTICCHI",  song:"Quando sarai piccola",  pts:"—"},
+  {pos:5, artist:"TONY EFFE",          song:"Damme 'na mano",        pts:"—"},
 ];
 
-/* ─── HELPERS ─── */
-function H(h,m){return h*60+m;}
-function norm(m){return m<720?m+1440:m;}
-function nowMin(){
-  const n=new Date();
-  return norm(n.getHours()*60+n.getMinutes()+n.getSeconds()/60);
-}
-function pad(v){return String(Math.floor(v)).padStart(2,'0');}
-function padT(arr){return pad(arr[0])+':'+pad(arr[1]);}
-function dateStr(d){return d.toISOString().slice(0,10);}
+/* ═══════════════ HELPERS ═══════════════ */
+const BADGE={watch:{l:"Da guardare",c:"bw"},special:{l:"Imperdibile ✦",c:"bs"},ospite:{l:"Ospite",c:"bo"},cat:{l:"In gara",c:"bc"},skip:{l:"Puoi saltare",c:"bsk"},pub:{l:"Pubblicità",c:"bp"}};
+const DOTS={watch:"#FEC82F",special:"#FEC82F",ospite:"#ff8562",cat:"#98a6fe",skip:"rgba(255,255,255,.1)",pub:"rgba(255,255,255,.05)"};
+const H=(h,m)=>h*60+m;
+const norm=m=>m<720?m+1440:m;
+const pad=v=>String(Math.floor(v)).padStart(2,'0');
+const padT=a=>pad(a[0])+':'+pad(a[1]);
+const toStr=d=>d.toISOString().slice(0,10);
+const todayStr=()=>toStr(new Date());
+const nowMin=()=>{const n=new Date();return norm(n.getHours()*60+n.getMinutes()+n.getSeconds()/60);};
 
-/* ─── NIGHT DETECTION ─── */
-function todayStr(){return dateStr(new Date());}
-
-function getCurrentNightIndex(){
-  const today=todayStr();
-  const now=new Date();
-  const m=now.getHours()*60+now.getMinutes();
-  // After 4am counts as previous night still
-  for(let i=0;i<FESTIVAL_NIGHTS.length;i++){
-    const fn=FESTIVAL_NIGHTS[i];
-    if(fn.date===today) return i;
-    // If it's past midnight (0-4am) check prev day
-    if(m<240){
-      const prev=new Date(now); prev.setDate(prev.getDate()-1);
-      if(fn.date===dateStr(prev)) return i;
-    }
+let activeTab=(()=>{
+  const today=todayStr(); const h=new Date().getHours();
+  for(let i=0;i<NIGHTS.length;i++){
+    if(NIGHTS[i].date===today) return i;
+    if(h<4){const p=new Date();p.setDate(p.getDate()-1);if(NIGHTS[i].date===toStr(p)) return i;}
   }
-  // Before festival starts → -1; after → last
-  if(today < FESTIVAL_NIGHTS[0].date) return -1;
-  if(today > FESTIVAL_NIGHTS[4].date) return 4;
-  return 0;
-}
+  return todayStr()<NIGHTS[0].date?0:NIGHTS.length-1;
+})();
+let lastIdx=-2;
 
-/* ─── STATE ─── */
-let activeNight=0; // tab index (0-based)
-let lastCurIdx=-2;
-const festivalOver=()=>todayStr()>'2026-02-28';
-const festivalNotStarted=()=>todayStr()<'2026-02-24';
-
-/* ─── INIT ─── */
-function init(){
-  buildNightTabs();
-  // Determine default active night
-  const idx=getCurrentNightIndex();
-  if(idx<0){activeNight=0;}
-  else{activeNight=Math.min(idx,4);}
-  setActiveNight(activeNight);
-  tick();
-  setInterval(tick,1000);
-}
-
-/* ─── NIGHT TABS ─── */
-function buildNightTabs(){
-  const row=document.getElementById('night-tabs-row');
+/* ═══════════════ TABS ═══════════════ */
+function buildTabs(){
+  const row=document.getElementById('night-tabs');
   const today=todayStr();
-  FESTIVAL_NIGHTS.forEach((fn,i)=>{
+  NIGHTS.forEach((n,i)=>{
     const btn=document.createElement('button');
-    btn.className='nt-btn';
-    btn.id=`ntb-${i}`;
-    const isLive=fn.date===today;
-    const isPast=fn.date<today;
-    const isFuture=fn.date>today;
-    if(isLive) btn.classList.add('live-night');
-    const dot=isLive?'live-dot':'';
-    btn.innerHTML=`<span class="nt-badge ${dot}"></span>${fn.label}${fn.isFinale?' 🏆':''}`;
-    if(isPast) btn.title='Archivio serata';
-    if(isFuture) btn.title='Prossimamente';
-    btn.onclick=()=>setActiveNight(i);
+    btn.className='nt-btn'+(n.date===today?' tonight':'');
+    btn.id='ntb'+i;
+    btn.innerHTML=`<span class="nt-dot"></span>${n.label}${n.isFinale?' 🏆':''}`;
+    btn.onclick=()=>{activeTab=i;lastIdx=-2;render();};
     row.appendChild(btn);
   });
 }
 
-/* ─── SET ACTIVE NIGHT ─── */
-function setActiveNight(i){
-  activeNight=i;
-  lastCurIdx=-2;
-  document.querySelectorAll('.nt-btn').forEach((b,j)=>{
-    b.classList.toggle('active',j===i);
-  });
-  renderNight(i);
-}
-
-/* ─── RENDER NIGHT ─── */
-function renderNight(i){
-  const fn=FESTIVAL_NIGHTS[i];
-  const nd=window.NIGHTS_DATA?window.NIGHTS_DATA[i+1]:null;
+/* ═══════════════ RENDER ═══════════════ */
+function render(){
+  document.querySelectorAll('.nt-btn').forEach((b,i)=>b.classList.toggle('active',i===activeTab));
+  const ni=NIGHTS[activeTab];
   const today=todayStr();
-  const isLiveNight=fn.date===today;
-  const isPast=fn.date<today;
-  const hasSched=nd&&nd.schedule&&nd.schedule.length>0;
+  const isTonight=ni.date===today;
+  const isPast=ni.date<today;
+  const hasSched=ni.schedule.length>0;
 
-  // hero eyebrow
-  const eyebrow=document.getElementById('eyebrow-text');
-  if(isLiveNight) eyebrow.textContent='In diretta stasera';
-  else if(isPast) eyebrow.textContent='Archivio · '+fn.long;
-  else eyebrow.textContent='Prossima serata · '+fn.long;
+  document.getElementById('eyebrow-text').textContent=isTonight?'In diretta stasera':isPast?'Archivio · '+ni.long:'Prossima serata · '+ni.long;
+  document.getElementById('sticky-tl').style.display=(hasSched&&isTonight)?'block':'none';
 
-  // sticky timeline
-  document.getElementById('sticky-tl').style.display=hasSched?'block':'none';
-
-  // render
-  const main=document.getElementById('main-content');
+  const main=document.getElementById('main');
   main.innerHTML='';
-
-  // ── Rankings widget (always shown) ──
-  const rw=buildRankingWidget(isPast, isLiveNight);
-  main.appendChild(rw);
+  main.appendChild(buildRanking(isTonight,isPast));
 
   if(!hasSched){
-    // Archive notice or upcoming notice
-    const notice=document.createElement('div');
-    notice.className='archive-notice';
-    if(isPast){
-      notice.innerHTML=`
-        <div class="an-icon">📁</div>
-        <div>
-          <h3>Serata ${i+1} – ${fn.long}</h3>
-          <p>La scaletta dettagliata è in lavorazione. Presto disponibile nell'archivio.</p>
-          ${nd&&nd.highlights?`<div class="highlights">${nd.highlights.map(h=>`<span class="hl">✦ ${h}</span>`).join('')}</div>`:''}
-        </div>`;
-    } else {
-      notice.innerHTML=`
-        <div class="an-icon">🔜</div>
-        <div>
-          <h3>Serata ${i+1} – ${fn.long}</h3>
-          <p>La scaletta non è ancora disponibile. Verrà aggiornata prima della serata.
-          <br>Puoi inviare il PDF della scaletta su <a href="https://github.com/TundrDesign/sanremo-2026" style="color:var(--brand)">GitHub</a> e verrà pubblicata automaticamente.</p>
-        </div>`;
-    }
-    main.appendChild(notice);
-    // Update track markers for nothing
-    buildMarkers(null);
+    const d=document.createElement('div');
+    d.className='notice';
+    d.innerHTML=`<div class="notice-icon">${isPast?'📁':isTonight?'⏳':'🔜'}</div><div><h3>Serata ${ni.n} – ${ni.long}</h3><p>${isPast?'Scaletta in lavorazione.':isTonight?'La scaletta verrà caricata prima dell\'inizio.':'Aggiornamento prima della serata.'}</p>${ni.highlights.length?`<div class="hl-list">${ni.highlights.map(h=>`<span class="hl">✦ ${h}</span>`).join('')}</div>`:''}</div>`;
+    main.appendChild(d);
     return;
   }
 
-  // ── Legend ──
   const leg=document.createElement('div');
   leg.className='legend';
-  leg.innerHTML=[
-    ['Da guardare','#FEC82F'],['Imperdibile ✦','#FED252'],
-    ['Ospite','#ff8562'],['In gara','#98a6fe'],
-    ['Puoi saltare','rgba(255,255,255,.15)'],['Pubblicità','rgba(255,255,255,.07)'],
-    ['Ora in onda','var(--brand)'],
-  ].map(([l,c])=>`<div class="leg"><div class="leg-d" style="background:${c}"></div>${l}</div>`).join('');
+  leg.innerHTML=[['Da guardare','#FEC82F'],['Imperdibile ✦','#FED252'],['Ospite','#ff8562'],['In gara','#98a6fe'],['Puoi saltare','rgba(255,255,255,.12)'],['Pubblicità','rgba(255,255,255,.06)'],['Ora in onda','#FEC82F']].map(([l,c])=>`<div class="leg"><div class="leg-d" style="background:${c}"></div>${l}</div>`).join('');
   main.appendChild(leg);
 
-  // ── Schedule ──
-  const slist=document.createElement('div');
-  slist.className='slist';
-  slist.id='slist';
-
-  const sched=nd.schedule;
+  const sl=document.createElement('div');
+  sl.className='slist';sl.id='slist';
   let sec=null;
-  const secs={
-    a:{icon:'🎤',text:'Prima parte · 20:40 – 22:30'},
-    b:{icon:'⭐',text:'Seconda parte · 22:30 – 23:34'},
-    c:{icon:'🌙',text:'Dopo mezzanotte · 23:34 – 01:44'},
-  };
-
-  sched.forEach((d,j)=>{
-    const hm=d.t;
-    const sk=hm[0]<22||(hm[0]===22&&hm[1]<30)?'a':hm[0]<23||(hm[0]===23&&hm[1]<34)?'b':'c';
-    if(sk!==sec){
-      sec=sk;
-      const chip=document.createElement('div');
-      chip.className='sc';
-      chip.textContent=secs[sk]?secs[sk].icon+'  '+secs[sk].text:'';
-      slist.appendChild(chip);
-    }
-    const cfg=BADGE_CFG[d.tp]||BADGE_CFG.skip;
+  const secs={a:{e:'🎤',t:'Prima parte · 20:40 – 22:30'},b:{e:'⭐',t:'Seconda parte · 22:30 – 23:34'},c:{e:'🌙',t:'Dopo mezzanotte'}};
+  ni.schedule.forEach((d,j)=>{
+    const sk=d.t[0]<22||(d.t[0]===22&&d.t[1]<30)?'a':d.t[0]<23||(d.t[0]===23&&d.t[1]<34)?'b':'c';
+    if(sk!==sec){sec=sk;const c=document.createElement('div');c.className='sc';c.textContent=secs[sk].e+'  '+secs[sk].t;sl.appendChild(c);}
+    const bg=BADGE[d.tp]||BADGE.skip;
     const el=document.createElement('div');
-    el.className='si';
-    el.id=`si${j}`;
-    el.innerHTML=`
-      <div class="si-time">${padT(d.t)}</div>
-      <div class="si-body">
-        <div class="si-artist">${d.a}</div>
-        ${d.s?`<div class="si-song">"${d.s}"</div>`:''}
-        ${d.d?`<div class="si-desc">${d.d}</div>`:''}
-      </div>
-      <div class="si-badges"><span class="badge ${cfg.cls}">${cfg.label}</span></div>
-    `;
-    slist.appendChild(el);
+    el.className='si';el.id='si'+j;
+    el.innerHTML=`<div class="si-time">${padT(d.t)}</div><div class="si-body"><div class="si-artist">${d.a}</div>${d.s?`<div class="si-song">"${d.s}"</div>`:''} ${d.d?`<div class="si-desc">${d.d}</div>`:''}</div><div class="si-badges"><span class="badge ${bg.c}">${bg.l}</span></div>`;
+    sl.appendChild(el);
   });
-  main.appendChild(slist);
+  main.appendChild(sl);
 
-  // Build track markers
-  buildMarkers(nd);
-
-  // Update track label
-  if(nd){
-    document.getElementById('tl-label').textContent=
-      `Scaletta · ${pad(nd.startHour)}:${pad(nd.startMin)} → ${pad(nd.endHour)}:${pad(nd.endMin)}`;
-  }
-}
-
-/* ─── RANKING WIDGET ─── */
-function buildRankingWidget(isPast, isLive){
-  const div=document.createElement('div');
-  div.className='ranking-widget';
-  div.style.marginBottom='20px';
-
-  const today=todayStr();
-  const nightsDone=FESTIVAL_NIGHTS.filter(fn=>fn.date<=today).length;
-  const badge=isLive?'In aggiornamento':isPast?'Aggiornata':'Provvisoria';
-
-  div.innerHTML=`
-    <div class="rw-head">
-      <div class="rw-title">
-        🏆 Classifica
-        <span class="rw-badge">${badge}</span>
-      </div>
-      <a class="rw-link" href="https://www.canzoniweb.com/sanremo-2026-classifica-finale-risultati-e-vincitore/" target="_blank">
-        fonte aggiornata →
-      </a>
-    </div>
-    <div class="rank-list">
-      ${RANKING.slice(0,5).map(r=>`
-        <div class="rank-item">
-          <div class="rank-num">${r.pos}</div>
-          <div class="rank-body">
-            <div class="rank-artist">${r.artist}</div>
-            <div class="rank-song">${r.song}</div>
-          </div>
-          <div class="rank-pts">${r.pts}</div>
-        </div>
-      `).join('')}
-    </div>`;
-  return div;
-}
-
-/* ─── BUILD MARKERS ─── */
-function buildMarkers(nd){
+  // Markers
   const mc=document.getElementById('track-markers');
-  if(!mc) return;
   mc.innerHTML='';
-  if(!nd||!nd.schedule.length) return;
-  const start=norm(H(nd.startHour,nd.startMin));
-  const end=norm(H(nd.endHour,nd.endMin));
-  const total=end-start;
-  nd.schedule.forEach((d,i)=>{
-    const pct=Math.max(0,Math.min(100,(norm(H(d.t[0],d.t[1]))-start)/total*100));
+  const start=norm(H(ni.startH,ni.startM)),end=norm(H(ni.endH,ni.endM));
+  ni.schedule.forEach((d,i)=>{
+    const pct=Math.max(0,Math.min(100,(norm(H(d.t[0],d.t[1]))-start)/(end-start)*100));
     const dot=document.createElement('div');
-    dot.className='tm';
-    dot.style.cssText=`left:${pct}%;background:${DOT_COLORS[d.tp]||'rgba(255,255,255,.08)'}`;
-    dot.title=d.a+(d.s?` — "${d.s}"`:'');
-    dot.onclick=e=>{
-      e.stopPropagation();
-      document.getElementById(`si${i}`)?.scrollIntoView({behavior:'smooth',block:'center'});
-    };
+    dot.className='tm';dot.style.cssText=`left:${pct}%;background:${DOTS[d.tp]||'rgba(255,255,255,.05)'}`;
+    dot.title=d.a+(d.s?` — "${d.s}"`:'')+' '+padT(d.t);
+    dot.onclick=e=>{e.stopPropagation();document.getElementById('si'+i)?.scrollIntoView({behavior:'smooth',block:'center'});};
     mc.appendChild(dot);
   });
+  document.getElementById('tl-label').textContent=`Scaletta · ${pad(ni.startH)}:${pad(ni.startM)} → ${pad(ni.endH)}:${pad(ni.endM)}`;
 }
 
-/* ─── CURRENT ITEM ─── */
-function curIdx(nd, now){
-  if(!nd||!nd.schedule.length) return -1;
-  const sched=nd.schedule;
-  for(let i=0;i<sched.length;i++){
-    const t=norm(H(sched[i].t[0],sched[i].t[1]));
-    const nx=i+1<sched.length?norm(H(sched[i+1].t[0],sched[i+1].t[1])):
-              norm(H(nd.endHour,nd.endMin));
-    if(now>=t&&now<nx) return i;
+function buildRanking(isTonight,isPast){
+  const badge=isTonight?'In aggiornamento':isPast&&activeTab>0?'Aggiornata':'Provvisoria';
+  const d=document.createElement('div');
+  d.className='ranking-widget';
+  d.innerHTML=`<div class="rw-head"><div class="rw-title">🏆 Classifica <span class="rw-badge">${badge}</span></div><a class="rw-link" href="https://www.canzoniweb.com/sanremo-2026-classifica-finale-risultati-e-vincitore/" target="_blank">fonte aggiornata →</a></div>${RANKING.map(r=>`<div class="rank-item"><div class="rank-num">${r.pos}</div><div class="rank-body"><div class="rank-artist">${r.artist}</div><div class="rank-song">${r.song}</div></div><div class="rank-pts">${r.pts}</div></div>`).join('')}`;
+  return d;
+}
+
+function curIdx(ni,mn){
+  if(!ni.schedule.length) return -1;
+  for(let i=0;i<ni.schedule.length;i++){
+    const t=norm(H(ni.schedule[i].t[0],ni.schedule[i].t[1]));
+    const nx=i+1<ni.schedule.length?norm(H(ni.schedule[i+1].t[0],ni.schedule[i+1].t[1])):norm(H(ni.endH,ni.endM));
+    if(mn>=t&&mn<nx) return i;
   }
   return -1;
 }
 
-/* ─── TICK ─── */
+/* ═══════════════ TICK ═══════════════ */
 function tick(){
   const now=new Date();
-  // Clock
-  document.getElementById('clock').textContent=
-    pad(now.getHours())+':'+pad(now.getMinutes())+':'+pad(now.getSeconds());
+  document.getElementById('clock').textContent=pad(now.getHours())+':'+pad(now.getMinutes())+':'+pad(now.getSeconds());
 
-  const mn=nowMin();
-  const fn=FESTIVAL_NIGHTS[activeNight];
-  const nd=window.NIGHTS_DATA?window.NIGHTS_DATA[activeNight+1]:null;
+  const ni=NIGHTS[activeTab];
   const today=todayStr();
-  const isLiveNight=fn.date===today;
-  const isPast=fn.date<today;
-  const isFuture=fn.date>today;
-  const hasSched=nd&&nd.schedule&&nd.schedule.length>0;
+  const isTonight=ni.date===today;
+  const hasSched=ni.schedule.length>0;
+  const mn=nowMin();
+  const start=norm(H(ni.startH,ni.startM));
+  const end=norm(H(ni.endH,ni.endM));
 
-  // ── Night status pill ──
-  const pill=document.getElementById('night-status-pill');
-  if(festivalNotStarted()){
-    pill.textContent='Inizia il 24 feb';
-    pill.className='night-pill';
-  } else if(festivalOver()){
-    pill.textContent='Festival concluso';
-    pill.className='night-pill';
-  } else if(isLiveNight && hasSched){
-    const start=norm(H(nd.startHour,nd.startMin));
-    const end=norm(H(nd.endHour,nd.endMin));
-    if(mn>=start && mn<end){
-      pill.textContent='● Live ora';
-      pill.className='night-pill live';
-    } else if(mn<start){
-      pill.textContent='Stasera in diretta';
-      pill.className='night-pill';
-    } else {
-      pill.textContent='Serata conclusa';
-      pill.className='night-pill';
-    }
-  } else {
-    pill.textContent=`Serata ${activeNight+1} / 5`;
-    pill.className='night-pill';
-  }
+  // Pill
+  const pill=document.getElementById('night-pill');
+  if(isTonight&&hasSched&&mn>=start&&mn<end){pill.textContent='● Live ora';pill.className='night-pill live';}
+  else{pill.textContent='Serata '+ni.n+' / 5';pill.className='night-pill';}
 
-  // ── Live card logic ──
+  // Live card
   const dot=document.getElementById('lc-dot');
   const lcBody=document.getElementById('lc-body');
   const lcHead=document.getElementById('lc-head-label');
 
-  if(!hasSched || isFuture){
-    // Countdown to next festival night
-    const targetDate=fn.date+'T20:40:00';
-    const target=new Date(targetDate);
-    const diff=target-now;
+  // Countdown: find next upcoming night
+  const nextNight=NIGHTS.find(n=>n.date>=today)||NIGHTS[NIGHTS.length-1];
+  const targetTime=new Date(nextNight.date+'T20:40:00');
+  const diff=targetTime-now;
 
-    dot.className='lc-dot inactive';
+  if(!isTonight||!hasSched||mn<start){
+    dot.className='lc-dot off';
     lcHead.textContent='MANCA A STASERA';
-
-    if(diff<=0){
-      lcBody.innerHTML=`<div class="lc-countdown">🎵 Il festival è iniziato!</div>`;
-    } else {
-      const days=Math.floor(diff/86400000);
-      const hrs=Math.floor((diff%86400000)/3600000);
-      const mins=Math.floor((diff%3600000)/60000);
-      const secs2=Math.floor((diff%60000)/1000);
-      const show=days>0
-        ? `<div class="cd-grid">
-            <div class="cd-unit"><div class="cd-num">${days}</div><div class="cd-lbl">giorni</div></div>
-            <div class="cd-unit"><div class="cd-num">${pad(hrs)}</div><div class="cd-lbl">ore</div></div>
-            <div class="cd-unit"><div class="cd-num">${pad(mins)}</div><div class="cd-lbl">minuti</div></div>
-            <div class="cd-unit"><div class="cd-num">${pad(secs2)}</div><div class="cd-lbl">secondi</div></div>
-          </div>`
-        : `<div class="cd-grid">
-            <div class="cd-unit"><div class="cd-num">${pad(hrs)}</div><div class="cd-lbl">ore</div></div>
-            <div class="cd-unit"><div class="cd-num">${pad(mins)}</div><div class="cd-lbl">min</div></div>
-            <div class="cd-unit"><div class="cd-num">${pad(secs2)}</div><div class="cd-lbl">sec</div></div>
-            <div class="cd-unit"><div class="cd-num">20:40</div><div class="cd-lbl">inizio</div></div>
-          </div>`;
-      lcBody.innerHTML=`<div class="lc-sub">Countdown</div>${show}`;
+    if(diff<=0){lcBody.innerHTML=`<div style="font-size:13px;color:var(--brand);font-weight:600;">🎵 Il festival è in corso!</div>`;}
+    else{
+      const days=Math.floor(diff/86400000),hrs=Math.floor((diff%86400000)/3600000),mins=Math.floor((diff%3600000)/60000),secs=Math.floor((diff%60000)/1000);
+      lcBody.innerHTML=`<div class="lc-sub">Countdown</div><div class="cd-grid">${days>0?`<div class="cd-unit"><div class="cd-num">${days}</div><div class="cd-lbl">giorni</div></div>`:''}<div class="cd-unit"><div class="cd-num">${pad(hrs)}</div><div class="cd-lbl">ore</div></div><div class="cd-unit"><div class="cd-num">${pad(mins)}</div><div class="cd-lbl">min</div></div><div class="cd-unit"><div class="cd-num">${pad(secs)}</div><div class="cd-lbl">sec</div></div></div>`;
     }
     return;
   }
+  if(mn>=end){dot.className='lc-dot off';lcHead.textContent='SERATA CONCLUSA';lcBody.innerHTML=`<div class="lc-content" style="color:var(--t2)">Ci vediamo domani sera alle 20:40!</div>`;return;}
 
-  // Live night with schedule
-  const start=norm(H(nd.startHour,nd.startMin));
-  const end=norm(H(nd.endHour,nd.endMin));
-  const total=end-start;
-
-  if(mn<start){
-    // Before show
-    const target=new Date(fn.date+'T20:40:00');
-    const diff=target-now;
-    const hrs=Math.floor(diff/3600000);
-    const mins=Math.floor((diff%3600000)/60000);
-    const secs2=Math.floor((diff%60000)/1000);
-    dot.className='lc-dot inactive';
-    lcHead.textContent='MANCA A STASERA';
-    lcBody.innerHTML=`
-      <div class="cd-grid">
-        <div class="cd-unit"><div class="cd-num">${pad(hrs)}</div><div class="cd-lbl">ore</div></div>
-        <div class="cd-unit"><div class="cd-num">${pad(mins)}</div><div class="cd-lbl">min</div></div>
-        <div class="cd-unit"><div class="cd-num">${pad(secs2)}</div><div class="cd-lbl">sec</div></div>
-        <div class="cd-unit"><div class="cd-num">20:40</div><div class="cd-lbl">inizio</div></div>
-      </div>`;
-    return;
-  }
-
-  if(mn>=end){
-    dot.className='lc-dot inactive';
-    lcHead.textContent='SERATA CONCLUSA';
-    lcBody.innerHTML=`<div class="lc-content" style="color:var(--t2)">Ci vediamo domani sera alle 20:40!</div>`;
-    return;
-  }
-
-  // During show
-  dot.className='lc-dot';
-  lcHead.textContent='LIVE ORA';
-
-  const pct=Math.max(0,Math.min(100,(mn-start)/total*100));
-  document.getElementById('track-fill').style.width=pct+'%';
+  // Live
+  dot.className='lc-dot';lcHead.textContent='LIVE ORA';
+  const pct=Math.max(0,Math.min(100,(mn-start)/(end-start)*100));
+  const tf=document.getElementById('track-fill');if(tf)tf.style.width=pct+'%';
   document.getElementById('tl-pct').textContent=Math.round(pct)+'%';
 
-  const idx=curIdx(nd, mn);
-
-  if(idx!==lastCurIdx){
-    lastCurIdx=idx;
-    // Update schedule items
-    const sched=nd.schedule;
+  const idx=curIdx(ni,mn);
+  if(idx!==lastIdx){
+    lastIdx=idx;
     document.querySelectorAll('.si').forEach((el,j)=>{
       el.classList.remove('current','past','next-up');
-      const cfg=BADGE_CFG[sched[j]?.tp]||BADGE_CFG.skip;
-      const t=norm(H(sched[j].t[0],sched[j].t[1]));
-      if(j===idx){
-        el.classList.add('current');
-        el.querySelector('.si-badges').innerHTML='<span class="badge bl">▶ Ora</span>';
-      } else if(t<mn){
-        el.classList.add('past');
-      } else if(j===idx+1){
-        el.classList.add('next-up');
-      }
+      if(!ni.schedule[j]) return;
+      const t=norm(H(ni.schedule[j].t[0],ni.schedule[j].t[1]));
+      const bg=BADGE[ni.schedule[j].tp]||BADGE.skip;
+      if(j===idx){el.classList.add('current');el.querySelector('.si-badges').innerHTML='<span class="badge bl">▶ Ora</span>';}
+      else if(t<mn) el.classList.add('past');
+      else if(j===idx+1) el.classList.add('next-up');
     });
   }
 
-  // Live card: current item
-  const cur=idx>=0?nd.schedule[idx]:null;
-  if(cur){
-    lcBody.innerHTML=`
-      <div class="lc-sub">ORA IN ONDA</div>
-      <div class="lc-content">${cur.a}${cur.s?` <em style="color:var(--t2)">— "${cur.s}"</em>`:''}</div>
-      <div class="lc-prog"><div class="lc-prog-fill" style="width:${pct}%"></div></div>`;
-  }
+  const cur=idx>=0?ni.schedule[idx]:null;
+  lcBody.innerHTML=cur
+    ?`<div class="lc-sub">ORA IN ONDA</div><div class="lc-content">${cur.a}${cur.s?` <em style="color:var(--t2)">— "${cur.s}"</em>`:''}</div><div class="lc-prog"><div class="lc-prog-fill" style="width:${pct}%"></div></div>`
+    :`<div class="lc-content" style="color:var(--t2)">—</div>`;
 
-  // FAB
   const fab=document.getElementById('fab');
-  if(idx>=0){
-    const el=document.getElementById(`si${idx}`);
-    if(el){
-      const r=el.getBoundingClientRect();
-      fab.classList.toggle('on',r.top<0||r.bottom>window.innerHeight);
-    }
-  } else {
-    fab.classList.remove('on');
-  }
+  if(idx>=0){const el=document.getElementById('si'+idx);if(el){const r=el.getBoundingClientRect();fab.classList.toggle('on',r.top<0||r.bottom>window.innerHeight);}}
+  else fab.classList.remove('on');
 }
 
-function fabClick(){
-  const nd=window.NIGHTS_DATA?window.NIGHTS_DATA[activeNight+1]:null;
-  if(!nd) return;
-  const idx=curIdx(nd, nowMin());
-  if(idx>=0) document.getElementById(`si${idx}`)?.scrollIntoView({behavior:'smooth',block:'center'});
-}
-
+function fabClick(){const ni=NIGHTS[activeTab];const idx=curIdx(ni,nowMin());if(idx>=0)document.getElementById('si'+idx)?.scrollIntoView({behavior:'smooth',block:'center'});}
 function clickTrack(e){
-  const nd=window.NIGHTS_DATA?window.NIGHTS_DATA[activeNight+1]:null;
-  if(!nd||!nd.schedule.length) return;
-  const start=norm(H(nd.startHour,nd.startMin));
-  const end=norm(H(nd.endHour,nd.endMin));
+  const ni=NIGHTS[activeTab];if(!ni.schedule.length) return;
+  const start=norm(H(ni.startH,ni.startM)),end=norm(H(ni.endH,ni.endM));
   const r=document.getElementById('track').getBoundingClientRect();
-  const pct=(e.clientX-r.left)/r.width;
-  const target=start+pct*(end-start);
+  const target=start+(e.clientX-r.left)/r.width*(end-start);
   let best=0,minD=Infinity;
-  nd.schedule.forEach((d,i)=>{
-    const df=Math.abs(norm(H(d.t[0],d.t[1]))-target);
-    if(df<minD){minD=df;best=i;}
-  });
-  document.getElementById(`si${best}`)?.scrollIntoView({behavior:'smooth',block:'center'});
+  ni.schedule.forEach((d,i)=>{const df=Math.abs(norm(H(d.t[0],d.t[1]))-target);if(df<minD){minD=df;best=i;}});
+  document.getElementById('si'+best)?.scrollIntoView({behavior:'smooth',block:'center'});
 }
 
-// Boot
-init();
+buildTabs();render();tick();setInterval(tick,1000);
 </script>
 </body>
 </html>
