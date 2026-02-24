@@ -29,12 +29,14 @@ body{font-family:var(--ff-body);background:var(--bg);color:var(--t1);font-size:1
 body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;}
 a{color:inherit;text-decoration:none;}
 button{cursor:pointer;border:none;background:none;}
+
 .topbar{position:relative;z-index:200;background:rgba(10,10,12,0.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
 .logo-svg{display:block;height:20px;width:auto;flex-shrink:0;color:var(--t1);}
 .topbar-center{font-family:var(--ff-title);font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);flex:1;text-align:center;}
 .topbar-center strong{color:var(--brand);font-weight:800;}
 .night-pill{display:flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-pill);padding:5px 12px;font-size:11px;font-weight:600;color:var(--t2);letter-spacing:.04em;white-space:nowrap;}
 .night-pill.live{border-color:var(--border-brand);background:var(--brand-dim);color:var(--brand);}
+
 .hero{position:relative;z-index:1;padding:48px 24px 40px;overflow:hidden;}
 .hero::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:800px;height:500px;background:radial-gradient(ellipse at center,rgba(254,200,47,0.07) 0%,transparent 60%);pointer-events:none;}
 .hero-wm{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--ff-title);font-size:clamp(80px,18vw,200px);font-weight:900;color:rgba(255,255,255,0.02);white-space:nowrap;pointer-events:none;letter-spacing:-.04em;user-select:none;}
@@ -46,20 +48,50 @@ button{cursor:pointer;border:none;background:none;}
 .hero h1 em{font-style:italic;color:var(--brand);}
 .hero p{font-size:15px;line-height:1.7;color:var(--t2);font-weight:300;max-width:480px;}
 .hero p strong{color:var(--t1);font-weight:500;}
-.live-card{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-xl);padding:20px;box-shadow:0 8px 40px rgba(0,0,0,.5);}
-.lc-head{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--t3);margin-bottom:14px;}
+
+.live-card{
+  background:var(--surface2);
+  border:1px solid var(--border2);
+  border-radius:var(--r-xl);
+  padding:20px;
+  box-shadow:0 8px 40px rgba(0,0,0,.5);
+  overflow:hidden; /* ✅ evita sbordi fuori dal box */
+}
+.lc-head{
+  display:flex;
+  align-items:center;
+  gap:6px;
+
+  font-size:12px;
+  font-weight:600;
+  color:var(--t2);
+
+  text-transform:none;   /* ✅ niente uppercase da “label” */
+  letter-spacing:0;      /* ✅ niente look da legenda */
+  margin-bottom:14px;
+}
 .lc-dot{width:6px;height:6px;border-radius:50%;background:var(--brand);box-shadow:0 0 8px var(--brand);animation:pip 1s ease-in-out infinite;}
 .lc-dot.off{background:var(--t3);box-shadow:none;animation:none;}
-.lc-clock{font-family:var(--ff-title);font-size:38px;font-weight:800;letter-spacing:-.04em;color:var(--t1);line-height:1;font-variant-numeric:tabular-nums;margin-bottom:14px;}
+.lc-clock{
+  font-family:var(--ff-title);
+  font-size:clamp(30px, 6.2vw, 30px); /* ✅ si adatta alla larghezza */
+  font-weight:800;
+  letter-spacing:-.06em;              /* ✅ stringe un filo */
+  color:var(--t1);
+  line-height:1;
+  font-variant-numeric:tabular-nums;
+  margin-bottom:14px;
+
+  display:block;
+  width:100%;
+  white-space:nowrap;                 /* ✅ non va a capo */
+}
 .lc-divider{height:1px;background:var(--border);margin-bottom:14px;}
 .lc-sub{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--t3);margin-bottom:4px;}
 .lc-content{font-size:13px;color:var(--t1);line-height:1.5;}
-.cd-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;}
-.cd-unit{background:var(--surface3);border:1px solid var(--border);border-radius:var(--r-md);padding:8px 6px;text-align:center;}
-.cd-num{font-family:var(--ff-title);font-size:22px;font-weight:800;color:var(--brand);line-height:1;font-variant-numeric:tabular-nums;}
-.cd-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-top:2px;}
 .lc-prog{height:3px;background:var(--surface3);border-radius:var(--r-pill);margin-top:12px;overflow:hidden;}
 .lc-prog-fill{height:100%;background:linear-gradient(90deg,var(--brand),var(--brand-hover));border-radius:var(--r-pill);transition:width 1s linear;}
+
 .sticky{position:sticky;top:0;z-index:150;background:rgba(10,10,12,0.94);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:10px 24px;}
 .sticky-inner{max-width:900px;margin:0 auto;}
 .tl-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;}
@@ -73,43 +105,59 @@ button{cursor:pointer;border:none;background:none;}
 .tm:hover{opacity:1;transform:translate(-50%,-50%) scaleY(2);}
 .track-times{display:flex;justify-content:space-between;margin-top:5px;}
 .track-times span{font-size:9px;color:var(--t3);font-variant-numeric:tabular-nums;}
+
 .night-tabs{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:20px 24px 0;}
 .nt-scroll{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;}
 .nt-scroll::-webkit-scrollbar{display:none;}
 .nt-btn{flex-shrink:0;display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:var(--r-pill);border:1px solid var(--border);font-family:var(--ff-body);font-size:11px;font-weight:600;color:var(--t2);background:transparent;transition:all .15s;white-space:nowrap;}
 .nt-btn:hover{background:var(--surface2);color:var(--t1);}
-.nt-btn.active{background:var(--brand);border-color:var(--brand);color:var(--brand-text);}
+.nt-btn.active{
+  background:var(--brand) !important;
+  border-color:var(--brand) !important;
+
+  color:#0a0a0c !important;              /* ✅ forza il colore del testo */
+  -webkit-text-fill-color:#0a0a0c;       /* ✅ fix Safari/Chrome in alcuni casi */
+  font-weight:800;
+
+  box-shadow:
+    0 0 0 2px rgba(254,200,47,.35),
+    0 10px 28px rgba(254,200,47,.12);
+}
+.nt-btn.active *{
+  color:inherit !important;              /* ✅ anche il pallino e qualsiasi span */
+  -webkit-text-fill-color:inherit;
+}
+.nt-btn.active .nt-dot{
+  opacity:1;
+  background:rgba(0,0,0,.35);    /* ✅ pallino visibile sul giallo */
+}
 .nt-btn .nt-dot{width:5px;height:5px;background:currentColor;border-radius:50%;opacity:.5;}
 .nt-btn.tonight{color:var(--brand);border-color:var(--border-brand);}
 .nt-btn.tonight .nt-dot{background:var(--brand);box-shadow:0 0 6px var(--brand);animation:pip 1s ease-in-out infinite;opacity:1;}
+/* Fix: quando è "tonight" + "active", il testo non deve tornare giallo */
+.nt-btn.active.tonight{
+  color:#0a0a0c !important;
+  border-color:var(--brand);
+}
+.nt-btn.active.tonight .nt-dot{
+  background:rgba(0,0,0,.35);
+  opacity:1;
+}
 .main{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:20px 24px 40px;}
-.ranking-widget{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-xl);overflow:hidden;margin-bottom:20px;}
-.rw-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);}
-.rw-title{font-family:var(--ff-title);font-size:14px;font-weight:800;color:var(--t1);display:flex;align-items:center;gap:8px;}
-.rw-badge{font-size:10px;font-weight:600;padding:2px 8px;background:var(--brand-dim);border:1px solid var(--border-brand);border-radius:var(--r-pill);color:var(--brand);text-transform:uppercase;letter-spacing:.08em;}
-.rw-link{font-size:11px;color:var(--t3);text-decoration:underline;text-underline-offset:2px;}
-.rw-link:hover{color:var(--brand);}
-.rank-item{display:flex;align-items:center;gap:12px;padding:11px 18px;border-bottom:1px solid var(--border);transition:background .12s;}
-.rank-item:last-child{border-bottom:none;}
-.rank-item:hover{background:var(--surface3);}
-.rank-num{font-family:var(--ff-title);font-size:18px;font-weight:900;color:var(--t3);width:28px;flex-shrink:0;font-variant-numeric:tabular-nums;}
-.rank-item:nth-child(1) .rank-num{color:var(--brand);}
-.rank-item:nth-child(2) .rank-num{color:var(--t2);}
-.rank-item:nth-child(3) .rank-num{color:#cd7f32;}
-.rank-body{flex:1;min-width:0;}
-.rank-artist{font-family:var(--ff-title);font-size:14px;font-weight:700;color:var(--t1);}
-.rank-song{font-size:12px;color:var(--t2);font-style:italic;}
-.rank-pts{font-family:var(--ff-title);font-size:12px;font-weight:700;color:var(--t3);flex-shrink:0;}
+
 .legend{display:flex;flex-wrap:wrap;gap:14px;padding-bottom:16px;border-bottom:1px solid var(--border);margin-bottom:16px;}
 .leg{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--t2);}
 .leg-d{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+
 .sc{display:flex;align-items:center;gap:8px;margin:20px 0 8px;padding:7px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-md);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);}
+
 .notice{display:flex;align-items:flex-start;gap:14px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-xl);padding:20px;margin-bottom:20px;}
 .notice-icon{flex-shrink:0;font-size:22px;line-height:1;margin-top:2px;}
 .notice h3{font-family:var(--ff-title);font-size:16px;font-weight:800;color:var(--t1);margin-bottom:4px;}
 .notice p{font-size:13px;color:var(--t2);line-height:1.6;}
 .hl-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
 .hl{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;background:var(--brand-dim);border:1px solid var(--border-brand);border-radius:var(--r-pill);font-size:11px;font-weight:600;color:var(--brand);}
+
 .slist{display:flex;flex-direction:column;gap:1px;}
 .si{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;padding:12px;border-radius:var(--r-md);border:1px solid transparent;transition:background .13s,border-color .13s;scroll-margin-top:100px;position:relative;}
 .si:hover{background:var(--surface2);border-color:var(--border);}
@@ -124,6 +172,7 @@ button{cursor:pointer;border:none;background:none;}
 .si-song{font-size:12px;color:var(--t2);font-style:italic;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .si-desc{font-size:11px;color:var(--t3);line-height:1.45;}
 .si-badges{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;}
+
 .badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:var(--r-pill);border:1px solid;white-space:nowrap;letter-spacing:.02em;}
 .bw{background:var(--bw-bg);color:var(--bw-fg);border-color:var(--bw-bd);}
 .bs{background:var(--bs-bg);color:var(--bs-fg);border-color:var(--bs-bd);}
@@ -133,6 +182,7 @@ button{cursor:pointer;border:none;background:none;}
 .bp{background:var(--bp-bg);color:var(--bp-fg);border-color:var(--bp-bd);}
 .bl{background:var(--brand);color:var(--brand-text);border-color:var(--brand);animation:badge-pulse 1.8s ease-in-out infinite;}
 @keyframes badge-pulse{0%,100%{box-shadow:0 0 0 0 var(--brand-glow);}50%{box-shadow:0 0 0 6px rgba(254,200,47,0);}}
+
 .fcta-wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 24px 60px;}
 .fcta{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-2xl);padding:44px 40px;text-align:center;position:relative;overflow:hidden;}
 .fcta::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(254,200,47,0.07) 0%,transparent 65%);pointer-events:none;}
@@ -142,10 +192,12 @@ button{cursor:pointer;border:none;background:none;}
 .fcta p{font-size:14px;line-height:1.7;color:var(--t2);max-width:440px;margin:0 auto 28px;position:relative;font-weight:300;}
 .btn{display:inline-block;padding:12px 28px;background:var(--brand);color:var(--brand-text);border-radius:var(--r-pill);font-family:var(--ff-body);font-size:13px;font-weight:700;transition:background .15s,transform .12s,box-shadow .15s;letter-spacing:.01em;}
 .btn:hover{background:var(--brand-hover);transform:translateY(-1px);box-shadow:0 8px 28px var(--brand-glow);}
+
 .fab{position:fixed;bottom:24px;right:24px;background:var(--brand);color:var(--brand-text);border-radius:var(--r-pill);padding:11px 20px;font-family:var(--ff-body);font-size:12px;font-weight:700;z-index:300;display:flex;align-items:center;gap:7px;box-shadow:0 4px 24px var(--brand-glow);opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .2s,transform .2s;}
 .fab.on{opacity:1;transform:translateY(0);pointer-events:all;}
 .fab:hover{background:var(--brand-hover);}
 .fab-pip{width:6px;height:6px;background:rgba(0,0,0,.3);border-radius:50%;animation:pip 1s ease-in-out infinite;}
+
 @media(max-width:640px){
   .hero-inner{grid-template-columns:1fr;} .live-card{display:none;}
   .si{grid-template-columns:52px 1fr;} .si-badges{display:none;}
@@ -303,15 +355,6 @@ const NIGHTS=[
   {n:5,date:"2026-02-28",label:"28 feb · Finale",long:"Sabato 28 febbraio · FINALE",startH:20,startM:40,endH:1,endM:30,isFinale:true,highlights:[],schedule:[]},
 ];
 
-/* ═══════════════ RANKING — aggiorna ogni sera ═══════════════ */
-const RANKING=[
-  {pos:1, artist:"OLLY",               song:"Balorda nostalgia",     pts:"—"},
-  {pos:2, artist:"LUCIO CORSI",        song:"Volevo essere un duro", pts:"—"},
-  {pos:3, artist:"BRUNORI SAS",        song:"L'albero delle noci",   pts:"—"},
-  {pos:4, artist:"SIMONE CRISTICCHI",  song:"Quando sarai piccola",  pts:"—"},
-  {pos:5, artist:"TONY EFFE",          song:"Damme 'na mano",        pts:"—"},
-];
-
 /* ═══════════════ HELPERS ═══════════════ */
 const BADGE={watch:{l:"Da guardare",c:"bw"},special:{l:"Imperdibile ✦",c:"bs"},ospite:{l:"Ospite",c:"bo"},cat:{l:"In gara",c:"bc"},skip:{l:"Puoi saltare",c:"bsk"},pub:{l:"Pubblicità",c:"bp"}};
 const DOTS={watch:"#FEC82F",special:"#FEC82F",ospite:"#ff8562",cat:"#98a6fe",skip:"rgba(255,255,255,.1)",pub:"rgba(255,255,255,.05)"};
@@ -361,32 +404,57 @@ function render(){
 
   const main=document.getElementById('main');
   main.innerHTML='';
-  main.appendChild(buildRanking(isTonight,isPast));
 
   if(!hasSched){
     const d=document.createElement('div');
     d.className='notice';
-    d.innerHTML=`<div class="notice-icon">${isPast?'📁':isTonight?'⏳':'🔜'}</div><div><h3>Serata ${ni.n} – ${ni.long}</h3><p>${isPast?'Scaletta in lavorazione.':isTonight?'La scaletta verrà caricata prima dell\'inizio.':'Aggiornamento prima della serata.'}</p>${ni.highlights.length?`<div class="hl-list">${ni.highlights.map(h=>`<span class="hl">✦ ${h}</span>`).join('')}</div>`:''}</div>`;
+    d.innerHTML=`<div class="notice-icon">${isPast?'📁':isTonight?'⏳':'🔜'}</div>
+      <div>
+        <h3>Serata ${ni.n} – ${ni.long}</h3>
+        <p>${isPast?'Scaletta in lavorazione.':isTonight?'La scaletta verrà caricata prima dell\'inizio.':'La scaletta sarà disponibile qualche ora prima dell\'inizio della serata.'}</p>
+        ${ni.highlights.length?`<div class="hl-list">${ni.highlights.map(h=>`<span class="hl">✦ ${h}</span>`).join('')}</div>`:''}
+      </div>`;
     main.appendChild(d);
     return;
   }
 
   const leg=document.createElement('div');
   leg.className='legend';
-  leg.innerHTML=[['Da guardare','#FEC82F'],['Imperdibile ✦','#FED252'],['Ospite','#ff8562'],['In gara','#98a6fe'],['Puoi saltare','rgba(255,255,255,.12)'],['Pubblicità','rgba(255,255,255,.06)'],['Ora in onda','#FEC82F']].map(([l,c])=>`<div class="leg"><div class="leg-d" style="background:${c}"></div>${l}</div>`).join('');
+  leg.innerHTML=[
+    ['Da guardare','#FEC82F'],
+    ['Imperdibile ✦','#FED252'],
+    ['Ospite','#ff8562'],
+    ['In gara','#98a6fe'],
+    ['Puoi saltare','rgba(255,255,255,.12)'],
+    ['Pubblicità','rgba(255,255,255,.06)'],
+    ['Ora in onda','#FEC82F']
+  ].map(([l,c])=>`<div class="leg"><div class="leg-d" style="background:${c}"></div>${l}</div>`).join('');
   main.appendChild(leg);
 
   const sl=document.createElement('div');
   sl.className='slist';sl.id='slist';
   let sec=null;
   const secs={a:{e:'🎤',t:'Prima parte · 20:40 – 22:30'},b:{e:'⭐',t:'Seconda parte · 22:30 – 23:34'},c:{e:'🌙',t:'Dopo mezzanotte'}};
+
   ni.schedule.forEach((d,j)=>{
     const sk=d.t[0]<22||(d.t[0]===22&&d.t[1]<30)?'a':d.t[0]<23||(d.t[0]===23&&d.t[1]<34)?'b':'c';
-    if(sk!==sec){sec=sk;const c=document.createElement('div');c.className='sc';c.textContent=secs[sk].e+'  '+secs[sk].t;sl.appendChild(c);}
+    if(sk!==sec){
+      sec=sk;
+      const c=document.createElement('div');
+      c.className='sc';
+      c.textContent=secs[sk].e+'  '+secs[sk].t;
+      sl.appendChild(c);
+    }
     const bg=BADGE[d.tp]||BADGE.skip;
     const el=document.createElement('div');
     el.className='si';el.id='si'+j;
-    el.innerHTML=`<div class="si-time">${padT(d.t)}</div><div class="si-body"><div class="si-artist">${d.a}</div>${d.s?`<div class="si-song">"${d.s}"</div>`:''} ${d.d?`<div class="si-desc">${d.d}</div>`:''}</div><div class="si-badges"><span class="badge ${bg.c}">${bg.l}</span></div>`;
+    el.innerHTML=`<div class="si-time">${padT(d.t)}</div>
+      <div class="si-body">
+        <div class="si-artist">${d.a}</div>
+        ${d.s?`<div class="si-song">"${d.s}"</div>`:''}
+        ${d.d?`<div class="si-desc">${d.d}</div>`:''}
+      </div>
+      <div class="si-badges"><span class="badge ${bg.c}">${bg.l}</span></div>`;
     sl.appendChild(el);
   });
   main.appendChild(sl);
@@ -398,20 +466,14 @@ function render(){
   ni.schedule.forEach((d,i)=>{
     const pct=Math.max(0,Math.min(100,(norm(H(d.t[0],d.t[1]))-start)/(end-start)*100));
     const dot=document.createElement('div');
-    dot.className='tm';dot.style.cssText=`left:${pct}%;background:${DOTS[d.tp]||'rgba(255,255,255,.05)'}`;
+    dot.className='tm';
+    dot.style.cssText=`left:${pct}%;background:${DOTS[d.tp]||'rgba(255,255,255,.05)'}`;
     dot.title=d.a+(d.s?` — "${d.s}"`:'')+' '+padT(d.t);
     dot.onclick=e=>{e.stopPropagation();document.getElementById('si'+i)?.scrollIntoView({behavior:'smooth',block:'center'});};
     mc.appendChild(dot);
   });
-  document.getElementById('tl-label').textContent=`Scaletta · ${pad(ni.startH)}:${pad(ni.startM)} → ${pad(ni.endH)}:${pad(ni.endM)}`;
-}
 
-function buildRanking(isTonight,isPast){
-  const badge=isTonight?'In aggiornamento':isPast&&activeTab>0?'Aggiornata':'Provvisoria';
-  const d=document.createElement('div');
-  d.className='ranking-widget';
-  d.innerHTML=`<div class="rw-head"><div class="rw-title">🏆 Classifica <span class="rw-badge">${badge}</span></div><a class="rw-link" href="https://www.canzoniweb.com/sanremo-2026-classifica-finale-risultati-e-vincitore/" target="_blank">fonte aggiornata →</a></div>${RANKING.map(r=>`<div class="rank-item"><div class="rank-num">${r.pos}</div><div class="rank-body"><div class="rank-artist">${r.artist}</div><div class="rank-song">${r.song}</div></div><div class="rank-pts">${r.pts}</div></div>`).join('')}`;
-  return d;
+  document.getElementById('tl-label').textContent=`Scaletta · ${pad(ni.startH)}:${pad(ni.startM)} → ${pad(ni.endH)}:${pad(ni.endM)}`;
 }
 
 function curIdx(ni,mn){
@@ -426,86 +488,166 @@ function curIdx(ni,mn){
 
 /* ═══════════════ TICK ═══════════════ */
 function tick(){
-  const now=new Date();
-  document.getElementById('clock').textContent=pad(now.getHours())+':'+pad(now.getMinutes())+':'+pad(now.getSeconds());
+  const now = new Date();
+  const clockEl = document.getElementById('clock');
 
-  const ni=NIGHTS[activeTab];
-  const today=todayStr();
-  const isTonight=ni.date===today;
-  const hasSched=ni.schedule.length>0;
-  const mn=nowMin();
-  const start=norm(H(ni.startH,ni.startM));
-  const end=norm(H(ni.endH,ni.endM));
+  const ni = NIGHTS[activeTab];
+  const today = todayStr();
+  const isTonight = ni.date === today;
+  const hasSched = ni.schedule.length > 0;
+  const mn = nowMin();
+  const start = norm(H(ni.startH, ni.startM));
+  const end = norm(H(ni.endH, ni.endM));
 
   // Pill
-  const pill=document.getElementById('night-pill');
-  if(isTonight&&hasSched&&mn>=start&&mn<end){pill.textContent='● Live ora';pill.className='night-pill live';}
-  else{pill.textContent='Serata '+ni.n+' / 5';pill.className='night-pill';}
+  const pill = document.getElementById('night-pill');
+  if (isTonight && hasSched && mn >= start && mn < end) {
+    pill.textContent = '● Live ora';
+    pill.className = 'night-pill live';
+  } else {
+    pill.textContent = 'Serata ' + ni.n + ' / 5';
+    pill.className = 'night-pill';
+  }
 
   // Live card
-  const dot=document.getElementById('lc-dot');
-  const lcBody=document.getElementById('lc-body');
-  const lcHead=document.getElementById('lc-head-label');
+  const dot = document.getElementById('lc-dot');
+  const lcBody = document.getElementById('lc-body');
+  const lcHead = document.getElementById('lc-head-label');
 
-  // Countdown: find next upcoming night
-  const nextNight=NIGHTS.find(n=>n.date>=today)||NIGHTS[NIGHTS.length-1];
-  const targetTime=new Date(nextNight.date+'T20:40:00');
-  const diff=targetTime-now;
+  // Countdown target: prima serata (NIGHTS[0]) alle 20:40
+  const firstNight = NIGHTS[0];
+  const target = new Date(firstNight.date + 'T20:40:00');
+  const diff = target - now;
 
-  if(!isTonight||!hasSched||mn<start){
-    dot.className='lc-dot off';
-    lcHead.textContent='MANCA A STASERA';
-    if(diff<=0){lcBody.innerHTML=`<div style="font-size:13px;color:var(--brand);font-weight:600;">🎵 Il festival è in corso!</div>`;}
-    else{
-      const days=Math.floor(diff/86400000),hrs=Math.floor((diff%86400000)/3600000),mins=Math.floor((diff%3600000)/60000),secs=Math.floor((diff%60000)/1000);
-      lcBody.innerHTML=`<div class="lc-sub">Countdown</div><div class="cd-grid">${days>0?`<div class="cd-unit"><div class="cd-num">${days}</div><div class="cd-lbl">giorni</div></div>`:''}<div class="cd-unit"><div class="cd-num">${pad(hrs)}</div><div class="cd-lbl">ore</div></div><div class="cd-unit"><div class="cd-num">${pad(mins)}</div><div class="cd-lbl">min</div></div><div class="cd-unit"><div class="cd-num">${pad(secs)}</div><div class="cd-lbl">sec</div></div></div>`;
+  // PRE-LIVE (o serata senza scaletta / prima dell'inizio):
+  // - nasconde il puntino
+  // - titolo: "Manca alla prima serata:"
+  // - display grande: countdown
+  // - testo sotto: info inizio
+  if (!isTonight || !hasSched || mn < start) {
+    dot.style.display = 'none';
+    lcHead.textContent = 'Manca alla prima serata:';
+
+    if (diff <= 0) {
+      clockEl.textContent = '00:00:00';
+    } else {
+      const hrs  = Math.floor(diff / 3600000);
+      const mins = Math.floor((diff % 3600000) / 60000);
+      const secs = Math.floor((diff % 60000) / 1000);
+      clockEl.textContent = `${pad(hrs)}:${pad(mins)}:${pad(secs)}`;
     }
+
+    lcBody.innerHTML = `
+      <div class="lc-sub">Inizio diretta</div>
+      <div class="lc-content" style="color:var(--t2)">
+        Stasera si parte alle <strong style="color:var(--t1)">${pad(firstNight.startH)}:${pad(firstNight.startM)}</strong>.
+      </div>
+    `;
     return;
   }
-  if(mn>=end){dot.className='lc-dot off';lcHead.textContent='SERATA CONCLUSA';lcBody.innerHTML=`<div class="lc-content" style="color:var(--t2)">Ci vediamo domani sera alle 20:40!</div>`;return;}
 
-  // Live
-  dot.className='lc-dot';lcHead.textContent='LIVE ORA';
-  const pct=Math.max(0,Math.min(100,(mn-start)/(end-start)*100));
-  const tf=document.getElementById('track-fill');if(tf)tf.style.width=pct+'%';
-  document.getElementById('tl-pct').textContent=Math.round(pct)+'%';
+  // POST-LIVE
+  if (mn >= end) {
+    dot.style.display = '';
+    dot.className = 'lc-dot off';
+    lcHead.textContent = 'SERATA CONCLUSA';
+    clockEl.textContent = '—';
+    lcBody.innerHTML = `<div class="lc-content" style="color:var(--t2)">Ci vediamo domani sera alle 20:40!</div>`;
+    return;
+  }
 
-  const idx=curIdx(ni,mn);
-  if(idx!==lastIdx){
-    lastIdx=idx;
-    document.querySelectorAll('.si').forEach((el,j)=>{
-      el.classList.remove('current','past','next-up');
-      if(!ni.schedule[j]) return;
-      const t=norm(H(ni.schedule[j].t[0],ni.schedule[j].t[1]));
-      const bg=BADGE[ni.schedule[j].tp]||BADGE.skip;
-      if(j===idx){el.classList.add('current');el.querySelector('.si-badges').innerHTML='<span class="badge bl">▶ Ora</span>';}
-      else if(t<mn) el.classList.add('past');
-      else if(j===idx+1) el.classList.add('next-up');
+  // LIVE
+  dot.style.display = '';
+  dot.className = 'lc-dot';
+  lcHead.textContent = 'LIVE ORA';
+
+  const pct = Math.max(0, Math.min(100, (mn - start) / (end - start) * 100));
+  const tf = document.getElementById('track-fill');
+  if (tf) tf.style.width = pct + '%';
+  document.getElementById('tl-pct').textContent = Math.round(pct) + '%';
+
+  const idx = curIdx(ni, mn);
+
+  // Evidenzia in lista (current/past/next-up)
+  if (idx !== lastIdx) {
+    lastIdx = idx;
+    document.querySelectorAll('.si').forEach((el, j) => {
+      el.classList.remove('current', 'past', 'next-up');
+      if (!ni.schedule[j]) return;
+
+      const t = norm(H(ni.schedule[j].t[0], ni.schedule[j].t[1]));
+      if (j === idx) {
+        el.classList.add('current');
+        el.querySelector('.si-badges').innerHTML = '<span class="badge bl">▶ Ora</span>';
+      } else if (t < mn) {
+        el.classList.add('past');
+      } else if (j === idx + 1) {
+        el.classList.add('next-up');
+      }
     });
   }
 
-  const cur=idx>=0?ni.schedule[idx]:null;
-  lcBody.innerHTML=cur
-    ?`<div class="lc-sub">ORA IN ONDA</div><div class="lc-content">${cur.a}${cur.s?` <em style="color:var(--t2)">— "${cur.s}"</em>`:''}</div><div class="lc-prog"><div class="lc-prog-fill" style="width:${pct}%"></div></div>`
-    :`<div class="lc-content" style="color:var(--t2)">—</div>`;
+  // Contenuto live card: titolo grande + descrizione
+  const cur = idx >= 0 ? ni.schedule[idx] : null;
 
-  const fab=document.getElementById('fab');
-  if(idx>=0){const el=document.getElementById('si'+idx);if(el){const r=el.getBoundingClientRect();fab.classList.toggle('on',r.top<0||r.bottom>window.innerHeight);}}
-  else fab.classList.remove('on');
+  if (cur) {
+    // Titolo grande nel "clock"
+    clockEl.textContent = cur.a;
+
+    // Sotto: brano + descrizione (se presenti)
+    lcBody.innerHTML = `
+      <div class="lc-sub">In onda</div>
+      <div class="lc-content">
+        ${cur.s ? `<em style="color:var(--t2)">"${cur.s}"</em><br>` : ''}
+        ${cur.d ? `<span style="color:var(--t2)">${cur.d}</span>` : `<span style="color:var(--t2)">—</span>`}
+      </div>
+      <div class="lc-prog"><div class="lc-prog-fill" style="width:${pct}%"></div></div>
+    `;
+  } else {
+    clockEl.textContent = '—';
+    lcBody.innerHTML = `<div class="lc-content" style="color:var(--t2)">—</div>`;
+  }
+
+  // FAB visibility
+  const fab = document.getElementById('fab');
+  if (idx >= 0) {
+    const el = document.getElementById('si' + idx);
+    if (el) {
+      const r = el.getBoundingClientRect();
+      fab.classList.toggle('on', r.top < 0 || r.bottom > window.innerHeight);
+    }
+  } else {
+    fab.classList.remove('on');
+  }
 }
 
-function fabClick(){const ni=NIGHTS[activeTab];const idx=curIdx(ni,nowMin());if(idx>=0)document.getElementById('si'+idx)?.scrollIntoView({behavior:'smooth',block:'center'});}
+function fabClick(){
+  const ni = NIGHTS[activeTab];
+  const idx = curIdx(ni, nowMin());
+  if (idx >= 0) document.getElementById('si' + idx)?.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
 function clickTrack(e){
-  const ni=NIGHTS[activeTab];if(!ni.schedule.length) return;
-  const start=norm(H(ni.startH,ni.startM)),end=norm(H(ni.endH,ni.endM));
-  const r=document.getElementById('track').getBoundingClientRect();
-  const target=start+(e.clientX-r.left)/r.width*(end-start);
-  let best=0,minD=Infinity;
-  ni.schedule.forEach((d,i)=>{const df=Math.abs(norm(H(d.t[0],d.t[1]))-target);if(df<minD){minD=df;best=i;}});
-  document.getElementById('si'+best)?.scrollIntoView({behavior:'smooth',block:'center'});
+  const ni = NIGHTS[activeTab];
+  if (!ni.schedule.length) return;
+
+  const start = norm(H(ni.startH, ni.startM)), end = norm(H(ni.endH, ni.endM));
+  const r = document.getElementById('track').getBoundingClientRect();
+  const target = start + (e.clientX - r.left) / r.width * (end - start);
+
+  let best = 0, minD = Infinity;
+  ni.schedule.forEach((d, i) => {
+    const df = Math.abs(norm(H(d.t[0], d.t[1])) - target);
+    if (df < minD) { minD = df; best = i; }
+  });
+
+  document.getElementById('si' + best)?.scrollIntoView({behavior:'smooth', block:'center'});
 }
 
-buildTabs();render();tick();setInterval(tick,1000);
+buildTabs();
+render();
+tick();
+setInterval(tick, 1000);
 </script>
 </body>
 </html>
