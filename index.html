@@ -237,6 +237,15 @@ function makeLottieSpinner(cls) {
 const SHEET = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYoLP0N8FnhBYOlhy3d942dlg8Vl8oDfXpFC3da1_ETLzXRPDFx9SkbJ0NFCvhVC3VZzk2Z6M3HQ9W/pub";
 const GIDS  = { 1:"0", 2:"1426018492", 3:"1682569433", 4:"285953640", 5:"1616238422" };
 const GID_CLASSIFICA = "119285555";
+// Worker URL: sostituisci con il tuo worker dopo il deploy
+// es. https://sanremo-proxy.TUNDR.workers.dev
+const WORKER_URL = "";
+
+// Fetch CSV: usa worker se disponibile (più veloce, cachato), altrimenti fallback diretto
+function csvUrl(gid) {
+  if (WORKER_URL) return `${WORKER_URL}/csv?gid=${gid}`;
+  return `${SHEET}?gid=${gid}&single=true&output=csv`;
+}
 
 const NIGHTS = [
   {n:1, date:"2026-02-24", label:"24 feb",          long:"Martedì 24 febbraio",     startH:20,startM:40,endH:1,endM:44,  isFinale:false},
@@ -313,37 +322,81 @@ function isNightOver(ni) {
 const schedCache = {};
 const rankCache  = {};
 
-async function fetchClassifica() {
-  if (rankCache['sheet']) return rankCache['sheet'];
-  try {
-    const res = await fetch(`${SHEET}?gid=${GID_CLASSIFICA}&single=true&output=csv`, {cache:'no-store'});
-    if (!res.ok) return null;
-    const text = await res.text();
-    const allRows = text.trim().split('\n').slice(1);
-    const data = [];
-    for (const row of allRows) {
-      const cols = [];
-      let cur = '', inQ = false;
-      for (const c of row) {
-        if (c === '"') { inQ = !inQ; }
-        else if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
-        else cur += c;
-      }
-      cols.push(cur.trim());
-      const [pos='', artista='', brano='', nota=''] = cols;
-      if (!artista.trim()) continue;
-      data.push({ pos: pos.replace(/[^0-9]/g,'') || String(data.length+1), artista: artista.trim(), brano: brano.trim(), nota: nota.trim() });
+function parseClassificaCSV(text) {
+  const allRows = text.trim().split('\n').slice(1);
+  const data = [];
+  for (const row of allRows) {
+    const cols = [];
+    let cur = '', inQ = false;
+    for (const c of row) {
+      if (c === '"') { inQ = !inQ; }
+      else if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+      else cur += c;
     }
-    if (data.length) rankCache['sheet'] = data; // cache resettato al cambio tab
-    return data.length ? data : null;
+    cols.push(cur.trim());
+    const [pos='', artista='', brano='', nota=''] = cols;
+    if (!artista.trim()) continue;
+    data.push({ pos: pos.replace(/[^0-9]/g,'') || String(data.length+1), artista: artista.trim(), brano: brano.trim(), nota: nota.trim() });
+  }
+  return data.length ? data : null;
+}
+
+async function fetchClassifica() {
+  // Se abbiamo cache, restituisci subito e aggiorna in background
+  if (rankCache['sheet']) {
+    fetch(csvUrl(GID_CLASSIFICA), {cache: WORKER_URL ? 'default' : 'no-store'})
+      .then(r => r.text())
+      .then(text => { const d = parseClassificaCSV(text); if (d) rankCache['sheet'] = d; })
+      .catch(() => {});
+    return rankCache['sheet'];
+  }
+  // Prima volta: fetch bloccante
+  try {
+    const res = await fetch(csvUrl(GID_CLASSIFICA), {cache: WORKER_URL ? 'default' : 'no-store'});
+    if (!res.ok) return null;
+    const data = parseClassificaCSV(await res.text());
+    if (data) rankCache['sheet'] = data;
+    return data;
   } catch(e) { return null; }
+}
+
+// Converte CSV del foglio Google Sheets in array di eventi
+// Colonne: ora | artista | canzone | descrizione | tipo
+function csvToSchedule(text) {
+  const lines = text.trim().split('\n').slice(1); // salta header
+  const out = [];
+  for (const line of lines) {
+    // Parser CSV robusto (gestisce campi tra virgolette)
+    const cols = [];
+    let cur = '', inQ = false;
+    for (const c of line) {
+      if (c === '"') { inQ = !inQ; }
+      else if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+      else cur += c;
+    }
+    cols.push(cur.trim());
+    const [ora='', artista='', canzone='', descrizione='', tipo=''] = cols;
+    if (!ora.trim() || !artista.trim()) continue;
+    // Parsa orario "HH:MM"
+    const [hStr, mStr] = ora.trim().split(':');
+    const h = parseInt(hStr), m = parseInt(mStr);
+    if (isNaN(h) || isNaN(m)) continue;
+    out.push({
+      t: [h, m],
+      a: artista.trim(),
+      s: canzone.trim(),
+      d: descrizione.trim(),
+      tp: tipo.trim() || 'skip'
+    });
+  }
+  return out;
 }
 
 async function fetchSchedule(nightNum) {
   const gid = GIDS[nightNum];
   if (!gid) return null;
   try {
-    const res = await fetch(`${SHEET}?gid=${gid}&single=true&output=csv`, {cache:'default'});
+    const res = await fetch(csvUrl(gid), {cache:'no-store'});
     if (!res.ok) return null;
     const sched = csvToSchedule(await res.text());
     return sched.length ? sched : null;
@@ -616,7 +669,6 @@ async function loadRankAfterRender(ni, _schedule) {
   // Aggiungi lottie spinner nel rank-content
   const rankEl = document.getElementById('rank-content');
   if (rankEl) rankEl.insertAdjacentElement('afterbegin', makeLottieSpinner());
-  delete rankCache['sheet']; // sempre dati freschi ad ogni apertura tab
   const rows = await fetchClassifica();
   const el = document.getElementById('rank-content');
   if (!el) return;
@@ -788,8 +840,63 @@ buildTabs();
   row.appendChild(btn);
 })();
 
-loadAndRender(activeTab);
-setInterval(tick, 1000);
+// Logica tab di default all'atterraggio:
+// 1. Se c'è una serata live → quella
+// 2. Ultima serata con dati nello sheet → mostrala
+// 3. Se l'ultima serata disponibile non ha ancora dati → mostra quella precedente con classifica
+(async function initTab() {
+  // Caso 1: serata live
+  const liveIdx = NIGHTS.findIndex(n => isNightActive(n));
+  if (liveIdx >= 0) {
+    activeTab = liveIdx;
+    await loadAndRender(activeTab);
+    setInterval(tick, 1000);
+    return;
+  }
+
+  const today = todayStr();
+  // Serate passate o di oggi (per data)
+  const available = NIGHTS.map((n,i) => ({n,i})).filter(({n}) => n.date <= today);
+
+  if (available.length === 0) {
+    // Prima di Sanremo → prima serata
+    activeTab = 0;
+    await loadAndRender(0);
+    setInterval(tick, 1000);
+    return;
+  }
+
+  // Controlla se l'ultima serata disponibile ha dati nello sheet
+  const lastAvail = available[available.length - 1];
+  const gid = GIDS[lastAvail.n.n];
+  let hasData = false;
+
+  if (gid) {
+    try {
+      const res = await fetch(csvUrl(gid), {cache:'no-store'});
+      if (res.ok) {
+        const rows = csvToSchedule(await res.text());
+        if (rows && rows.length > 0) {
+          schedCache[lastAvail.n.n] = rows; // pre-carica la cache
+          hasData = true;
+        }
+      }
+    } catch {}
+  }
+
+  if (hasData) {
+    // Scaletta pronta → mostra quella serata
+    activeTab = lastAvail.i;
+  } else if (available.length >= 2) {
+    // Nessun dato per la serata di oggi/ieri → mostra la precedente con classifica
+    activeTab = available[available.length - 2].i;
+  } else {
+    activeTab = 0;
+  }
+
+  await loadAndRender(activeTab);
+  setInterval(tick, 1000);
+})();
 </script>
 </body>
 </html>
