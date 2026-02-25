@@ -112,10 +112,10 @@ button{cursor:pointer;border:none;background:none;}
 .rank-title{font-family:var(--ff-t);font-size:22px;font-weight:800;color:var(--t1);}
 .rank-sub{font-size:11px;color:var(--t3);margin-top:3px;}
 .rank-loading{color:var(--t3);font-size:13px;padding:32px 0;text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;}
-.lottie-spinner{width:120px;height:30px;display:block;}
-.lottie-spinner-sm{width:60px;height:15px;display:inline-block;vertical-align:middle;}
 @keyframes spin{to{transform:rotate(360deg)}}
 .spinner-css{width:20px;height:20px;border:2px solid rgba(255,255,255,.15);border-top-color:var(--brand);border-radius:50%;animation:spin .7s linear infinite;margin:5px auto;}
+.lottie-spinner{display:flex;justify-content:center;padding:8px 0;}
+.lottie-spinner-sm{display:inline-flex;align-items:center;vertical-align:middle;}
 .notice{display:flex;align-items:flex-start;gap:14px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-xl);padding:20px;margin-bottom:20px;}
 .notice-icon{flex-shrink:0;font-size:22px;line-height:1;margin-top:2px;}
 .notice h3{font-family:var(--ff-t);font-size:16px;font-weight:800;color:var(--t1);margin-bottom:4px;}
@@ -163,7 +163,6 @@ button{cursor:pointer;border:none;background:none;}
   .fcta{padding:28px 20px;}.hero-wm,.topbar-center{display:none;}
 }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js" defer></script>
 </head>
 <body>
 
@@ -218,33 +217,12 @@ button{cursor:pointer;border:none;background:none;}
 
 <script>
 
-let TUNDR_LOTTIE = null;
-// Carica Lottie JSON in background, non blocca il rendering
-fetch('tundr-logo.lottie.json').then(r=>r.json()).then(d=>{ TUNDR_LOTTIE=d; }).catch(()=>{});
 // Crea un elemento con animazione Lottie logo Tundr
 // Se Lottie o i dati non sono ancora pronti, usa fallback spinner CSS
 function makeLottieSpinner(cls) {
   const el = document.createElement('div');
   el.className = cls || 'lottie-spinner';
-  if (TUNDR_LOTTIE && typeof lottie !== 'undefined') {
-    lottie.loadAnimation({
-      container: el,
-      renderer: 'svg',
-      loop: true,
-      autoplay: true,
-      animationData: TUNDR_LOTTIE,
-    });
-  } else {
-    // Fallback: spinner CSS semplice finché Lottie non è pronto
-    el.innerHTML = '<div class="spinner-css"></div>';
-    // Riprova dopo 300ms
-    setTimeout(() => {
-      if (TUNDR_LOTTIE && typeof lottie !== 'undefined' && el.isConnected) {
-        el.innerHTML = '';
-        lottie.loadAnimation({ container: el, renderer: 'svg', loop: true, autoplay: true, animationData: TUNDR_LOTTIE });
-      }
-    }, 600);
-  }
+  el.innerHTML = '<div class="spinner-css"></div>';
   return el;
 }
 
@@ -277,7 +255,7 @@ const H    = (h,m) => h*60+m;
 const norm = m => m < 720 ? m+1440 : m;
 const pad  = v => String(Math.floor(v)).padStart(2,'0');
 const padT = ([h,m]) => `${pad(h)}:${pad(m)}`;
-const todayStr = () => new Date().toISOString().slice(0,10);
+const todayStr = () => { const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; };
 const nowMin   = () => { const n=new Date(); return norm(n.getHours()*60+n.getMinutes()+n.getSeconds()/60); };
 
 // Orario dell'ultimo evento nello sheet (in minuti normalizzati), o null
@@ -290,7 +268,8 @@ function lastEventMin(ni) {
 
 // La data di ieri in formato YYYY-MM-DD
 function yesterdayStr() {
-  return new Date(Date.now() - 86400000).toISOString().slice(0,10);
+  const d = new Date(Date.now() - 86400000);
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 
 // Una serata è "in corso" se:
@@ -304,7 +283,9 @@ function isNightActive(ni) {
   if (ni.date === today) return realMin >= startMin;
   if (ni.date !== yesterdayStr()) return false;
   if (ni.endH >= 12) return false; // serata che finisce prima di mezzanotte
-  // Siamo il giorno dopo: usa nowMin() normalizzato per confrontare con lastEvent
+  // Siamo il giorno dopo: la serata di ieri può essere ancora in corso
+  // solo se siamo nelle ore piccole (prima di mezzogiorno)
+  if (realMin >= 720) return false; // dopo mezzogiorno la serata di ieri è finita
   const nm = nowMin();
   const cutoff = (lastEventMin(ni) ?? norm(H(ni.endH, ni.endM))) + 10;
   return nm < cutoff;
@@ -324,9 +305,8 @@ function isNightOver(ni) {
 const schedCache = {};
 const rankCache  = {};
 
-async function fetchClassifica(nightNum) {
-  const cacheKey = 'sheet_'+nightNum;
-  if (rankCache[cacheKey]) return rankCache[cacheKey];
+async function fetchClassifica() {
+  if (rankCache['sheet']) return rankCache['sheet'];
   try {
     const res = await fetch(`${SHEET}?gid=${GID_CLASSIFICA}&single=true&output=csv`, {cache:'no-store'});
     if (!res.ok) return null;
@@ -342,14 +322,11 @@ async function fetchClassifica(nightNum) {
         else cur += c;
       }
       cols.push(cur.trim());
-      // struttura: posizione, artista, brano, nota, serata(opzionale)
-      const [pos='', artista='', brano='', nota='', serata=''] = cols;
-      if (!artista) continue;
-      // filtra per serata se la colonna esiste
-      if (serata && serata !== String(nightNum)) continue;
-      data.push({ pos: pos.replace(/[^0-9]/g,'') || String(data.length+1), artista, brano, nota });
+      const [pos='', artista='', brano='', nota=''] = cols;
+      if (!artista.trim()) continue;
+      data.push({ pos: pos.replace(/[^0-9]/g,'') || String(data.length+1), artista: artista.trim(), brano: brano.trim(), nota: nota.trim() });
     }
-    if (data.length) rankCache[cacheKey] = data;
+    if (data.length) rankCache['sheet'] = data; // cache resettato al cambio tab
     return data.length ? data : null;
   } catch(e) { return null; }
 }
@@ -620,12 +597,13 @@ async function loadRankAfterRender(ni, _schedule) {
   // Aggiungi lottie spinner nel rank-content
   const rankEl = document.getElementById('rank-content');
   if (rankEl) rankEl.insertAdjacentElement('afterbegin', makeLottieSpinner());
-  const rows = await fetchClassifica(ni.n);
+  delete rankCache['sheet']; // sempre dati freschi ad ogni apertura tab
+  const rows = await fetchClassifica();
   const el = document.getElementById('rank-content');
   if (!el) return;
 
   if (!rows || rows.length === 0) {
-    el.innerHTML = '📡 Classifica non ancora disponibile.<br><small style="color:var(--t3)">Riprova tra qualche minuto.</small>';
+    el.innerHTML = '📡 Classifica non ancora disponibile per la serata '+ni.n+'.<br><small style="color:var(--t3)">Aggiorna la pagina tra qualche minuto.</small>';
     return;
   }
 
