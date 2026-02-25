@@ -240,6 +240,34 @@ const padT = ([h,m]) => `${pad(h)}:${pad(m)}`;
 const todayStr = () => new Date().toISOString().slice(0,10);
 const nowMin   = () => { const n=new Date(); return norm(n.getHours()*60+n.getMinutes()+n.getSeconds()/60); };
 
+// Una serata è "questa sera" anche se siamo dopo mezzanotte ma prima del suo endH:endM
+function isNightActive(ni) {
+  const now = new Date();
+  const today = now.toISOString().slice(0,10);
+  const nowM = now.getHours()*60 + now.getMinutes();
+  const endM = ni.endH*60 + ni.endM;
+  // Data coincide = attiva
+  if (ni.date === today) return true;
+  // Data di ieri = attiva solo se ancora prima della fine (endH < 12 = va oltre mezzanotte)
+  const yesterday = new Date(now - 86400000).toISOString().slice(0,10);
+  if (ni.date === yesterday && ni.endH < 12 && nowM < endM + 6) return true;
+  return false;
+}
+
+// Una serata è "finita" se è passata + siamo oltre endH:endM + 6 minuti (buffer)
+function isNightOver(ni) {
+  const now = new Date();
+  const today = now.toISOString().slice(0,10);
+  const yesterday = new Date(now - 86400000).toISOString().slice(0,10);
+  const nowM = now.getHours()*60 + now.getMinutes();
+  const endM = ni.endH*60 + ni.endM + 6; // +6 min buffer
+  if (ni.date === today && ni.endH >= 12) return false; // serata che finisce prima di mezzanotte, stesso giorno
+  if (ni.date === yesterday && ni.endH < 12 && nowM >= endM) return true;
+  if (ni.date < yesterday) return true;
+  if (ni.date < today && ni.endH >= 12) return true;
+  return false;
+}
+
 const schedCache = {};
 const rankCache  = {};
 
@@ -334,14 +362,46 @@ async function fetchSchedule(nightNum) {
 
 function buildTabs() {
   const row = document.getElementById('night-tabs');
-  const today = todayStr();
   NIGHTS.forEach((n,i) => {
     const btn = document.createElement('button');
-    btn.className = 'nt-btn' + (n.date===today ? ' tonight' : '');
+    btn.className = 'nt-btn';
     btn.id = 'ntb'+i;
     btn.innerHTML = `<span class="nt-dot"></span>${n.label}${n.isFinale?' 🏆':''}`;
     btn.onclick = async () => { activeTab=i; lastIdx=-2; await loadAndRender(i); };
     row.appendChild(btn);
+  });
+  updateTabPills();
+}
+
+// Aggiorna il pallino "tonight" su ogni tab ogni secondo.
+// Il pallino resta sulla serata corrente finche non scatta il PRIMO EVENTO
+// della serata successiva (basato sui dati reali del Google Sheet).
+function updateTabPills() {
+  const mn = nowMin();
+  NIGHTS.forEach((n, i) => {
+    const btn = document.getElementById('ntb'+i);
+    if (!btn) return;
+    let isLive = false;
+    if (isNightActive(n)) {
+      const next = NIGHTS[i+1];
+      if (next) {
+        const nextSched = schedCache[next.n];
+        if (nextSched && nextSched.length > 0) {
+          const firstEv = nextSched[0];
+          const firstEvMin = norm(H(firstEv.t[0], firstEv.t[1]));
+          if (isNightActive(next) && mn >= firstEvMin) {
+            isLive = false; // serata successiva ha preso il testimone
+          } else {
+            isLive = true;
+          }
+        } else {
+          isLive = true; // dati serata successiva non ancora disponibili
+        }
+      } else {
+        isLive = true; // ultima serata
+      }
+    }
+    btn.classList.toggle('tonight', isLive);
   });
 }
 
@@ -357,10 +417,8 @@ async function loadAndRender(i) {
 
 function render(ni, schedule) {
   document.querySelectorAll('.nt-btn').forEach((b,i)=>b.classList.toggle('active',i===activeTab));
-  const today     = todayStr();
-  const isTonight = ni.date === today;
+  const isTonight = isNightActive(ni);
   const hasSched  = Array.isArray(schedule) && schedule.length > 0;
-
 
   document.getElementById('sticky-tl').style.display = hasSched && isTonight ? 'block' : 'none';
   lastIdx = -2;
@@ -368,17 +426,8 @@ function render(ni, schedule) {
   const main = document.getElementById('main');
   main.innerHTML = '';
 
-  const nowD = new Date();
-  const isPast = ni.date < todayStr() || (ni.date === todayStr() && (nowD.getHours() > 1 || (nowD.getHours() === 1 && nowD.getMinutes() >= 45)));
-
-  if (isPast) {
-    document.getElementById('sticky-tl').style.display = 'none';
-    loadRankAfterRender(ni);
-    return;
-  }
-
   if (!hasSched) {
-    const isFuture = ni.date > todayStr();
+    const isFuture = ni.date > todayStr() && !isNightActive(ni);
     main.innerHTML = `<div class="notice"><div class="notice-icon">${isFuture ? '🔜' : '📡'}</div><div><h3>Serata ${ni.n} — ${ni.long}</h3><p>${isFuture ? 'La scaletta sarà disponibile qualche ora prima dell\'inizio.' : 'Scaletta non disponibile.'}</p></div></div>`;
     buildMarkers(ni, []);
     return;
@@ -446,9 +495,9 @@ function tick() {
   const now     = new Date();
   const clockEl = document.getElementById('clock');
   const ni      = NIGHTS[activeTab];
-  const today   = todayStr();
+  updateTabPills();
   const sched   = schedCache[ni.n] || null;
-  const isTonight = ni.date === today;
+  const isTonight = isNightActive(ni);
   const mn    = nowMin();
   const start = norm(H(ni.startH,ni.startM));
   const end   = norm(H(ni.endH,ni.endM));
@@ -464,16 +513,25 @@ function tick() {
   const lcHead  = document.getElementById('lc-head-label');
   const target  = new Date(ni.date+'T'+pad(ni.startH)+':'+pad(ni.startM)+':00');
   const diff    = target - now;
-  if (!isTonight || !sched || mn < start) {
+  // Prima dell'inizio: countdown
+  if (!isTonight || mn < start) {
     dot.style.display='none';
-    lcHead.textContent = diff > 0 ? 'Manca alla serata:' : 'Serata conclusa';
-    if (diff <= 0) {
-      clockEl.textContent='--:--:--';fitClock();
-    } else {
+    lcHead.textContent = diff > 0 ? 'Manca alla serata:' : 'In attesa…';
+    if (diff > 0) {
       const hrs=Math.floor(diff/3600000), mins=Math.floor((diff%3600000)/60000), secs=Math.floor((diff%60000)/1000);
       clockEl.textContent=`${pad(hrs)}:${pad(mins)}:${pad(secs)}`;fitClock();
+    } else {
+      clockEl.textContent='--:--:--';fitClock();
     }
     lcBody.innerHTML=`<div class="lc-content" style="color:var(--t2)"><strong style="color:var(--t1)">${ni.long}</strong><br>Inizia alle ${pad(ni.startH)}:${pad(ni.startM)}.</div>`;
+    return;
+  }
+  // Serata in corso ma scaletta non ancora caricata
+  if (!sched) {
+    dot.style.display=''; dot.className='lc-dot';
+    lcHead.textContent='Live ora';
+    clockEl.textContent='…';fitClock();
+    lcBody.innerHTML=`<div class="lc-content" style="color:var(--t2)">Caricamento scaletta…</div>`;
     return;
   }
   if (mn >= end) {
@@ -724,6 +782,23 @@ function liveCardClick() {
 })();
 
 buildTabs();
+
+// Tab classifica — solo dopo la fine della serata finale (28 feb → 1 mar 01:44)
+(function(){
+  if (!isNightOver(NIGHTS[4])) return; // mostra solo dopo fine della serata finale
+  const row = document.getElementById('night-tabs');
+  const btn = document.createElement('button');
+  btn.className = 'nt-btn';
+  btn.id = 'ntb-rank';
+  btn.innerHTML = '🏆 Classifica';
+  btn.onclick = () => {
+    document.querySelectorAll('.nt-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('sticky-tl').style.display = 'none';
+    loadRankTab();
+  };
+  row.appendChild(btn);
+})();
 
 loadAndRender(activeTab);
 setInterval(tick, 1000);
