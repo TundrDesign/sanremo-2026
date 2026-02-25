@@ -214,6 +214,7 @@ button{cursor:pointer;border:none;background:none;}
 <script>
 const SHEET = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYoLP0N8FnhBYOlhy3d942dlg8Vl8oDfXpFC3da1_ETLzXRPDFx9SkbJ0NFCvhVC3VZzk2Z6M3HQ9W/pub";
 const GIDS  = { 1:"0", 2:"1426018492", 3:"1682569433", 4:"285953640", 5:"1616238422" };
+const GID_CLASSIFICA = "119285555";
 
 const NIGHTS = [
   {n:1, date:"2026-02-24", label:"24 feb",          long:"Martedì 24 febbraio",     startH:20,startM:40,endH:1,endM:44,  isFinale:false},
@@ -233,6 +234,9 @@ const BADGE = {
 };
 const DOTS = {watch:"#FEC82F",special:"#FEC82F",ospite:"#ff8562",cat:"#98a6fe",skip:"rgba(255,255,255,.1)",pub:"rgba(255,255,255,.05)"};
 
+let activeTab = 0;
+let lastIdx   = -2;
+
 const H    = (h,m) => h*60+m;
 const norm = m => m < 720 ? m+1440 : m;
 const pad  = v => String(Math.floor(v)).padStart(2,'0');
@@ -240,113 +244,78 @@ const padT = ([h,m]) => `${pad(h)}:${pad(m)}`;
 const todayStr = () => new Date().toISOString().slice(0,10);
 const nowMin   = () => { const n=new Date(); return norm(n.getHours()*60+n.getMinutes()+n.getSeconds()/60); };
 
-// Una serata è "questa sera" anche se siamo dopo mezzanotte ma prima del suo endH:endM
-function isNightActive(ni) {
-  const now = new Date();
-  const today = now.toISOString().slice(0,10);
-  const nowM = now.getHours()*60 + now.getMinutes();
-  const endM = ni.endH*60 + ni.endM;
-  // Data coincide = attiva
-  if (ni.date === today) return true;
-  // Data di ieri = attiva solo se ancora prima della fine (endH < 12 = va oltre mezzanotte)
-  const yesterday = new Date(now - 86400000).toISOString().slice(0,10);
-  if (ni.date === yesterday && ni.endH < 12 && nowM < endM + 6) return true;
-  return false;
+// Orario dell'ultimo evento nello sheet (in minuti normalizzati), o null
+function lastEventMin(ni) {
+  const sched = schedCache[ni.n];
+  if (!sched || !sched.length) return null;
+  const last = sched[sched.length - 1];
+  return norm(H(last.t[0], last.t[1]));
 }
 
-// Una serata è "finita" se è passata + siamo oltre endH:endM + 6 minuti (buffer)
-function isNightOver(ni) {
+// La data di ieri in formato YYYY-MM-DD
+function yesterdayStr() {
+  return new Date(Date.now() - 86400000).toISOString().slice(0,10);
+}
+
+// Una serata è "in corso" se:
+// - la sua data è oggi E l'ora reale >= startH:startM (es. >= 20:40)
+// - la sua data è ieri E siamo dopo mezzanotte MA prima di lastEvent+10min
+function isNightActive(ni) {
   const now = new Date();
-  const today = now.toISOString().slice(0,10);
-  const yesterday = new Date(now - 86400000).toISOString().slice(0,10);
-  const nowM = now.getHours()*60 + now.getMinutes();
-  const endM = ni.endH*60 + ni.endM + 6; // +6 min buffer
-  if (ni.date === today && ni.endH >= 12) return false; // serata che finisce prima di mezzanotte, stesso giorno
-  if (ni.date === yesterday && ni.endH < 12 && nowM >= endM) return true;
-  if (ni.date < yesterday) return true;
-  if (ni.date < today && ni.endH >= 12) return true;
+  const today = todayStr();
+  const realMin = now.getHours()*60 + now.getMinutes(); // minuti reali, no norm
+  const startMin = H(ni.startH, ni.startM); // es. 20*60+40 = 1240
+  if (ni.date === today) return realMin >= startMin;
+  if (ni.date !== yesterdayStr()) return false;
+  if (ni.endH >= 12) return false; // serata che finisce prima di mezzanotte
+  // Siamo il giorno dopo: usa nowMin() normalizzato per confrontare con lastEvent
+  const nm = nowMin();
+  const cutoff = (lastEventMin(ni) ?? norm(H(ni.endH, ni.endM))) + 10;
+  return nm < cutoff;
+}
+
+// Una serata è "finita" se non è attiva e la data è passata (o oggi oltre fine)
+function isNightOver(ni) {
+  if (isNightActive(ni)) return false;
+  const today = todayStr();
+  if (ni.date < today) return true;
+  if (ni.date === today && ni.endH >= 12) {
+    return nowMin() >= norm(H(ni.endH, ni.endM)) + 10;
+  }
   return false;
 }
 
 const schedCache = {};
 const rankCache  = {};
 
-async function fetchWikiClassifica(nightNum) {
-  if (rankCache[nightNum]) return rankCache[nightNum];
+async function fetchClassifica(nightNum) {
+  const cacheKey = 'sheet_'+nightNum;
+  if (rankCache[cacheKey]) return rankCache[cacheKey];
   try {
-    const url = 'https://it.wikipedia.org/w/api.php?action=parse&page=Festival_di_Sanremo_2026&prop=text&format=json&origin=*';
-    const res = await fetch(url, {cache:'default'});
+    const res = await fetch(`${SHEET}?gid=${GID_CLASSIFICA}&single=true&output=csv`, {cache:'no-store'});
     if (!res.ok) return null;
-    const json = await res.json();
-    const html = json?.parse?.text?.['*'];
-    if (!html) return null;
-    // Parsa la tabella della serata corrispondente
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-    // Cerca sezione "Prima/Seconda/Terza/Quarta/Quinta serata"
-    const nightNames = ['', 'prima', 'seconda', 'terza', 'quarta', 'quinta'];
-    const nightName = nightNames[nightNum];
-    // Trova l'heading della serata
-    let targetTable = null;
-    const headings = doc.querySelectorAll('h2, h3, h4');
-    for (const h of headings) {
-      if (h.textContent.toLowerCase().includes(nightName + ' serata') ||
-          h.textContent.toLowerCase().includes(nightName.charAt(0).toUpperCase() + nightName.slice(1) + ' serata')) {
-        // Prendi la prima tabella dopo questo heading
-        let el = h.nextElementSibling;
-        while (el && !['H2','H3','H4'].includes(el.tagName)) {
-          if (el.tagName === 'TABLE' || el.querySelector('table')) {
-            targetTable = el.tagName === 'TABLE' ? el : el.querySelector('table');
-            break;
-          }
-          el = el.nextElementSibling;
-        }
-        if (targetTable) break;
+    const text = await res.text();
+    const allRows = text.trim().split('\n').slice(1);
+    const data = [];
+    for (const row of allRows) {
+      const cols = [];
+      let cur = '', inQ = false;
+      for (const c of row) {
+        if (c === '"') { inQ = !inQ; }
+        else if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+        else cur += c;
       }
+      cols.push(cur.trim());
+      // struttura: posizione, artista, brano, nota, serata(opzionale)
+      const [pos='', artista='', brano='', nota='', serata=''] = cols;
+      if (!artista) continue;
+      // filtra per serata se la colonna esiste
+      if (serata && serata !== String(nightNum)) continue;
+      data.push({ pos: pos.replace(/[^0-9]/g,'') || String(data.length+1), artista, brano, nota });
     }
-    if (!targetTable) return null;
-    // Estrai righe
-    const rows = [];
-    targetTable.querySelectorAll('tr').forEach((tr, i) => {
-      if (i === 0) return; // skip header
-      const cells = tr.querySelectorAll('td, th');
-      if (cells.length < 2) return;
-      const pos = cells[0]?.textContent.trim().replace(/[^0-9°ºª]/g,'') || (i+'');
-      const artist = cells[1]?.textContent.trim();
-      const song = cells[2]?.textContent.trim() || '';
-      if (artist) rows.push({ pos, artist, song });
-    });
-    if (rows.length === 0) return null;
-    rankCache[nightNum] = rows;
-    return rows;
-  } catch(e) { console.warn('Wiki fetch error:', e); return null; }
-}  // cache in-session per le scalette già caricate
-let activeTab = (() => {
-  const today = todayStr(), h = new Date().getHours();
-  for (let i=0; i<NIGHTS.length; i++) {
-    if (NIGHTS[i].date === today) return i;
-    if (h < 4) { const p = new Date(); p.setDate(p.getDate()-1); if (NIGHTS[i].date === p.toISOString().slice(0,10)) return i; }
-  }
-  return today < NIGHTS[0].date ? 0 : NIGHTS.length-1;
-})();
-let lastIdx = -2;
-
-function csvToSchedule(csv) {
-  return csv.trim().split('\n').slice(1).map(line => {
-    const cols = []; let cur='', inQ=false;
-    for (const c of line) {
-      if (c==='"') { inQ=!inQ; }
-      else if (c===',' && !inQ) { cols.push(cur.trim()); cur=''; }
-      else cur += c;
-    }
-    cols.push(cur.trim());
-    const [ora='', artista='', canzone='', descrizione='', tipo=''] = cols;
-    if (!ora || !artista) return null;
-    const [hS,mS] = ora.replace('.', ':').split(':');
-    const h=parseInt(hS), m=parseInt(mS||'0');
-    if (isNaN(h)||isNaN(m)) return null;
-    return { t:[h,m], a:artista, s:canzone, d:descrizione, tp:tipo.trim().toLowerCase()||'cat' };
-  }).filter(Boolean);
+    if (data.length) rankCache[cacheKey] = data;
+    return data.length ? data : null;
+  } catch(e) { return null; }
 }
 
 async function fetchSchedule(nightNum) {
@@ -426,8 +395,17 @@ function render(ni, schedule) {
   const main = document.getElementById('main');
   main.innerHTML = '';
 
+  // Serata finita → classifica Wikipedia
+  const isOver = isNightOver(ni);
+  if (isOver) {
+    document.getElementById('sticky-tl').style.display = 'none';
+    loadRankAfterRender(ni, schedule);
+    return;
+  }
+
+
   if (!hasSched) {
-    const isFuture = ni.date > todayStr() && !isNightActive(ni);
+    const isFuture = !isNightActive(ni) && !isNightOver(ni);
     main.innerHTML = `<div class="notice"><div class="notice-icon">${isFuture ? '🔜' : '📡'}</div><div><h3>Serata ${ni.n} — ${ni.long}</h3><p>${isFuture ? 'La scaletta sarà disponibile qualche ora prima dell\'inizio.' : 'Scaletta non disponibile.'}</p></div></div>`;
     buildMarkers(ni, []);
     return;
@@ -511,9 +489,11 @@ function tick() {
   const dot     = document.getElementById('lc-dot');
   const lcBody  = document.getElementById('lc-body');
   const lcHead  = document.getElementById('lc-head-label');
-  const target  = new Date(ni.date+'T'+pad(ni.startH)+':'+pad(ni.startM)+':00');
+  // Per la card: usa sempre la prossima serata non ancora iniziata
+  const nextNight = NIGHTS.find(n => !isNightActive(n) && !isNightOver(n)) || ni;
+  const target  = new Date(nextNight.date+'T'+pad(nextNight.startH)+':'+pad(nextNight.startM)+':00');
   const diff    = target - now;
-  // Prima dell'inizio: countdown
+  // Prima dell'inizio della serata attiva sul tab: countdown alla prossima
   if (!isTonight || mn < start) {
     dot.style.display='none';
     lcHead.textContent = diff > 0 ? 'Manca alla serata:' : 'In attesa…';
@@ -523,7 +503,7 @@ function tick() {
     } else {
       clockEl.textContent='--:--:--';fitClock();
     }
-    lcBody.innerHTML=`<div class="lc-content" style="color:var(--t2)"><strong style="color:var(--t1)">${ni.long}</strong><br>Inizia alle ${pad(ni.startH)}:${pad(ni.startM)}.</div>`;
+    lcBody.innerHTML=`<div class="lc-content" style="color:var(--t2)"><strong style="color:var(--t1)">${nextNight.long}</strong><br>Inizia alle ${pad(nextNight.startH)}:${pad(nextNight.startM)}.</div>`;
     return;
   }
   // Serata in corso ma scaletta non ancora caricata
@@ -573,9 +553,8 @@ function tick() {
 
 }
 
-async function loadRankAfterRender(ni) {
+async function loadRankAfterRender(ni, _schedule) {
   const main = document.getElementById('main');
-  // Mostra stato loading
   main.innerHTML = `
     <div class="rank-header">
       <span style="font-size:28px">🏆</span>
@@ -584,118 +563,67 @@ async function loadRankAfterRender(ni) {
         <div class="rank-sub">${ni.long}</div>
       </div>
     </div>
-    <div class="rank-loading" id="rank-loading-${ni.n}">Carico la classifica da Wikipedia…</div>`;
-  const rows = await fetchWikiClassifica(ni.n);
-  const loadEl = document.getElementById('rank-loading-'+ni.n);
+    <div id="rank-content" class="rank-loading">Carico la classifica…</div>`;
+
+  const rows = await fetchClassifica(ni.n);
+  const el = document.getElementById('rank-content');
+  if (!el) return;
+
   if (!rows || rows.length === 0) {
-    if (loadEl) loadEl.innerHTML = '📡 Classifica non ancora disponibile.<br><small style="color:var(--t3)">Wikipedia viene aggiornata subito dopo la serata — riprova tra qualche minuto.</small>';
+    el.innerHTML = '📡 Classifica non ancora disponibile.<br><small style="color:var(--t3)">Riprova tra qualche minuto.</small>';
     return;
   }
-  if (loadEl) loadEl.remove();
+
+  // Controlla se è provvisoria (ordine casuale)
+  const isRandom = rows.some(r => r.nota && r.nota.toLowerCase().includes('ordine casuale'));
+
+  // Se ordine casuale: ordina alfabeticamente per artista
+  const sorted = isRandom
+    ? [...rows].sort((a,b) => a.artista.localeCompare(b.artista, 'it'))
+    : rows;
+
+  const wrapper = document.createElement('div');
+
+  // Banner provvisoria
+  if (isRandom) {
+    const banner = document.createElement('div');
+    banner.style.cssText = 'background:rgba(254,200,47,.08);border:1px solid rgba(254,200,47,.2);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:var(--t2);line-height:1.5';
+    banner.innerHTML = '⚠️ <strong style="color:var(--brand)">Classifica provvisoria</strong> — Top 5 in ordine casuale (voto sala stampa). L\u2019ordine effettivo sar\u00e0 comunicato alla fine del Festival.';
+    wrapper.appendChild(banner);
+  }
+
   const table = document.createElement('table');
   table.className = 'rank-table';
-  table.innerHTML = '<thead><tr><th>#</th><th>Artista</th><th>Canzone</th></tr></thead>';
+  table.innerHTML = '<thead><tr><th style="width:48px;text-align:center">#</th><th>Artista</th><th>Brano</th></tr></thead>';
   const tbody = document.createElement('tbody');
-  rows.forEach(r => {
-    const n = parseInt(r.pos);
-    const numClass = n===1?'gold':n===2?'silver':n===3?'bronze':'';
+
+  sorted.forEach((r, i) => {
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td><span class="rank-num ${numClass}">${r.pos}</span></td>
-      <td><div class="rank-artist">${r.artist}</div></td>
-      <td><div class="rank-song">${r.song ? '"'+r.song+'"' : ''}</div></td>`;
-    tbody.appendChild(tr);
-  });
-  table.appendChild(tbody);
-  document.getElementById('main').appendChild(table);
-}
-
-async function loadRankAfterRender(ni) {
-  const main = document.getElementById('main');
-  main.innerHTML = `
-    <div class="rank-header">
-      <span style="font-size:28px">🏆</span>
-      <div>
-        <div class="rank-title">Classifica · Serata ${ni.n}</div>
-        <div class="rank-sub">${ni.long} · Aggiornata da Wikipedia</div>
-      </div>
-    </div>
-    <div id="rank-content" class="rank-loading">Carico la classifica…</div>`;
-  try {
-    const url = 'https://it.wikipedia.org/w/api.php?action=parse&page=Festival_di_Sanremo_2026&prop=text&format=json&origin=*';
-    const res = await fetch(url, {cache:'default'});
-    if (!res.ok) throw new Error('HTTP '+res.status);
-    const json = await res.json();
-    const html = json?.parse?.text?.['*'];
-    if (!html) throw new Error('no content');
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-
-    // Cerca la sezione della serata giusta
-    const nightNames = ['','prima','seconda','terza','quarta','quinta'];
-    const nightName = nightNames[ni.n] || '';
-    let targetTable = null;
-    const headings = doc.querySelectorAll('h2,h3,h4');
-    for (const h of headings) {
-      const t = h.textContent.toLowerCase();
-      if (t.includes(nightName+' serata') || t.includes('serata '+ni.n)) {
-        let el = h.nextElementSibling;
-        while (el && !/^H[2-4]$/.test(el.tagName)) {
-          const tbl = el.tagName==='TABLE' ? el : el.querySelector('table');
-          if (tbl) { targetTable = tbl; break; }
-          el = el.nextElementSibling;
-        }
-        if (targetTable) break;
-      }
-    }
-    // Fallback: prendi la n-esima wikitable
-    if (!targetTable) {
-      const all = doc.querySelectorAll('table.wikitable');
-      targetTable = all[ni.n - 1] || all[0] || null;
-    }
-
-    const el = document.getElementById('rank-content');
-    if (!targetTable) {
-      el.innerHTML = '📡 Classifica non ancora disponibile.<br><small style="color:var(--t3)">Wikipedia viene aggiornata subito dopo la serata.</small>';
-      return;
-    }
-
-    // Trova colonne interprete e brano
-    const headerCells = Array.from(targetTable.querySelectorAll('tr')[0]?.querySelectorAll('th,td')||[]);
-    const hTexts = headerCells.map(c=>c.textContent.trim().toLowerCase());
-    const posIdx    = hTexts.findIndex(t=>t.includes('pos')||t==='#'||t==='n°'||t==='n.');
-    const artistIdx = hTexts.findIndex(t=>t.includes('interprete')||t.includes('artista')||t.includes('cantante'));
-    const songIdx   = hTexts.findIndex(t=>t.includes('brano')||t.includes('canzone')||t.includes('titolo'));
-
-    const table = document.createElement('table');
-    table.className = 'rank-table';
-    table.innerHTML = '<thead><tr><th style="width:48px;text-align:center">#</th><th>Interprete</th><th>Brano</th></tr></thead>';
-    const tbody = document.createElement('tbody');
-    Array.from(targetTable.querySelectorAll('tr')).slice(1).forEach((tr,i) => {
-      const cells = Array.from(tr.querySelectorAll('td,th'));
-      if (cells.length < 2) return;
-      const pos    = posIdx>=0 ? cells[posIdx]?.textContent.trim().replace(/\[.*?\]/g,'') : String(i+1);
-      const artist = (artistIdx>=0 ? cells[artistIdx] : cells[1])?.textContent.trim().replace(/\[.*?\]/g,'');
-      const song   = (songIdx>=0 ? cells[songIdx] : cells[2])?.textContent.trim().replace(/\[.*?\]/g,'');
-      if (!artist) return;
-      const n = parseInt(pos);
+    if (isRandom) {
+      // Ordine casuale: nessun numero, solo lettera alfabetica
+      tr.innerHTML = `<td style="text-align:center;color:var(--t3);font-size:12px">${String.fromCharCode(65+i)}</td>
+        <td><div class="rank-artist">${r.artista}</div></td>
+        <td><div class="rank-song">${r.brano ? '"'+r.brano+'"' : '—'}</div></td>`;
+    } else {
+      const n = parseInt(r.pos);
       const medal = n===1?'🥇':n===2?'🥈':n===3?'🥉':'';
       const numClass = n===1?'gold':n===2?'silver':n===3?'bronze':'';
-      const row = document.createElement('tr');
-      row.innerHTML = `<td style="text-align:center"><span class="rank-num ${numClass}">${medal||pos}</span></td>
-        <td><div class="rank-artist">${artist}</div></td>
-        <td><div class="rank-song">${song?'"'+song+'"':'—'}</div></td>`;
-      tbody.appendChild(row);
-    });
-    if (!tbody.children.length) {
-      el.innerHTML = '📡 Classifica non ancora disponibile.';
-      return;
+      tr.innerHTML = `<td style="text-align:center"><span class="rank-num ${numClass}">${medal||r.pos}</span></td>
+        <td><div class="rank-artist">${r.artista}</div></td>
+        <td><div class="rank-song">${r.brano ? '"'+r.brano+'"' : '—'}</div></td>`;
     }
-    table.appendChild(tbody);
-    el.replaceWith(table);
-  } catch(e) {
-    const el = document.getElementById('rank-content');
-    if (el) el.innerHTML = '❌ Errore: '+e.message;
-  }
+    tbody.appendChild(tr);
+  });
+
+  table.appendChild(tbody);
+  wrapper.appendChild(table);
+  el.replaceWith(wrapper);
+}
+
+
+async function loadRankTab() {
+  // Tab finale: mostra classifica serata 5 (o tutte se colonna serata assente)
+  await loadRankAfterRender(NIGHTS[4], null);
 }
 
 function fitClock() {
