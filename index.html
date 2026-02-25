@@ -389,11 +389,22 @@ function updateTabPills() {
 
 async function loadAndRender(i) {
   const ni = NIGHTS[i];
+  // Serata conclusa → vai diretto alla classifica, non serve caricare la scaletta
+  if (isNightOver(ni)) {
+    document.querySelectorAll('.nt-btn').forEach((b,j)=>b.classList.toggle('active',j===i));
+    document.getElementById('sticky-tl').style.display = 'none';
+    loadRankAfterRender(ni, null);
+    return;
+  }
   if (!schedCache[ni.n]) {
     render(ni, null);
     const sched = await fetchSchedule(ni.n);
-    schedCache[ni.n] = sched; // null se fallisce
+    schedCache[ni.n] = sched;
+    // Se nel frattempo l'utente ha cambiato tab o la serata è diventata conclusa, non sovrascrivere
+    if (activeTab !== i) return;
+    if (isNightOver(ni)) { loadRankAfterRender(ni, null); return; }
   }
+  if (activeTab !== i) return;
   render(ni, schedCache[ni.n]);
 }
 
@@ -588,8 +599,8 @@ async function loadRankAfterRender(ni, _schedule) {
     <div class="rank-header">
       <span style="font-size:28px">🏆</span>
       <div>
-        <div class="rank-title">Classifica · Serata ${ni.n}</div>
-        <div class="rank-sub">${ni.long}</div>
+        <div class="rank-title">Classifica aggiornata</div>
+        <div class="rank-sub">Aggiornata dopo ogni serata</div>
       </div>
     </div>
     <div id="rank-content" class="rank-loading"><span>Carico la classifica…</span></div>`;
