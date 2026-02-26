@@ -234,17 +234,31 @@ function makeLottieSpinner(cls) {
   return el;
 }
 
-const SHEET = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYoLP0N8FnhBYOlhy3d942dlg8Vl8oDfXpFC3da1_ETLzXRPDFx9SkbJ0NFCvhVC3VZzk2Z6M3HQ9W/pub";
+// ⚡ API gviz: ~200ms vs 1-3s dell'endpoint /pub
+// Foglio da condividere con "Chiunque ha il link può visualizzare" (non serve "Pubblica sul web")
+const SHEET_ID = "16InNL80Daj3a-_-02VDk48HcG5XCjqHQnHrx-rPVhqY"; // ← ID dall'URL di edit del foglio
 const GIDS  = { 1:"0", 2:"1426018492", 3:"1682569433", 4:"285953640", 5:"1616238422" };
-const GID_CLASSIFICA = "119285555";
-// Worker URL: sostituisci con il tuo worker dopo il deploy
-// es. https://sanremo-proxy.TUNDR.workers.dev
-const WORKER_URL = "";
+// GID classifica per ogni serata
+const GIDS_CLASSIFICA = {
+  1: "119285555",
+  2: "1922115539",
+  3: "162588330",
+  4: "1288867646",
+  5: "1836252288",
+};
 
-// Fetch CSV: usa worker se disponibile (più veloce, cachato), altrimenti fallback diretto
+// Costruisce URL gviz per il foglio
 function csvUrl(gid) {
-  if (WORKER_URL) return `${WORKER_URL}/csv?gid=${gid}`;
-  return `${SHEET}?gid=${gid}&single=true&output=csv`;
+  return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${gid}`;
+}
+
+// Parser gviz JSON → array di righe (array di stringhe)
+function parseGvizResponse(text) {
+  try {
+    const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*?)\);?\s*$/)[1]);
+    if (!json.table || !json.table.rows) return [];
+    return json.table.rows.map(r => r.c.map(c => (c && c.v != null ? String(c.v) : '')));
+  } catch { return []; }
 }
 
 const NIGHTS = [
@@ -323,17 +337,9 @@ const schedCache = {};
 const rankCache  = {};
 
 function parseClassificaCSV(text) {
-  const allRows = text.trim().split('\n').slice(1);
+  const rows = parseGvizResponse(text);
   const data = [];
-  for (const row of allRows) {
-    const cols = [];
-    let cur = '', inQ = false;
-    for (const c of row) {
-      if (c === '"') { inQ = !inQ; }
-      else if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
-      else cur += c;
-    }
-    cols.push(cur.trim());
+  for (const cols of rows) {
     const [pos='', artista='', brano='', nota=''] = cols;
     if (!artista.trim()) continue;
     data.push({ pos: pos.replace(/[^0-9]/g,'') || String(data.length+1), artista: artista.trim(), brano: brano.trim(), nota: nota.trim() });
@@ -341,21 +347,23 @@ function parseClassificaCSV(text) {
   return data.length ? data : null;
 }
 
-async function fetchClassifica() {
-  // Se abbiamo cache, restituisci subito e aggiorna in background
-  if (rankCache['sheet']) {
-    fetch(csvUrl(GID_CLASSIFICA), {cache: WORKER_URL ? 'default' : 'no-store'})
+async function fetchClassifica(nightNum) {
+  const gid = GIDS_CLASSIFICA[nightNum];
+  if (!gid) return null;
+  const cacheKey = 'n' + nightNum;
+  if (rankCache[cacheKey]) {
+    // Aggiorna in background
+    fetch(csvUrl(gid))
       .then(r => r.text())
-      .then(text => { const d = parseClassificaCSV(text); if (d) rankCache['sheet'] = d; })
+      .then(text => { const d = parseClassificaCSV(text); if (d) rankCache[cacheKey] = d; })
       .catch(() => {});
-    return rankCache['sheet'];
+    return rankCache[cacheKey];
   }
-  // Prima volta: fetch bloccante
   try {
-    const res = await fetch(csvUrl(GID_CLASSIFICA), {cache: WORKER_URL ? 'default' : 'no-store'});
+    const res = await fetch(csvUrl(gid));
     if (!res.ok) return null;
     const data = parseClassificaCSV(await res.text());
-    if (data) rankCache['sheet'] = data;
+    if (data) rankCache[cacheKey] = data;
     return data;
   } catch(e) { return null; }
 }
@@ -363,21 +371,11 @@ async function fetchClassifica() {
 // Converte CSV del foglio Google Sheets in array di eventi
 // Colonne: ora | artista | canzone | descrizione | tipo
 function csvToSchedule(text) {
-  const lines = text.trim().split('\n').slice(1); // salta header
+  const rows = parseGvizResponse(text);
   const out = [];
-  for (const line of lines) {
-    // Parser CSV robusto (gestisce campi tra virgolette)
-    const cols = [];
-    let cur = '', inQ = false;
-    for (const c of line) {
-      if (c === '"') { inQ = !inQ; }
-      else if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
-      else cur += c;
-    }
-    cols.push(cur.trim());
+  for (const cols of rows) {
     const [ora='', artista='', canzone='', descrizione='', tipo=''] = cols;
     if (!ora.trim() || !artista.trim()) continue;
-    // Parsa orario "HH:MM"
     const [hStr, mStr] = ora.trim().split(':');
     const h = parseInt(hStr), m = parseInt(mStr);
     if (isNaN(h) || isNaN(m)) continue;
@@ -396,7 +394,7 @@ async function fetchSchedule(nightNum) {
   const gid = GIDS[nightNum];
   if (!gid) return null;
   try {
-    const res = await fetch(csvUrl(gid), {cache:'no-store'});
+    const res = await fetch(csvUrl(gid));
     if (!res.ok) return null;
     const sched = csvToSchedule(await res.text());
     return sched.length ? sched : null;
@@ -450,20 +448,37 @@ function updateTabPills() {
 
 async function loadAndRender(i) {
   const ni = NIGHTS[i];
-  // Serata conclusa → vai diretto alla classifica, non serve caricare la scaletta
+
   if (isNightOver(ni)) {
     document.querySelectorAll('.nt-btn').forEach((b,j)=>b.classList.toggle('active',j===i));
     document.getElementById('sticky-tl').style.display = 'none';
-    loadRankAfterRender(ni, null);
+    // Mostra placeholder mentre carichiamo
+    document.getElementById('main').innerHTML = '<div class="rank-loading"><div class="spinner-css"></div><span>Carico la classifica…</span></div>';
+    // Controlla se il tab classifica ha dati
+    const rows = await fetchClassifica(ni.n);
+    if (activeTab !== i) return;
+    if (rows && rows.length > 0) {
+      loadRankAfterRender(ni, null);
+    } else {
+      // Classifica non ancora pubblicata → mostra messaggio
+      document.getElementById('main').innerHTML = `
+        <div class="notice">
+          <div class="notice-icon">🏆</div>
+          <div>
+            <h3>Serata ${ni.n} — ${ni.long}</h3>
+            <p>La classifica sarà disponibile a breve. Aggiorna la pagina tra qualche minuto.</p>
+          </div>
+        </div>`;
+    }
     return;
   }
+
   if (!schedCache[ni.n]) {
     render(ni, null);
     const sched = await fetchSchedule(ni.n);
     schedCache[ni.n] = sched;
-    // Se nel frattempo l'utente ha cambiato tab o la serata è diventata conclusa, non sovrascrivere
     if (activeTab !== i) return;
-    if (isNightOver(ni)) { loadRankAfterRender(ni, null); return; }
+    if (isNightOver(ni)) { loadAndRender(i); return; }
   }
   if (activeTab !== i) return;
   render(ni, schedCache[ni.n]);
@@ -654,47 +669,56 @@ function tick() {
 
 }
 
+// Info voto per ogni serata
+const NIGHT_VOTE_INFO = {
+  1: { title: "Top 5 provvisoria · Serata 1", sub: "Tutti i 30 Big in gara", note: "Top 5 in ordine casuale — Televoto (50%) + Giuria delle Radio (50%)" },
+  2: { title: "Top 5 provvisoria · Serata 2", sub: "Primi 15 Big in gara", note: "Top 5 tra i 15 Big della serata — Televoto (50%) + Giuria delle Radio (50%)" },
+  3: { title: "Top 5 provvisoria · Serata 3", sub: "Secondi 15 Big in gara", note: "Top 5 tra i 15 Big della serata — Televoto (50%) + Giuria delle Radio (50%)" },
+  4: { title: "Classifica Cover · Serata 4", sub: "Serata delle cover", note: "Voto Sala Stampa (34%) + Televoto (33%) + Giuria Demoscopica (33%) — contribuisce al risultato finale" },
+  5: { title: "Classifica Finale 🏆", sub: "Sabato 28 febbraio", note: "Televoto (34%) + Sala Stampa (33%) + Giuria Demoscopica (33%)" },
+};
+
 async function loadRankAfterRender(ni, _schedule) {
+  const voteInfo = NIGHT_VOTE_INFO[ni.n] || { title: 'Classifica Serata '+ni.n, sub: '', note: '' };
   const main = document.getElementById('main');
   main.innerHTML = `
     <div class="rank-header">
       <span style="font-size:28px">🏆</span>
       <div>
-        <div class="rank-title">Classifica aggiornata</div>
-        <div class="rank-sub">Aggiornata dopo ogni serata</div>
+        <div class="rank-title">${voteInfo.title}</div>
+        <div class="rank-sub">${voteInfo.sub}</div>
       </div>
     </div>
     <div id="rank-content" class="rank-loading"><span>Carico la classifica…</span></div>`;
 
-  // Aggiungi lottie spinner nel rank-content
   const rankEl = document.getElementById('rank-content');
   if (rankEl) rankEl.insertAdjacentElement('afterbegin', makeLottieSpinner());
-  const rows = await fetchClassifica();
+
+  const rows = await fetchClassifica(ni.n);
   const el = document.getElementById('rank-content');
   if (!el) return;
 
   if (!rows || rows.length === 0) {
-    el.innerHTML = '📡 Classifica non ancora disponibile per la serata '+ni.n+'.<br><small style="color:var(--t3)">Aggiorna la pagina tra qualche minuto.</small>';
+    el.innerHTML = '📡 Classifica non ancora disponibile.<br><small style="color:var(--t3)">Aggiorna la pagina tra qualche minuto.</small>';
     return;
   }
 
-  // Controlla se è provvisoria (ordine casuale)
   const isRandom = rows.some(r => r.nota && r.nota.toLowerCase().includes('ordine casuale'));
-
-  // Se ordine casuale: ordina alfabeticamente per artista
   const sorted = isRandom
     ? [...rows].sort((a,b) => a.artista.localeCompare(b.artista, 'it'))
     : rows;
 
   const wrapper = document.createElement('div');
 
-  // Banner provvisoria
+  // Banner info voto (sempre)
+  const banner = document.createElement('div');
+  banner.style.cssText = 'background:rgba(254,200,47,.08);border:1px solid rgba(254,200,47,.2);border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:12px;color:var(--t2);line-height:1.5';
   if (isRandom) {
-    const banner = document.createElement('div');
-    banner.style.cssText = 'background:rgba(254,200,47,.08);border:1px solid rgba(254,200,47,.2);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:var(--t2);line-height:1.5';
-    banner.innerHTML = '⚠️ <strong style="color:var(--brand)">Classifica provvisoria</strong> — Top 5 in ordine casuale (voto sala stampa). L\u2019ordine effettivo sar\u00e0 comunicato alla fine del Festival.';
-    wrapper.appendChild(banner);
+    banner.innerHTML = '⚠️ <strong style="color:var(--brand)">Classifica provvisoria</strong> — ' + voteInfo.note + '. Ordine casuale, non riflette la posizione effettiva.';
+  } else {
+    banner.innerHTML = 'ℹ️ ' + voteInfo.note + '.';
   }
+  wrapper.appendChild(banner);
 
   const table = document.createElement('table');
   table.className = 'rank-table';
@@ -704,8 +728,7 @@ async function loadRankAfterRender(ni, _schedule) {
   sorted.forEach((r, i) => {
     const tr = document.createElement('tr');
     if (isRandom) {
-      // Ordine casuale: nessun numero, solo lettera alfabetica
-      tr.innerHTML = `<td style="text-align:center;color:var(--t3);font-size:12px">${String.fromCharCode(65+i)}</td>
+      tr.innerHTML = `<td style="text-align:center;color:var(--t3);font-size:13px;font-weight:600">${String.fromCharCode(65+i)}</td>
         <td><div class="rank-artist">${r.artista}</div></td>
         <td><div class="rank-song">${r.brano ? '"'+r.brano+'"' : '—'}</div></td>`;
     } else {
@@ -726,7 +749,6 @@ async function loadRankAfterRender(ni, _schedule) {
 
 
 async function loadRankTab() {
-  // Tab finale: mostra classifica serata 5 (o tutte se colonna serata assente)
   await loadRankAfterRender(NIGHTS[4], null);
 }
 
@@ -873,7 +895,7 @@ buildTabs();
 
   if (gid) {
     try {
-      const res = await fetch(csvUrl(gid), {cache:'no-store'});
+      const res = await fetch(csvUrl(gid));
       if (res.ok) {
         const rows = csvToSchedule(await res.text());
         if (rows && rows.length > 0) {
