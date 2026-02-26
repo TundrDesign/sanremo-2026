@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tundr.tech/sanremo2026/sitemap.xml
